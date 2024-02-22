@@ -47,9 +47,8 @@ public class Materia {
 	@Column(nullable = false)
 	@ManyToMany(mappedBy = "materias", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Alumno> alumnos;
-	
-	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Nota> notas;
 
+	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Nota> notas;
 
 }

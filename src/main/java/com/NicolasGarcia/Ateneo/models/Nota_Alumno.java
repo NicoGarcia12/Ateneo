@@ -1,11 +1,5 @@
 package com.NicolasGarcia.Ateneo.models;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import com.NicolasGarcia.Ateneo.enums.tipoNota;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,26 +16,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Nota {
+public class Nota_Alumno {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(nullable = false)
-	private String nombre;
-
-	@Column(nullable = false)
-	private tipoNota tipo;
-
-	@Column(nullable = false)
-	private LocalDate fecha;
-
+	private Double valor;
+	
 	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_materia")
-	private Materia materia;
+	@JoinColumn(name = "id_nota")
+	private Nota nota;
 	
-	@OneToMany(mappedBy = "nota", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Nota_Alumno> notas;
+	@Column(nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_alumno")
+	private Alumno alumno;
 }
