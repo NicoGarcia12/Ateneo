@@ -1,8 +1,6 @@
 package com.NicolasGarcia.Ateneo.models;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,9 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Materia {
+public class Nota {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,25 +27,13 @@ public class Materia {
 	private String nombre;
 
 	@Column(nullable = false)
-	private int ciclo_lectivo;
+	private String tipo;
 
 	@Column(nullable = false)
-	private String institucion;
-
-	@Column(nullable = false)
-	private int secundario_carrera;
-
+	private LocalDate fecha;
+	
 	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_profesor")
-	private Profesor profesor;
-
-	@Column(nullable = false)
-	@ManyToMany(mappedBy = "materias", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Alumno> alumnos;
-	
-	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Nota> notas;
-
-
+	@JoinColumn(name = "id_materia")
+	private Materia materia;
 }
