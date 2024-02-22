@@ -42,8 +42,11 @@ public class Alumno {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "alumno_materia", joinColumns = @JoinColumn(name = "id_alumno"), inverseJoinColumns = @JoinColumn(name = "id_materia"))
 	private List<Materia> materias;
-	
+
 	@OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Nota_Alumno> notas;
+
+	@OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Inasistencia> inasistencias;
 
 }
