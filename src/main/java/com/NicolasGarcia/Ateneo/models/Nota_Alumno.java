@@ -25,13 +25,11 @@ public class Nota_Alumno {
 	@Column(nullable = false)
 	private Double valor;
 
-	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_nota")
+	@JoinColumn(nullable = false, name = "id_nota")
 	private Nota nota;
 
-	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_alumno")
+	@JoinColumn(nullable = false, name = "id_alumno")
 	private Alumno alumno;
 }

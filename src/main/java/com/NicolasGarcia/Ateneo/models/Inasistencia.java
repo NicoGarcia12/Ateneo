@@ -1,6 +1,5 @@
 package com.NicolasGarcia.Ateneo.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,10 +22,10 @@ public class Inasistencia {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_materia")
-	private Materia materia;
+	@JoinColumn(nullable = false, name = "id_clase")
+	private Clase clase;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_alumno")
+	@JoinColumn(nullable = false, name = "id_alumno")
 	private Alumno alumno;
 }

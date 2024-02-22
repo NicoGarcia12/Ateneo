@@ -2,8 +2,6 @@ package com.NicolasGarcia.Ateneo.models;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Profesor {
 
-	@Id
+	@jakarta.persistence.Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 

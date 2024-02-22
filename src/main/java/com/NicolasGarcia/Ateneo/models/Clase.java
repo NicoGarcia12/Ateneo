@@ -31,7 +31,7 @@ public class Clase {
 	private LocalDate fecha;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_materia")
+	@JoinColumn(nullable = false, name = "id_materia")
 	private Materia materia;
 
 	@OneToMany(mappedBy = "clase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

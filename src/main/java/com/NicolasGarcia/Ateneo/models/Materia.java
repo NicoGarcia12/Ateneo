@@ -39,9 +39,8 @@ public class Materia {
 	@Column(nullable = false)
 	private int secundario_carrera;
 
-	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_profesor")
+	@JoinColumn(nullable = false, name = "id_profesor")
 	private Profesor profesor;
 
 	@Column(nullable = false)

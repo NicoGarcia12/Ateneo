@@ -25,13 +25,11 @@ public class RelacionNota {
 	@Column(nullable = false)
 	private Double peso;
 
-	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_nota_base")
+	@JoinColumn(nullable = false, name = "id_nota_base")
 	private Nota nota_base;
 
-	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_nota_derivada")
+	@JoinColumn(nullable = false, name = "id_nota_derivada")
 	private Nota nota_derivada;
 }

@@ -2,8 +2,6 @@ package com.NicolasGarcia.Ateneo.models;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Alumno {
 
-	@Id
+	@jakarta.persistence.Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
@@ -38,9 +36,9 @@ public class Alumno {
 	private Long dni;
 
 	private String email;
-	@Column(nullable = false)
+
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "alumno_materia", joinColumns = @JoinColumn(name = "id_alumno"), inverseJoinColumns = @JoinColumn(name = "id_materia"))
+	@JoinTable(name = "alumno_materia", joinColumns = @JoinColumn(nullable = false, name = "id_alumno"), inverseJoinColumns = @JoinColumn(nullable = false, name = "id_materia"))
 	private List<Materia> materias;
 
 	@OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

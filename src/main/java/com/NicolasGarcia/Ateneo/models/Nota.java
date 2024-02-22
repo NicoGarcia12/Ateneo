@@ -38,9 +38,8 @@ public class Nota {
 	@Column(nullable = false)
 	private LocalDate fecha;
 
-	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_materia")
+	@JoinColumn(nullable = false, name = "id_materia")
 	private Materia materia;
 
 	@OneToMany(mappedBy = "nota", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
