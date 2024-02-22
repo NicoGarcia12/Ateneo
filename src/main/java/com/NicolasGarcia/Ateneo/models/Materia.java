@@ -50,5 +50,8 @@ public class Materia {
 
 	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Nota> notas;
+	
+	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Clase> clases;
 
 }

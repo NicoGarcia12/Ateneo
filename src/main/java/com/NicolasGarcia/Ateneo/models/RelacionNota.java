@@ -21,15 +21,15 @@ public class RelacionNota {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private Double peso;
-	
+
 	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nota_base")
 	private Nota nota_base;
-	
+
 	@Column(nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nota_derivada")
