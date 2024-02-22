@@ -45,4 +45,10 @@ public class Nota {
 	
 	@OneToMany(mappedBy = "nota", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Nota_Alumno> notas;
+	
+	@OneToMany(mappedBy = "nota_base", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<RelacionNota> notas_base;
+	
+	@OneToMany(mappedBy = "nota_derivada", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<RelacionNota> notas_derivadas;
 }
