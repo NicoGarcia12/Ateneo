@@ -2,16 +2,16 @@ package com.NicolasGarcia.Ateneo.models;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import org.springframework.data.annotation.Id;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,31 +20,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Materia {
+public class Alumno {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(nullable = false)
-	private String nombre;
+	private String nombres;
 
 	@Column(nullable = false)
-	private int ciclo_lectivo;
+	private String apellidos;
 
 	@Column(nullable = false)
-	private String institucion;
+	private Long dni;
 
+	private String email;
 	@Column(nullable = false)
-	private int secundario_carrera;
-
-	@Column(nullable = false)
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_profesor")
-	private Profesor profesor;
-
-	@Column(nullable = false)
-	@ManyToMany(mappedBy = "materias", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Alumno> alumnos;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "alumno_materia", joinColumns = @JoinColumn(name = "id_alumno"), inverseJoinColumns = @JoinColumn(name = "id_materia"))
+	private List<Materia> materias;
 
 }
