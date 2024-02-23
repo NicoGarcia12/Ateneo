@@ -1,5 +1,6 @@
 package com.NicolasGarcia.Ateneo.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;

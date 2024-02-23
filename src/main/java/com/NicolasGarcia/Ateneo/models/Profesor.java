@@ -1,5 +1,6 @@
 package com.NicolasGarcia.Ateneo.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -34,6 +35,11 @@ public class Profesor {
 
 	@Column(nullable = false)
 	private String contraseña;
+	
+    @Column(nullable = false)
+    private boolean borrado;
+
+    private LocalDate fechaBorrado;
 
 	@OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Materia> materias;

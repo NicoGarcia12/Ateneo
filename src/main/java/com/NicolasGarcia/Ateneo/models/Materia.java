@@ -1,5 +1,6 @@
 package com.NicolasGarcia.Ateneo.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -38,6 +39,11 @@ public class Materia {
 
 	@Column(nullable = false)
 	private int secundario_carrera;
+	
+    @Column(nullable = false)
+    private boolean borrado;
+
+    private LocalDate fechaBorrado;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false, name = "id_profesor")
