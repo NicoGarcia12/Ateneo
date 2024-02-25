@@ -39,11 +39,6 @@ public class Materia {
 
 	@Column(nullable = false)
 	private int secundario_carrera;
-	
-    @Column(nullable = false)
-    private boolean borrado;
-
-    private LocalDate fechaBorrado;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false, name = "id_profesor")
@@ -55,7 +50,7 @@ public class Materia {
 
 	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Nota> notas;
-	
+
 	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Clase> clases;
 

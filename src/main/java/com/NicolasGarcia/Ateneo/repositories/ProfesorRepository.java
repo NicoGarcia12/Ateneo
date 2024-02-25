@@ -8,4 +8,6 @@ import com.NicolasGarcia.Ateneo.models.Profesor;
 @Repository
 public interface ProfesorRepository extends JpaRepository<Profesor, Long>{
 
+	Profesor findByEmail(String email);
+
 }

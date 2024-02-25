@@ -37,11 +37,6 @@ public class Alumno {
 	private Long dni;
 
 	private String email;
-	
-    @Column(nullable = false)
-    private boolean sinMaterias;
-
-    private LocalDate fechaUltimoBorrado;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "alumno_materia", joinColumns = @JoinColumn(nullable = false, name = "id_alumno"), inverseJoinColumns = @JoinColumn(nullable = false, name = "id_materia"))
