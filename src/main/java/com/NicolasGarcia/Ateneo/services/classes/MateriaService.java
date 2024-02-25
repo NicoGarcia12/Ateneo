@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.NicolasGarcia.Ateneo.models.Alumno;
 import com.NicolasGarcia.Ateneo.models.Materia;
 import com.NicolasGarcia.Ateneo.repositories.MateriaRepository;
 import com.NicolasGarcia.Ateneo.services.interfaces.MateriaServiceInterface;
@@ -17,7 +18,7 @@ public class MateriaService implements MateriaServiceInterface {
 
 	@Override
 	public void crearMateria(Materia materia) {
-		materiaRepo.save(materia);		
+		materiaRepo.save(materia);
 	}
 
 	@Override
@@ -31,8 +32,13 @@ public class MateriaService implements MateriaServiceInterface {
 	}
 
 	@Override
+	public List<Alumno> buscarAlumnosPorMateria(Long id) {
+		return materiaRepo.findAllAlumnosByMateriaId(id);
+	}
+
+	@Override
 	public void modificarMateria(Materia materia) {
-		materiaRepo.save(materia);		
+		materiaRepo.save(materia);
 	}
 
 	@Override
