@@ -33,4 +33,9 @@ public class ProfesorService implements ProfesorServiceInterface {
 		profRepo.save(prof);
 	}
 
+	@Override
+	public void eliminarProfesor(Long id) {
+		profRepo.deleteById(id);
+	}
+
 }

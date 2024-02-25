@@ -11,5 +11,7 @@ public interface ProfesorServiceInterface {
 	public Profesor buscarPorId(Long id);
 
 	public void modificarProfesor(Profesor prof);
+	
+	public void eliminarProfesor(Long id);
 
 }
