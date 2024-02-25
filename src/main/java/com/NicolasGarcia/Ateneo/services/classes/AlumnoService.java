@@ -35,4 +35,9 @@ public class AlumnoService implements AlumnoServiceInterface{
 		alumnoRepo.save(alumno);		
 	}
 
+	@Override
+	public void borrarAlumnoMateria(Long idMateria, Long idAlumno) {
+		alumnoRepo.deleteAlumnoByMateria(idAlumno, idMateria);		
+	}
+
 }

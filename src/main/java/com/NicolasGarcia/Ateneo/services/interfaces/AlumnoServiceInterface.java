@@ -13,4 +13,6 @@ public interface AlumnoServiceInterface {
 	public Alumno verAlumno(Long id);
 
 	public void modificarAlumno(Alumno alumno);
+	
+	public void borrarAlumnoMateria(Long idMateria, Long idAlumno);
 }
