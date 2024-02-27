@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.NicolasGarcia.Ateneo.models.Alumno;
+import com.NicolasGarcia.Ateneo.models.Materia;
 import com.NicolasGarcia.Ateneo.repositories.AlumnoRepository;
 import com.NicolasGarcia.Ateneo.services.interfaces.AlumnoServiceInterface;
 
@@ -37,7 +38,13 @@ public class AlumnoService implements AlumnoServiceInterface{
 
 	@Override
 	public void borrarAlumnoMateria(Long idMateria, Long idAlumno) {
-		alumnoRepo.deleteAlumnoByMateria(idAlumno, idMateria);		
+	    Alumno alumno = alumnoRepo.findById(idAlumno).orElse(null);
+	    if (alumno != null) {
+	        List<Materia> materias = alumno.getMaterias();
+	        materias.removeIf(materia -> materia.getId().equals(idMateria));
+	        alumnoRepo.save(alumno);
+	    }
 	}
+
 
 }

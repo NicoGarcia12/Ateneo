@@ -12,9 +12,4 @@ import com.NicolasGarcia.Ateneo.models.Alumno;
 @Repository
 public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
 
-	@Transactional
-	@Modifying
-	@Query("DELETE FROM Alumno_Materia am WHERE am.id_alumno = :idAlumno AND am.id_materia = :idMateria")
-	void deleteAlumnoByMateria(@Param("idAlumno") Long idAlumno, @Param("idMateria") Long idMateria);
-
 }
