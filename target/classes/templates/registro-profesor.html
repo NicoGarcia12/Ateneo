@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Ateneo: Registro-Profesor</title>
+<script th:if="${mensaje}">
+    setTimeout(function(){
+        document.getElementById("mensajeTemporal").style.display = "none";
+    }, 5000);
+</script>
+</head>
+<body>
+    <h1>Registrate</h1>
+    <form th:action="@{/registro-profesor}" method="post" >
+        <input type="text" name="nombres" placeholder="Nombres" required>
+        <input type="text" name="apellidos" placeholder="Apellidos" required>
+        <input type="text" name="email" placeholder="Email" required>
+        <input type="password" name="contraseña" placeholder="Contraseña" required>
+        <input type="submit" value="Enviar">
+    </form>
+    <div id="mensajeTemporal" th:if="${mensaje}" class="mensaje" th:text="${mensaje}"></div>
+    <a th:href="@{/}">Volver</a>
+</body>
+</html>

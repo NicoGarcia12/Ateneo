@@ -3,13 +3,22 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Ateneo: Login</title>
+<script th:if="${mensaje}">
+    setTimeout(function(){
+        document.getElementById("mensajeTemporal").style.display = "none";
+    }, 5000);
+</script>
 </head>
 <body>
     <h1>Ingresá</h1>
     <form th:action="@{/}" method="post" >
-        <input type="text" name="Email" placeholder="Email">
-        <input type="password" name="Contrasena" placeholder="Contraseña">
+        <input type="text" name="email" placeholder="Email">
+        <input type="password" name="contraseña" placeholder="Contraseña">
         <input type="submit" value="Ingresar">
     </form>
+    <div id="mensajeTemporal" th:if="${mensaje}" class="mensaje" th:text="${mensaje}"></div>
+    <div th:if="${mensaje}" class="mensaje" th:text="${contra1}"></div>
+    <div th:if="${mensaje}" class="mensaje" th:text="${contra2}"></div>
+    <a th:href="@{/registro-profesor}">Registrarse</a>
 </body>
 </html>
