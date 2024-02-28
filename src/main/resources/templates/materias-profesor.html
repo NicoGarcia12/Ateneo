@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Ateneo: Mis Materias</title>
+</head>
+<body>
+    <h1>Materias</h1>
+    <div id="mensajeTemporal" th:if="${mensaje}" class="mensaje" th:text="${mensaje}"></div>
+    <div th:if="${mensaje}" class="mensaje" th:text="${contra1}"></div>
+    <div th:if="${mensaje}" class="mensaje" th:text="${contra2}"></div>
+    <a th:href="@{/registro-profesor}">Registrarse</a>
+</body>
+</html>

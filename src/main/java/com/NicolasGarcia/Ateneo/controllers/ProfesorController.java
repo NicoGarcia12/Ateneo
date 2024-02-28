@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.NicolasGarcia.Ateneo.SessionProfesor;
 import com.NicolasGarcia.Ateneo.models.Profesor;
 import com.NicolasGarcia.Ateneo.services.classes.ProfesorService;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ProfesorController {
@@ -23,11 +27,20 @@ public class ProfesorController {
 	}
 
 	@PostMapping("/")
-	public String PostLogin(RedirectAttributes redirectAttributes, @ModelAttribute Profesor profesor) {
+	public String PostLogin(HttpServletResponse response, RedirectAttributes redirectAttributes,
+			@ModelAttribute Profesor profesor) {
 		if (profesor.getContraseña() != null && profesor.getEmail() != null) {
 			Profesor profesor2 = profesorService.buscarPorEmail(profesor.getEmail());
 			if (profesor2 != null) {
 				if (profesor.getContraseña().equals(profesor2.getContraseña())) {
+					Cookie cookie = new Cookie("miCookie", SessionProfesor.generarCodigoCookieProfesor(profesor2.getId()));
+
+					// Establecer la fecha de expiración en 30 días (en segundos)
+					int maxAge = 30 * 24 * 60 * 60; // 30 días
+					cookie.setMaxAge(maxAge);
+
+					// Agregar la cookie a la respuesta
+					response.addCookie(cookie);
 					redirectAttributes.addFlashAttribute("mensaje", "¡CORRECTO!");
 					return "redirect:/"; // REDIRECCIONAR A LAS MATERIAS Y BORRAR MSJE DE ARRIBA
 				} else {
