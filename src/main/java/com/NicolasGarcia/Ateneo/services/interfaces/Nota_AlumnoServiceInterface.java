@@ -16,6 +16,6 @@ public interface Nota_AlumnoServiceInterface {
 
 	public List<Nota_Alumno> buscarPorNota(Long idNota);
 
-	public void borrarNota (Long id);
+	public void borrarNota(Long id);
 
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.NicolasGarcia.Ateneo.models.Nota_Alumno;
 
 @Repository
-public interface Nota_AlumnoRepository extends JpaRepository<Nota_Alumno, Long>{
+public interface Nota_AlumnoRepository extends JpaRepository<Nota_Alumno, Long> {
 
 	List<Nota_Alumno> findByAlumnoId(Long idAlumno);
 

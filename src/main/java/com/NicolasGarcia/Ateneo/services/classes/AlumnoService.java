@@ -11,8 +11,8 @@ import com.NicolasGarcia.Ateneo.repositories.AlumnoRepository;
 import com.NicolasGarcia.Ateneo.services.interfaces.AlumnoServiceInterface;
 
 @Service
-public class AlumnoService implements AlumnoServiceInterface{
-	
+public class AlumnoService implements AlumnoServiceInterface {
+
 	@Autowired
 	public AlumnoRepository alumnoRepo;
 
@@ -33,18 +33,17 @@ public class AlumnoService implements AlumnoServiceInterface{
 
 	@Override
 	public void modificarAlumno(Alumno alumno) {
-		alumnoRepo.save(alumno);		
+		alumnoRepo.save(alumno);
 	}
 
 	@Override
 	public void borrarAlumnoMateria(Long idMateria, Long idAlumno) {
-	    Alumno alumno = alumnoRepo.findById(idAlumno).orElse(null);
-	    if (alumno != null) {
-	        List<Materia> materias = alumno.getMaterias();
-	        materias.removeIf(materia -> materia.getId().equals(idMateria));
-	        alumnoRepo.save(alumno);
-	    }
+		Alumno alumno = alumnoRepo.findById(idAlumno).orElse(null);
+		if (alumno != null) {
+			List<Materia> materias = alumno.getMaterias();
+			materias.removeIf(materia -> materia.getId().equals(idMateria));
+			alumnoRepo.save(alumno);
+		}
 	}
-
 
 }

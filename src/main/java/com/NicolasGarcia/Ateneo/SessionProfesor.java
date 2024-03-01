@@ -7,7 +7,7 @@ import java.util.Base64;
 public class SessionProfesor {
 	private static final String Clave = "Ateneo";
 
-	//Método para generar un ID de sesión único a partir del ID del profesor
+	// Método para generar un ID de sesión único a partir del ID del profesor
 	public static String generarCodigoCookieProfesor(Long profesorId) {
 		// Concatenar el ID del profesor con la clave secreta
 		String StringParaHash = profesorId.toString() + Clave;
@@ -30,27 +30,28 @@ public class SessionProfesor {
 			return null;
 		}
 	}
+
 	public static Long decodificarCookie(String cookieValue) {
-        try {
-            // Decodifica el valor de la cookie desde Base64
-            byte[] cookieDecodificada = Base64.getDecoder().decode(cookieValue);
+		try {
+			// Decodifica el valor de la cookie desde Base64
+			byte[] cookieDecodificada = Base64.getDecoder().decode(cookieValue);
 
-            // Calcula el hash inverso utilizando SHA-256
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] cookieDecodificadaEnBytes = digest.digest(cookieDecodificada);
+			// Calcula el hash inverso utilizando SHA-256
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] cookieDecodificadaEnBytes = digest.digest(cookieDecodificada);
 
-            // Convierte el hash inverso a una cadena
-            String cookieDecodificadaEnString = new String(cookieDecodificadaEnBytes);
+			// Convierte el hash inverso a una cadena
+			String cookieDecodificadaEnString = new String(cookieDecodificadaEnBytes);
 
-            // Extrae el ID del profesor del hash inverso
-            String idProfesorString = cookieDecodificadaEnString.replace(Clave, "");
+			// Extrae el ID del profesor del hash inverso
+			String idProfesorString = cookieDecodificadaEnString.replace(Clave, "");
 
-            // Retorna el ID del profesor como Long
-            return Long.parseLong(idProfesorString);
-        } catch (NoSuchAlgorithmException e) {
-            // Maneja cualquier error de algoritmo de hash no soportado
-            e.printStackTrace();
-            return null;
-        }
-    }
+			// Retorna el ID del profesor como Long
+			return Long.parseLong(idProfesorString);
+		} catch (NoSuchAlgorithmException e) {
+			// Maneja cualquier error de algoritmo de hash no soportado
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

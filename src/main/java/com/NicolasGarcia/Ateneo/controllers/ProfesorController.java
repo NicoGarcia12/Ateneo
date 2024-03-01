@@ -33,7 +33,8 @@ public class ProfesorController {
 			Profesor profesor2 = profesorService.buscarPorEmail(profesor.getEmail());
 			if (profesor2 != null) {
 				if (profesor.getContraseña().equals(profesor2.getContraseña())) {
-					Cookie cookie = new Cookie("miCookie", SessionProfesor.generarCodigoCookieProfesor(profesor2.getId()));
+					Cookie cookie = new Cookie("miCookie",
+							SessionProfesor.generarCodigoCookieProfesor(profesor2.getId()));
 
 					// Establecer la fecha de expiración en 30 días (en segundos)
 					int maxAge = 30 * 24 * 60 * 60; // 30 días

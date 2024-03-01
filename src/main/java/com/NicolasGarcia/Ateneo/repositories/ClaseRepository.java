@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.NicolasGarcia.Ateneo.models.Clase;
 
 @Repository
-public interface ClaseRepository extends JpaRepository<Clase, Long>{
+public interface ClaseRepository extends JpaRepository<Clase, Long> {
 
 	List<Clase> findByMateriaId(Long idMateria);
 
