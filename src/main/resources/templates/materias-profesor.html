@@ -6,9 +6,7 @@
 </head>
 <body>
     <h1>Materias</h1>
-    <div id="mensajeTemporal" th:if="${mensaje}" class="mensaje" th:text="${mensaje}"></div>
-    <div th:if="${mensaje}" class="mensaje" th:text="${contra1}"></div>
-    <div th:if="${mensaje}" class="mensaje" th:text="${contra2}"></div>
+    <div th:if="${id}" class="mensaje" th:text="'El profesor es: '+${id}"></div>
     <a th:href="@{/registro-profesor}">Registrarse</a>
 </body>
 </html>

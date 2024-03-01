@@ -36,15 +36,21 @@ public class SessionProfesor {
 			// Decodifica el valor de la cookie desde Base64
 			byte[] cookieDecodificada = Base64.getDecoder().decode(cookieValue);
 
-			// Calcula el hash inverso utilizando SHA-256
+			// Calcula el hash utilizando SHA-256
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] cookieDecodificadaEnBytes = digest.digest(cookieDecodificada);
+			byte[] hashBytes = digest.digest(cookieDecodificada);
 
-			// Convierte el hash inverso a una cadena
-			String cookieDecodificadaEnString = new String(cookieDecodificadaEnBytes);
+			// Convierte el hash resultante a una cadena hexadecimal
+			StringBuilder hexString = new StringBuilder();
+			for (byte b : hashBytes) {
+				String hex = Integer.toHexString(0xff & b);
+				if (hex.length() == 1)
+					hexString.append('0');
+				hexString.append(hex);
+			}
 
-			// Extrae el ID del profesor del hash inverso
-			String idProfesorString = cookieDecodificadaEnString.replace(Clave, "");
+			// Extrae el ID del profesor del hash resultante
+			String idProfesorString = hexString.toString().substring(0, 10);
 
 			// Retorna el ID del profesor como Long
 			return Long.parseLong(idProfesorString);
