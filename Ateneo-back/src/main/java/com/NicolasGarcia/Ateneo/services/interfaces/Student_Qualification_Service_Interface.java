@@ -7,9 +7,9 @@ import com.NicolasGarcia.Ateneo.models.Student_Qualification;
 
 public interface Student_Qualification_Service_Interface {
 
-	public void createStudentQualification(Student_Qualification nota_alumno);
+	public void createStudentQualification(Student_Qualification student_qualification);
 
-	public void modifyStudentQualification(Student_Qualification nota_alumno);
+	public void modifyStudentQualification(Student_Qualification student_qualification);
 
 	public Student_Qualification findById(UUID id);
 
