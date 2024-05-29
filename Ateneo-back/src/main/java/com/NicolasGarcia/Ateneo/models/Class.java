@@ -35,6 +35,6 @@ public class Class {
 	@JoinColumn(nullable = false, name = "id_subject")
 	private Subject subject;
 	
-	@OneToMany(mappedBy = "class", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "_class", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Absence> absences;
 }

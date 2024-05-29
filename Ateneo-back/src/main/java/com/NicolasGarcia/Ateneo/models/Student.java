@@ -43,7 +43,7 @@ public class Student {
 	private List<Subject> subjects;
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Qualification> qualifications;
+	private List<Student_Qualification> qualifications;
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Absence> absences;

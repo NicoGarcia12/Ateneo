@@ -11,6 +11,6 @@ import com.NicolasGarcia.Ateneo.models.Class;
 @Repository
 public interface Class_Repository extends JpaRepository<Class, UUID> {
 
-	List<Class> findBySubjectId(UUID id_class);
+	List<Class> findBySubjectId(UUID id_subject);
 
 }
