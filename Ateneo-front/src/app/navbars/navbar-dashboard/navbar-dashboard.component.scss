@@ -1,0 +1,22 @@
+.navbar-landing {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 100px;
+    background-color: #fff;
+    align-items: center;
+  }
+  
+  .image img {
+    width: 100px;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 40px;
+  }
+  
+  .buttons span {
+    cursor: pointer;
+    color: black;
+  }
+  
