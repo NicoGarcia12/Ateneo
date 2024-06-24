@@ -1,0 +1,6 @@
+<app-navbar-landing></app-navbar-landing>
+<form [formGroup]="formLogin" (ngSubmit)="logIn()">
+  <input type="email" id="email" formControlName="email" />
+  <input type="password" id="password" formControlName="password" />
+  <button type="submit">Iniciar sesión</button>
+</form>
