@@ -1,0 +1,12 @@
+.primary-button {
+  background-color: $primary-color !important;
+  color: $white-color !important;
+}
+
+.secondary-button {
+  background-color: $gray-color !important;
+  background-color: transparent !important;
+  color: $white-color !important;
+  color: $secondary-color !important;
+  border: 1px solid $secondary-color !important;
+}
