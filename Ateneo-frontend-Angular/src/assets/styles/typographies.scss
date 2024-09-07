@@ -1,0 +1,39 @@
+body {
+  font-size: 16px; // Base de 16px
+}
+
+h1 {
+  font-size: 2.986rem; // 2.986 * 16px = 47.776px
+}
+
+h2 {
+  font-size: 2.488rem; // 2.488 * 16px = 39.808px
+}
+
+h3 {
+  font-size: 2.074rem; // 2.074 * 16px = 33.184px
+}
+
+h4 {
+  font-size: 1.728rem; // 1.728 * 16px = 27.648px
+}
+
+h5 {
+  font-size: 1.44rem; // 1.44 * 16px = 23.04px
+}
+
+h6 {
+  font-size: 1.2rem; // 1.2 * 16px = 19.2px
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  body {
+    font-size: 12px;
+  }
+}

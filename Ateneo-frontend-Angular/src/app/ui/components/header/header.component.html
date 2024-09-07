@@ -1,0 +1,13 @@
+<div class="header-container">
+  <div class="image-container">
+    <img src="../../../../assets/images/Ateneo-logo.png" alt="Ateneo" />
+  </div>
+  <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
+    <p>Links dashboard</p>
+  </div>
+  <ng-template #landingLinks>
+    <div class="links-landing-container">
+      <button mat-button></button>
+    </div>
+  </ng-template>
+</div>

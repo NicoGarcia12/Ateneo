@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Profesor {
+  id                  String   @id @default(uuid())
+  nombres             String
+  apellidos           String
+  email               String
+  contrasena          String
+  recuperar_contrasena DateTime
+  correo_activado     Boolean
+  Materias            Materia[]
+}
+
+model Alumno {
+  id      String   @id @default(uuid())
+  nombres String
+  apellidos String
+  dni      BigInt
+  email    String
+  Inasistencias Inasistencia[]
+  Notas_Alumnos Nota_Alumno[]
+}
+
+model Clase {
+  id       String   @id @default(uuid())
+  fecha    DateTime
+  materia  Materia  @relation(fields: [materiaId], references: [id])
+  materiaId String
+  Inasistencias Inasistencia[]
+}
+
+model Inasistencia {
+  id       String   @id @default(uuid())
+  clase    Clase    @relation(fields: [claseId], references: [id])
+  claseId  String
+  alumno   Alumno   @relation(fields: [alumnoId], references: [id])
+  alumnoId String
+  justificado Boolean
+}
+
+model Relacion_Nota {
+  id           String   @id @default(uuid())
+  peso         Float
+  nota_derivada Nota    @relation("NotaDerivada", fields: [notaDerivadaId], references: [id])
+  notaDerivadaId String
+  nota_base    Nota     @relation("NotaBase", fields: [notaBaseId], references: [id])
+  notaBaseId   String
+}
+
+model Materia {
+  id              String   @id @default(uuid())
+  nombre          String
+  ciclo_lectivo   Int
+  institucion     String
+  titulo          String
+  profesor        Profesor @relation(fields: [profesorId], references: [id])
+  profesorId      String
+  Clases          Clase[]
+  Notas           Nota[]
+}
+
+model Nota {
+  id          String   @id @default(uuid())
+  nombre      String
+  tipo        TipoNota
+  fecha       DateTime
+  descripcion String   @db.Text
+  materia     Materia  @relation(fields: [materiaId], references: [id])
+  materiaId   String
+  Notas_Alumnos Nota_Alumno[]
+  Relacion_Nota_Derivada Relacion_Nota[] @relation("NotaDerivada")
+  Relacion_Nota_Base     Relacion_Nota[] @relation("NotaBase")
+}
+
+model Nota_Alumno {
+  id       String   @id @default(uuid())
+  valor    Float
+  nota     Nota     @relation(fields: [notaId], references: [id])
+  notaId   String
+  alumno   Alumno   @relation(fields: [alumnoId], references: [id])
+  alumnoId String
+}
+
+enum TipoNota {
+  Definitiva
+  Ponderada
+  Aritmetica
+}

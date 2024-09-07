@@ -1,0 +1,32 @@
+@import "../../../../assets/styles/colors.scss";
+
+.header-container {
+  background-color: $gray-color;
+  height: fit-content;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: center;
+
+  .image-container {
+    grid-column: span 6;
+  }
+
+  .image-container img {
+    width: 80px;
+  }
+
+  .links-dashboard-container {
+    display: flex;
+    justify-content: flex-end;
+    grid-column: span 6;
+    color: #fff;
+  }
+
+  .links-landing-container {
+    display: flex;
+    justify-content: flex-end;
+    grid-column: span 6;
+    color: #fff;
+  }
+}

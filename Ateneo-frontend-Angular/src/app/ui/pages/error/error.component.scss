@@ -1,0 +1,40 @@
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f4f4f4;
+}
+
+.error-content {
+  max-width: 600px;
+  padding: 20px;
+  background-color: white;
+}
+
+h1 {
+  font-size: 6rem;
+  margin: 0;
+  color: #60a2ee;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.back-home {
+  // display: inline-block;
+  padding: 10px 20px;
+  background-color: #60a2ee;
+  color: white;
+  border-radius: 5px;
+}
