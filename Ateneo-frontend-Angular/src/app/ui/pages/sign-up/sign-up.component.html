@@ -1,0 +1,58 @@
+<app-header></app-header>
+<div class="sign-up-container">
+    <div class="form-container">
+        <h1>Crea tu cuenta</h1>
+        <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+
+            <div [ngClass]="{row: !isMobile, column: isMobile}">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres</mat-label>
+                    <input matInput formControlName="names" placeholder="Nombres" />
+                    <mat-error *ngIf="hasError('names', 'required')">
+                        Los nombres son requeridos
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellidos</mat-label>
+                    <input matInput formControlName="lastName" placeholder="Apellidos" />
+                    <mat-error *ngIf="hasError('lastName', 'required')">
+                        Los apellidos son requeridos
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div [ngClass]="{row: !isMobile, column: isMobile}">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" placeholder="Email" />
+                    <mat-error *ngIf="hasError('email', 'required')">
+                        El email es requerido
+                    </mat-error>
+                    <mat-error *ngIf="hasError('email', 'email')">
+                        El email no es válido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput formControlName="password" type="password" placeholder="Contraseña" />
+                    <mat-error *ngIf="hasError('password', 'required')">
+                        La contraseña es requerida
+                    </mat-error>
+                    <mat-error *ngIf="hasError('password', 'minlength')">
+                        La contraseña debe tener al menos 10 caracteres
+                    </mat-error>
+                    <mat-error *ngIf="hasError('password', 'pattern')">
+                        La contraseña debe tener al menos una letra y un número
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <button mat-flat-button color="primary" [disabled]="signUpForm.invalid" type="submit"
+                [ngClass]="{'primary-button': !signUpForm.invalid}">
+                Enviar
+            </button>
+        </form>
+    </div>
+</div>

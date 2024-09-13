@@ -1,14 +1,52 @@
 <div class="header-container">
-  <div class="image-container">
-    <img src="../../../../assets/images/Ateneo-logo.png" alt="Ateneo" />
+  <div class="image-container" [ngClass]="{'image-landing': isLanding}">
+    <img
+      src="../../../../assets/images/Ateneo-logo.png"
+      alt="Ateneo"
+      (click)="goTo('/')"
+    />
   </div>
-  <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
-    <button class="primary-button" mat-flat-button>Materias</button>
-    <button class="secondary-button" mat-stroked-button>Perfil</button>
+
+  <div class="links-header-desktop" *ngIf="!isMobile; else mobileHeader">
+    <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
+      <button class="primary-button" mat-flat-button (click)="goTo('/')">
+        Materias
+      </button>
+      <button class="primary-button" mat-stroked-button (click)="goTo('/')">
+        Perfil
+      </button>
+    </div>
+    <ng-template #landingLinks>
+      <div class="links-landing-container">
+        <button class="primary-button" mat-flat-button (click)="goTo('/login')">
+          Iniciar Sesión
+        </button>
+        <button
+          class="primary-button"
+          mat-flat-button
+          (click)="goTo('/sign-up')"
+        >
+          Registrarse
+        </button>
+      </div>
+    </ng-template>
   </div>
-  <ng-template #landingLinks>
-    <div class="links-landing-container">
-      <button class="primary-button" mat-flat-button>Registrarse</button>
+  <ng-template #mobileHeader>
+    <div class="mobile-header">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <ng-container *ngIf="dashboard; else mobileLandingLinks">
+          <button mat-menu-item (click)="goTo('/')">Materias</button>
+          <button mat-menu-item (click)="goTo('/')">Perfil</button>
+        </ng-container>
+
+        <ng-template #mobileLandingLinks>
+          <button mat-menu-item (click)="goTo('/login')">Iniciar Sesión</button>
+          <button mat-menu-item (click)="goTo('/sign-up')">Registrarse</button>
+        </ng-template>
+      </mat-menu>
     </div>
   </ng-template>
 </div>

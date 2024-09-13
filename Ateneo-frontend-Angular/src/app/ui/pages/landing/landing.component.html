@@ -1,1 +1,26 @@
 <app-header></app-header>
+<div class="landing-container">
+  <h1>Bienvenidos a Ateneo</h1>
+  <div class="landing-cards-container">
+    <div class="card image-container">
+      <img src="../../../../assets/images/Ateneo-logo.png" alt="Ateneo" />
+    </div>
+
+    <mat-card class="card card-content">
+      <button mat-icon-button class="arrow left-arrow" (click)="previousCard()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="card-text">
+        <h4>{{ cards[currentIndex].title }}</h4>
+        <p>{{ cards[currentIndex].content }}</p>
+      </div>
+
+      <span class="current-index">{{currentIndex + 1}}/{{cards.length}}</span>
+
+      <button mat-icon-button class="arrow right-arrow" (click)="nextCard()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </mat-card>
+  </div>
+</div>

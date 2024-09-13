@@ -1,0 +1,30 @@
+<app-header></app-header>
+<div class="login-container">
+  <div class="form-container">
+    <h1>Iniciar Sesión</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Email" />
+        <mat-error *ngIf="hasError('email', 'required')">
+          El email es requerido
+        </mat-error>
+        <mat-error *ngIf="hasError('email', 'email')">
+          El email no es válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Contraseña" />
+        <mat-error *ngIf="hasError('password', 'required')">
+          La contraseña es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-flat-button [ngClass]="{'primary-button': !loginForm.invalid}" [disabled]="loginForm.invalid" type="submit" class="primary-button">
+        Enviar
+      </button>
+    </form>
+  </div>
+</div>
