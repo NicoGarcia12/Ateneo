@@ -1,7 +1,7 @@
-import { Professor } from "../entities/professor.model";
+import { Professor } from '../entities/professor.model';
 
-export class ProfessorService{
-    getProffesorByLogin(): Professor{
-        return new Professor()
+export class ProfessorService {
+    getProffesorByLogin(): Professor {
+        return new Professor();
     }
 }

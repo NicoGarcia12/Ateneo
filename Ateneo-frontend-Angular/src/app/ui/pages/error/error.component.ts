@@ -2,15 +2,14 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-error',
-  templateUrl: './error.component.html',
-  styleUrls: ['./error.component.scss']
+    selector: 'app-error',
+    templateUrl: './error.component.html',
+    styleUrls: ['./error.component.scss']
 })
 export class ErrorComponent {
+    constructor(private router: Router) {}
 
-  constructor(private router: Router) {}
-
-  public goHome(): void {
-    this.router.navigate(['/']); // Redirige al home
-  }
+    public goHome(): void {
+        this.router.navigate(['/']);
+    }
 }

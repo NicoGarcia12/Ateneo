@@ -5,8 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [LandingComponent],
-  imports: [HeaderModule, MatCardModule, MatIconModule],
-  exports: [LandingComponent],
+    declarations: [LandingComponent],
+    imports: [HeaderModule, MatCardModule, MatIconModule],
+    exports: [LandingComponent]
 })
 export class LandingModule {}

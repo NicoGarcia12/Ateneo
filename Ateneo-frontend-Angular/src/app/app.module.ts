@@ -12,19 +12,19 @@ import { DashboardModule } from './ui/pages/dashboard/dashboard.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    RouterOutlet,
-    ErrorModule,
-    LandingModule,
-    LoginModule,
-    SignUpModule,
-    DashboardModule,
-    AppRoutingModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        RouterOutlet,
+        ErrorModule,
+        LandingModule,
+        LoginModule,
+        SignUpModule,
+        DashboardModule,
+        AppRoutingModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

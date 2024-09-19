@@ -1,67 +1,67 @@
-@import "../../../../assets/styles/colors.scss";
+@import '../../../../assets/styles/colors.scss';
 
 .header-container {
-  background-color: $gray-color;
-  height: fit-content;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .image-container {
-    display: flex;
-    justify-content: flex-start;
-
-    img {
-      width: 80px;
-    }
-  }
-  
-  .image-landing {
-    opacity: 0;
-  }
-
-  .links-header-desktop {
-    display: flex;
-    gap: 12px;
-  }
-
-  .links-dashboard-container,
-  .links-landing-container {
-    display: flex;
-    gap: 12px;
-  }
-
-  .mobile-header {
-    display: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .header-container {
-    padding: 16px;
+    background-color: $gray-color;
+    height: fit-content;
+    padding: 16px 24px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     .image-container {
-      justify-content: flex-start;
-      flex: 1;
+        display: flex;
+        justify-content: flex-start;
+
+        img {
+            width: 80px;
+        }
+    }
+
+    .image-landing {
+        opacity: 0;
     }
 
     .links-header-desktop {
-      display: none;
+        display: flex;
+        gap: 12px;
+    }
+
+    .links-dashboard-container,
+    .links-landing-container {
+        display: flex;
+        gap: 12px;
     }
 
     .mobile-header {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      flex: 1;
-
-      mat-icon {
-        font-size: 24px;
-        color: $secondary-color;
-      }
+        display: none;
     }
-  }
+}
+
+@media (max-width: 600px) {
+    .header-container {
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+
+        .image-container {
+            justify-content: flex-start;
+            flex: 1;
+        }
+
+        .links-header-desktop {
+            display: none;
+        }
+
+        .mobile-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex: 1;
+
+            mat-icon {
+                font-size: 24px;
+                color: $secondary-color;
+            }
+        }
+    }
 }

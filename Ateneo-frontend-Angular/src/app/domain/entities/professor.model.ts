@@ -1,3 +1,1 @@
-export class Professor {
-
-}
+export class Professor {}

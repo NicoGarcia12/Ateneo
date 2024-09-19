@@ -7,24 +7,24 @@ import { SignUpComponent } from './ui/pages/sign-up/sign-up.component';
 import { DashboardComponent } from './ui/pages/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', component: LandingComponent },
-  { path: 'sign-up', component: SignUpComponent },
-  { path: 'login', component: LoginComponent },
-  // { path: 'reset-password', component: ResetPasswordComponent },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    // children: [
-    //   { path: 'profile', component: ProfileComponent },
-    //   { path: 'subject ', component: MateriaComponent },
-    //   { path: '', redirectTo: 'profile', pathMatch: 'full' },
-    // ],
-  },
-  { path: '**', component: ErrorComponent },
+    { path: '', component: LandingComponent },
+    { path: 'sign-up', component: SignUpComponent },
+    { path: 'login', component: LoginComponent },
+    // { path: 'reset-password', component: ResetPasswordComponent },
+    {
+        path: 'dashboard',
+        component: DashboardComponent
+        // children: [
+        //   { path: 'profile', component: ProfileComponent },
+        //   { path: 'subject ', component: MateriaComponent },
+        //   { path: '', redirectTo: 'profile', pathMatch: 'full' },
+        // ],
+    },
+    { path: '**', component: ErrorComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule {}

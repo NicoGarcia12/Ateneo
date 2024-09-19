@@ -8,15 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [SignUpComponent],
-  imports: [
-    HeaderModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    CommonModule,
-    MatButtonModule,
-  ],
-  exports: [SignUpComponent],
+    declarations: [SignUpComponent],
+    imports: [HeaderModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, CommonModule, MatButtonModule],
+    exports: [SignUpComponent]
 })
 export class SignUpModule {}

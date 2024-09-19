@@ -9,15 +9,8 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  declarations: [LoginComponent],
-  imports: [
-    HeaderModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    CommonModule,
-    MatButtonModule
-  ],
-  exports: [LoginComponent],
+    declarations: [LoginComponent],
+    imports: [HeaderModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, CommonModule, MatButtonModule],
+    exports: [LoginComponent]
 })
 export class LoginModule {}

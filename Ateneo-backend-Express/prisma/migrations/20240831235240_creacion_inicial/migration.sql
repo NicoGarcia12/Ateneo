@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `Profesor` (
+CREATE TABLE `proffesor` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `nombres` VARCHAR(191) NOT NULL,
     `apellidos` VARCHAR(191) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE `Materia` (
     `ciclo_lectivo` INTEGER NOT NULL,
     `institucion` VARCHAR(191) NOT NULL,
     `titulo` VARCHAR(191) NOT NULL,
-    `profesorId` BIGINT NOT NULL,
+    `proffesorId` BIGINT NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -101,7 +101,7 @@ ALTER TABLE `Relacion_Nota` ADD CONSTRAINT `Relacion_Nota_notaDerivadaId_fkey` F
 ALTER TABLE `Relacion_Nota` ADD CONSTRAINT `Relacion_Nota_notaBaseId_fkey` FOREIGN KEY (`notaBaseId`) REFERENCES `Nota`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Materia` ADD CONSTRAINT `Materia_profesorId_fkey` FOREIGN KEY (`profesorId`) REFERENCES `Profesor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Materia` ADD CONSTRAINT `Materia_proffesorId_fkey` FOREIGN KEY (`proffesorId`) REFERENCES `proffesor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Nota` ADD CONSTRAINT `Nota_materiaId_fkey` FOREIGN KEY (`materiaId`) REFERENCES `Materia`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,58 +1,58 @@
-@import "../../../../assets/styles/colors.scss";
+@import '../../../../assets/styles/colors.scss';
 
 .sign-up-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  margin-top: 40px;
-
-  .form-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
+    align-items: center;
+    gap: 30px;
+    margin-top: 40px;
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      align-items: center;
-
-      mat-error {
-        text-align: center;
-      }
-
-      .row {
-        display: flex;
-        gap: 20px;
-        width: 100%;
-
-        mat-form-field {
-          flex: 1;
-        }
-      }
-
-      .column {
+    .form-container {
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        width: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
 
-        mat-error {
-          margin-bottom: 10px;
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
         }
-      }
 
-      button {
-        width: fit-content;
-      }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+
+            mat-error {
+                text-align: center;
+            }
+
+            .row {
+                display: flex;
+                gap: 20px;
+                width: 100%;
+
+                mat-form-field {
+                    flex: 1;
+                }
+            }
+
+            .column {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 100%;
+
+                mat-error {
+                    margin-bottom: 10px;
+                }
+            }
+
+            button {
+                width: fit-content;
+            }
+        }
     }
-  }
 }
