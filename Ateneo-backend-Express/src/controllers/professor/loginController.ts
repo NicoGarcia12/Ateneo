@@ -1,9 +1,9 @@
 import { Professor } from '@prisma/client';
-import { getProfessorByEmailPasswordHelper } from '../../helpers/professor/get-professor-email-password-helper';
+import { loginHelper } from '../../helpers/professor/loginHelper';
 
-export const getProfessorByEmailPasswordController = async (email: string, password: string): Promise<Professor> => {
+export const loginController = async (email: string, password: string): Promise<Professor> => {
     try {
-        const professor: Professor | null = await getProfessorByEmailPasswordHelper(email);
+        const professor: Professor | null = await loginHelper(email);
 
         if (!professor) {
             throw new Error('Professor not found');

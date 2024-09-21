@@ -10,6 +10,7 @@ import { LoginModule } from './ui/pages/login/login.module';
 import { SignUpModule } from './ui/pages/sign-up/sign-up.module';
 import { DashboardModule } from './ui/pages/dashboard/dashboard.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
     declarations: [AppComponent],

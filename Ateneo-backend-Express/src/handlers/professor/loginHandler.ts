@@ -1,12 +1,12 @@
 import { Professor } from '@prisma/client';
 import { Request, Response } from 'express';
-import { getProfessorByEmailPasswordController } from '../../controllers/professor/get-professor-email-password-controller';
+import { loginController } from '../../controllers/professor/loginController';
 
-export const getProfessorByEmailPasswordHandler = async (req: Request, res: Response): Promise<Response> => {
+export const loginHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { email, password } = req.body;
 
-        const professor: Professor = await getProfessorByEmailPasswordController(email, password);
+        const professor: Professor = await loginController(email, password);
 
         return res.status(200).json(professor);
     } catch (error: any) {

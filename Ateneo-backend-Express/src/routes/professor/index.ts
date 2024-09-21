@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getProfessorByEmailPasswordHandler } from '../../handlers/professor//get-professor-email-password-handler';
+import { loginHandler } from '../../handlers/professor/loginHandler';
 
 const professorRouter = Router();
 
-professorRouter.get('/', getProfessorByEmailPasswordHandler);
+professorRouter.post('/', loginHandler);
 
 export default professorRouter;

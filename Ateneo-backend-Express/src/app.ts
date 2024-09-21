@@ -17,8 +17,7 @@ app.use(morgan('dev'));
 // Configuración de CORS
 app.use(
     cors({
-        origin: URL_BASE,
-        credentials: true
+        origin: URL_BASE
     })
 );
 

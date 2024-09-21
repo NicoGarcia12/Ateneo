@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginUseCase } from '../../../domain/use-cases/professor-use-cases/login-use-case';
 
 @Component({
     selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent implements OnInit {
 
     public constructor(
         private fb: FormBuilder,
-        private router: Router
+        private router: Router,
+        private loginUseCase: LoginUseCase
     ) {}
 
     public ngOnInit(): void {
@@ -33,11 +35,14 @@ export class LoginComponent implements OnInit {
         }
 
         const user = this.loginForm.value;
-
-        if (user.email === 'nicolasgarcia9812@hotmail.com' && user.password === '1234567890') {
-            this.router.navigate(['/dashboard']);
-        } else {
-            console.log('Credenciales incorrectas');
-        }
+        const response = '';
+        this.loginUseCase.execute(user).subscribe(
+            () => {
+                this.router.navigate(['dashboard']);
+            },
+            (error) => {
+                console.error(error);
+            }
+        );
     }
 }
