@@ -13,7 +13,7 @@ interface ILoginUseCase {
     providedIn: 'root'
 })
 export class LoginUseCase implements useCase<Professor, ILoginUseCase> {
-    private apiUrl = 'http://localhost:3001/professors'; // Cambia esta URL por la tuya
+    private apiUrl = 'http://localhost:3001/professors/login';
 
     constructor(private httpClient: HttpClient) {}
 
