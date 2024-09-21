@@ -5,6 +5,6 @@ export class getProfessorByLogin implements useCase {
     constructor(private professorService: ProfessorService) {}
 
     execute() {
-        return this.professorService.getProffesorByLogin();
+        return this.professorService.getProfessorByLogin();
     }
 }

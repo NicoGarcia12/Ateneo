@@ -8,54 +8,54 @@ datasource db {
 }
 
 model Professor {
-  id              String   @id @default(uuid())
-  firstName       String
-  lastName        String
-  email           String
-  password        String
-  resetPassword   DateTime
-  emailActivated  Boolean
-  subjects        Subject[]
+  id             String    @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String    @unique
+  password       String
+  // resetPassword  DateTime
+  emailActivated Boolean
+  subjects       Subject[]
 }
 
 model Student {
-  id            String   @id @default(uuid())
+  id            String         @id @default(uuid())
   firstName     String
   lastName      String
-  dni           BigInt
+  dni           BigInt         @unique
   email         String
   absences      Absence[]
   studentGrades StudentGrade[]
 }
 
 model Class {
-  id           String   @id @default(uuid())
-  date         DateTime
-  subject      Subject   @relation(fields: [subjectId], references: [id])
-  subjectId    String
-  absences     Absence[]
+  id        String    @id @default(uuid())
+  date      DateTime
+  subject   Subject   @relation(fields: [subjectId], references: [id])
+  subjectId String
+  absences  Absence[]
 }
 
 model Absence {
-  id           String   @id @default(uuid())
-  class        Class    @relation(fields: [classId], references: [id])
-  classId      String
-  student      Student   @relation(fields: [studentId], references: [id])
-  studentId    String
-  justified    Boolean
+  id        String  @id @default(uuid())
+  class     Class   @relation(fields: [classId], references: [id])
+  classId   String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+  justified Boolean
 }
 
 model GradeRelationship {
-  id           String   @id @default(uuid()) 
-  weight       Float
-  derivedGrade Grade    @relation("DerivedGrade", fields: [derivedGradeId], references: [id])
+  id             String @id @default(uuid())
+  weight         Float
+  derivedGrade   Grade  @relation("DerivedGrade", fields: [derivedGradeId], references: [id])
   derivedGradeId String
-  baseGrade    Grade    @relation("BaseGrade", fields: [baseGradeId], references: [id])
-  baseGradeId  String
+  baseGrade      Grade  @relation("BaseGrade", fields: [baseGradeId], references: [id])
+  baseGradeId    String
 }
 
 model Subject {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   name         String
   academicYear Int
   institution  String
@@ -67,25 +67,25 @@ model Subject {
 }
 
 model Grade {
-  id               String   @id @default(uuid())
-  name             String
-  type             GradeType
-  date             DateTime
-  description      String   @db.Text
-  subject          Subject  @relation(fields: [subjectId], references: [id])
-  subjectId        String
-  studentGrades    StudentGrade[]
-  derivedGradeRel  GradeRelationship[] @relation("DerivedGrade")
-  baseGradeRel     GradeRelationship[] @relation("BaseGrade")
+  id              String              @id @default(uuid())
+  name            String
+  type            GradeType
+  date            DateTime
+  description     String              @db.Text
+  subject         Subject             @relation(fields: [subjectId], references: [id])
+  subjectId       String
+  studentGrades   StudentGrade[]
+  derivedGradeRel GradeRelationship[] @relation("DerivedGrade")
+  baseGradeRel    GradeRelationship[] @relation("BaseGrade")
 }
 
 model StudentGrade {
-  id           String   @id @default(uuid())
-  value        Float
-  grade        Grade    @relation(fields: [gradeId], references: [id])
-  gradeId      String
-  student      Student  @relation(fields: [studentId], references: [id])
-  studentId    String
+  id        String  @id @default(uuid())
+  value     Float
+  grade     Grade   @relation(fields: [gradeId], references: [id])
+  gradeId   String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
 }
 
 enum GradeType {

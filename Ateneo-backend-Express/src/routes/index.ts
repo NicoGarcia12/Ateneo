@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import proffesorRouter from './professor';
+import professorRouter from './professor';
 
 const router = Router();
 
-router.use('/proffesors', proffesorRouter);
+router.use('/professors', professorRouter);
 
-module.exports = router;
+export default router;
