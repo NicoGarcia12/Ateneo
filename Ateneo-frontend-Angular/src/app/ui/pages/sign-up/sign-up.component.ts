@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ResolutionService } from '../../shared/services/resolution.service';
-import { SignUpUseCase } from '../../../domain/use-cases/professor-use-cases/sign-up-use-case';
 import { SignUpViewModelService } from './sign-up-view-model.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { NotifyService } from '../../shared/services/notify.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit {
         private router: Router,
         private resolutionService: ResolutionService,
         private signUpViewModelService: SignUpViewModelService,
-        private signUpUseCase: SignUpUseCase
+        private notifyService: NotifyService
     ) {}
 
     public ngOnInit(): void {
@@ -60,13 +60,13 @@ export class SignUpComponent implements OnInit {
         const { firstName, lastName, email, password } = this.signUpForm.value;
 
         this.signUpViewModelService.signUp(email, password, firstName, lastName).subscribe({
-            next: (message) => {
-                console.log(message);
+            next: (success) => {
+                console.log(success);
+                // this.notifyService.notify(message,"success","Cerrar",5)
                 this.router.navigate(['/login']);
             },
             error: (error: HttpErrorResponse) => {
-                // throw error;
-                console.warn(error.error.message);
+                this.notifyService.notify(error.error.message, 'error', 'Cerrar');
             }
         });
     }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginViewModelService } from './login-view-model.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NotifyService } from '../../shared/services/notify.service';
 
 @Component({
     selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
     public constructor(
         private fb: FormBuilder,
         private loginViewModelService: LoginViewModelService,
+        private notifyService: NotifyService,
         private router: Router
     ) {}
 
@@ -42,8 +44,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['dashboard']);
             },
             (error: HttpErrorResponse) => {
-                // throw error;
-                console.warn(error.error.message);
+                this.notifyService.notify(error.error.message, 'error', 'Cerrar');
             }
         );
     }

@@ -1,3 +1,4 @@
+// Botones
 .primary-button {
     background-color: $primary-color !important;
     color: $white-color !important;
@@ -11,4 +12,38 @@
 
 .disabled-button {
     background-color: $gray-white-color !important;
+}
+
+// Notificación
+.mat-snack-bar-container {
+    border-radius: 20px !important;
+    min-width: 0 !important;
+    color: #000000;
+    font-size: 1rem;
+    font-weight: bold;
+
+    .mat-button {
+        font-size: 0.9rem;
+        margin-left: 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        border: 1px solid #000000;
+        background-color: transparent;
+    }
+
+    &.error {
+        background-color: #f44336;
+    }
+
+    &.success {
+        background-color: #4caf50;
+    }
+
+    &.warning {
+        background-color: #ff9800;
+    }
+
+    &.info {
+        background-color: #2196f3;
+    }
 }
