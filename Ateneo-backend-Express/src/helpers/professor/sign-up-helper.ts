@@ -9,9 +9,8 @@ export const SignUpHelper = async (professor: Omit<Professor, 'id' | 'emailActiv
         });
         console.log(existingProfessor);
         if (existingProfessor) {
-            throw new Error('Email already exists');
-        } else{
-            
+            throw new Error();
+        } else {
         }
 
         await prisma.professor.create({
@@ -24,12 +23,12 @@ export const SignUpHelper = async (professor: Omit<Professor, 'id' | 'emailActiv
             }
         });
 
-        return 'Professor registered successfully';
+        return 'Profesor registrado exitosamente';
     } catch (error: unknown) {
         if (error instanceof Error) {
-            throw new Error('Error registering professor: ' + error.message);
+            throw new Error('El email ya está registrado');
         } else {
-            throw new Error('An unknown error occurred');
+            throw new Error('Se produjo un error desconocido');
         }
     } finally {
         await prisma.$disconnect();

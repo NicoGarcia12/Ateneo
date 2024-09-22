@@ -6,7 +6,7 @@
     <div class="links-header-desktop" *ngIf="!isMobile; else mobileHeader">
         <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
             <button class="primary-button" mat-flat-button (click)="goTo('/')">Materias</button>
-            <button class="primary-button" mat-stroked-button (click)="goTo('/')">Perfil</button>
+            <button class="primary-button" mat-flat-button color="warn" (click)="goTo('/')">Perfil</button>
         </div>
         <ng-template #landingLinks>
             <div class="links-landing-container">

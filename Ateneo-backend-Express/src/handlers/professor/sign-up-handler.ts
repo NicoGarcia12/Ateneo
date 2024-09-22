@@ -9,10 +9,10 @@ export const SignUpHandler = async (req: Request, res: Response): Promise<Respon
 
         return res.status(200).json({ message: response });
     } catch (error: any) {
-        if (error.message === 'Error registering professor: Email already exists') {
+        if (error.message === 'El email ya está registrado') {
             return res.status(409).json({ message: error.message });
         } else {
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 };

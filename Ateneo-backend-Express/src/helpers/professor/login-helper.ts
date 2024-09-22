@@ -10,9 +10,9 @@ export const LoginHelper = async (email: string) => {
         return professor;
     } catch (error: unknown) {
         if (error instanceof Error) {
-            throw new Error('Error fetching professor: ' + error.message);
+            throw new Error('Error al buscar al profesor: ' + error.message);
         } else {
-            throw new Error('An unknown error occurred');
+            throw new Error('Se produjo un error desconocido');
         }
     } finally {
         await prisma.$disconnect();

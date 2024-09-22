@@ -6,11 +6,11 @@ export const LoginController = async (email: string, password: string): Promise<
         const professor: Professor | null = await LoginHelper(email);
 
         if (!professor) {
-            throw new Error('Professor not found');
+            throw new Error('Email inválido');
         }
 
         if (professor.password !== password) {
-            throw new Error('Incorrect password');
+            throw new Error('Contraseña incorrecta');
         }
 
         return professor;
@@ -18,6 +18,6 @@ export const LoginController = async (email: string, password: string): Promise<
         if (error instanceof Error) {
             throw new Error(error.message);
         }
-        throw new Error('An unknown error occurred');
+        throw new Error('Se produjo un error desconocido');
     }
 };

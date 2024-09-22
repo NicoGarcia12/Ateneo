@@ -10,12 +10,12 @@ export const LoginHandler = async (req: Request, res: Response): Promise<Respons
 
         return res.status(200).json(professor);
     } catch (error: any) {
-        if (error.message === 'Professor not found') {
+        if (error.message === 'Email inválido') {
             return res.status(404).json({ message: error.message });
-        } else if (error.message === 'Incorrect password') {
+        } else if (error.message === 'Contraseña incorrecta') {
             return res.status(401).json({ message: error.message });
         } else {
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 };

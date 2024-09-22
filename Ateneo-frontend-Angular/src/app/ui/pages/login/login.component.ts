@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoginViewModelService } from './login-view-model.service';
 import { Router } from '@angular/router';
-import { LoginUseCase } from '../../../domain/use-cases/professor-use-cases/login-use-case';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-login',
@@ -13,8 +14,8 @@ export class LoginComponent implements OnInit {
 
     public constructor(
         private fb: FormBuilder,
-        private router: Router,
-        private loginUseCase: LoginUseCase
+        private loginViewModelService: LoginViewModelService,
+        private router: Router
     ) {}
 
     public ngOnInit(): void {
@@ -35,13 +36,14 @@ export class LoginComponent implements OnInit {
         }
 
         const user = this.loginForm.value;
-        const response = '';
-        this.loginUseCase.execute(user).subscribe(
+
+        this.loginViewModelService.login(user.email, user.password).subscribe(
             () => {
                 this.router.navigate(['dashboard']);
             },
-            (error) => {
-                console.error(error);
+            (error: HttpErrorResponse) => {
+                // throw error;
+                console.warn(error.error.message);
             }
         );
     }
