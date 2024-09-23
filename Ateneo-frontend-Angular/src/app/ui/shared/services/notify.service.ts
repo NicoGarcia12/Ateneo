@@ -12,7 +12,7 @@ export class NotifyService {
         private zone: NgZone
     ) {}
 
-    public notify(notification: string, severity: Severity = 'error', button: string | undefined = undefined, duration: number = 15): void {
+    public notify(notification: string, severity: Severity = 'error', button: string | undefined = undefined, duration: number = 4): void {
         this.zone.run((): void => {
             this.snackBar.open(notification, button, {
                 duration: duration * 1000,

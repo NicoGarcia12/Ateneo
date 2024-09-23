@@ -14,6 +14,7 @@ import { NotifyService } from '../../shared/services/notify.service';
 export class SignUpComponent implements OnInit {
     public signUpForm!: FormGroup;
     public isMobile: boolean = false;
+    public signUpLoading: boolean = false;
 
     public constructor(
         private fb: FormBuilder,
@@ -56,17 +57,20 @@ export class SignUpComponent implements OnInit {
         if (!this.signUpForm.valid) {
             return;
         }
+        this.signUpLoading = true;
 
         const { firstName, lastName, email, password } = this.signUpForm.value;
 
         this.signUpViewModelService.signUp(email, password, firstName, lastName).subscribe({
             next: (success) => {
-                console.log(success);
-                // this.notifyService.notify(message,"success","Cerrar",5)
+                this.signUpLoading = false;
+                this.notifyService.notify(success.message, 'success');
                 this.router.navigate(['/login']);
             },
             error: (error: HttpErrorResponse) => {
+                this.signUpLoading = false;
                 this.notifyService.notify(error.error.message, 'error', 'Cerrar');
+                throw error.error.message;
             }
         });
     }

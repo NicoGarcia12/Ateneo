@@ -33,16 +33,7 @@
                     <mat-error *ngIf="hasError('password', 'pattern')"> La contraseña debe tener al menos una letra y un número </mat-error>
                 </mat-form-field>
             </div>
-
-            <button
-                mat-flat-button
-                color="primary"
-                [disabled]="signUpForm.invalid"
-                type="submit"
-                [ngClass]="{ 'primary-button': !signUpForm.invalid }"
-            >
-                Registrarse
-            </button>
+            <app-submit [withText]="!signUpLoading" [loading]="signUpLoading" [disabled]="signUpForm.invalid"> Iniciar Sesión </app-submit>
         </form>
     </div>
 </div>

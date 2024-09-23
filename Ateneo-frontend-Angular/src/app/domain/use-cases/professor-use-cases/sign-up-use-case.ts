@@ -14,12 +14,12 @@ interface ISignUpUseCase {
 @Injectable({
     providedIn: 'root'
 })
-export class SignUpUseCase implements useCase<string, ISignUpUseCase> {
+export class SignUpUseCase implements useCase<any, ISignUpUseCase> {
     private apiUrl = 'http://localhost:3001/professors/sign-up';
 
     constructor(private httpClient: HttpClient) {}
 
-    execute(params: ISignUpUseCase): Observable<string> {
+    execute(params: ISignUpUseCase): Observable<any> {
         return this.httpClient.post<string>(this.apiUrl, params);
     }
 }

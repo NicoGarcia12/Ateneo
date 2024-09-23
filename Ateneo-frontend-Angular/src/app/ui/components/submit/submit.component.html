@@ -1,0 +1,22 @@
+<button
+    type="{{ type }}"
+    mat-flat-button
+    [disabled]="disabled"
+    [ngClass]="{
+        'primary-button': class === 'primary' && !disabled,
+        'secondary-button': class === 'secondary' && !disabled,
+        'disabled-button': disabled
+    }"
+    class="button-content"
+>
+    <ng-container *ngIf="loading; else content">
+        <mat-spinner
+            class="spinner"
+            [ngClass]="{ 'primary-spinner': class === 'primary', 'secondary-spinner': class === 'secondary' }"
+            diameter="20"
+        ></mat-spinner>
+    </ng-container>
+    <ng-template #content>
+        <ng-content></ng-content>
+    </ng-template>
+</button>

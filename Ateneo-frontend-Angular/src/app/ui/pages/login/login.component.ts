@@ -12,6 +12,7 @@ import { NotifyService } from '../../shared/services/notify.service';
 })
 export class LoginComponent implements OnInit {
     public loginForm!: FormGroup;
+    public loadingLogin: boolean = false;
 
     public constructor(
         private fb: FormBuilder,
@@ -36,15 +37,19 @@ export class LoginComponent implements OnInit {
         if (!this.loginForm.valid) {
             return;
         }
+        this.loadingLogin = true;
 
         const user = this.loginForm.value;
 
         this.loginViewModelService.login(user.email, user.password).subscribe(
             () => {
+                this.loadingLogin = false;
                 this.router.navigate(['dashboard']);
             },
             (error: HttpErrorResponse) => {
+                this.loadingLogin = false;
                 this.notifyService.notify(error.error.message, 'error', 'Cerrar');
+                throw error.error.message;
             }
         );
     }

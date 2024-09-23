@@ -16,15 +16,7 @@
                 <mat-error *ngIf="hasError('password', 'required')"> La contraseña es requerida </mat-error>
             </mat-form-field>
 
-            <button
-                mat-flat-button
-                [ngClass]="{ 'primary-button': !loginForm.invalid }"
-                [disabled]="loginForm.invalid"
-                type="submit"
-                class="primary-button"
-            >
-                Iniciar Sesión
-            </button>
+            <app-submit [withText]="!loadingLogin" [loading]="loadingLogin" [disabled]="loginForm.invalid"> Iniciar Sesión </app-submit>
         </form>
     </div>
 </div>

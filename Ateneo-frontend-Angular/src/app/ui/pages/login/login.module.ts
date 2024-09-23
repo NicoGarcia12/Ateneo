@@ -8,10 +8,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { SubmitModule } from '../../components/submit/submit.module';
 
 @NgModule({
     declarations: [LoginComponent],
-    imports: [HeaderModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, CommonModule, MatButtonModule, HttpClientModule],
+    imports: [
+        HeaderModule,
+        SubmitModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        CommonModule,
+        MatButtonModule,
+        HttpClientModule
+    ],
     exports: [LoginComponent]
 })
 export class LoginModule {}
