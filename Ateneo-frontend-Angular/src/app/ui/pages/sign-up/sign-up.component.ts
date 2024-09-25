@@ -5,6 +5,7 @@ import { ResolutionService } from '../../shared/services/resolution.service';
 import { SignUpViewModelService } from './sign-up-view-model.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
+import { sha256 } from 'js-sha256';
 
 @Component({
     selector: 'app-sign-up',
@@ -59,8 +60,8 @@ export class SignUpComponent implements OnInit {
         }
         this.signUpLoading = true;
 
-        const { firstName, lastName, email, password } = this.signUpForm.value;
-
+        let { firstName, lastName, email, password } = this.signUpForm.value;
+        password = sha256(password);
         this.signUpViewModelService.signUp(email, password, firstName, lastName).subscribe({
             next: (success) => {
                 this.signUpLoading = false;

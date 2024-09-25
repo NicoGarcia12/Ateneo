@@ -4,6 +4,8 @@ import { LoginViewModelService } from './login-view-model.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
+import { sha256 } from 'js-sha256';
+
 
 @Component({
     selector: 'app-login',
@@ -39,7 +41,8 @@ export class LoginComponent implements OnInit {
         }
         this.loadingLogin = true;
 
-        const user = this.loginForm.value;
+        let user = this.loginForm.value;
+        user.password = sha256(user.password)
 
         this.loginViewModelService.login(user.email, user.password).subscribe(
             () => {

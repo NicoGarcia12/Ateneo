@@ -1,16 +1,12 @@
 import { Professor } from '@prisma/client';
 import { LoginHelper } from '../../helpers/professor/login-helper';
+import * as bcrypt from 'bcrypt';
 
 export const LoginController = async (email: string, password: string): Promise<Professor> => {
     try {
         const professor: Professor | null = await LoginHelper(email);
-
-        if (!professor) {
-            throw new Error('Email inválido');
-        }
-
-        if (professor.password !== password) {
-            throw new Error('Contraseña incorrecta');
+        if (!professor || !bcrypt.compare(password, professor.password)) {
+            throw new Error('No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo.');
         }
 
         return professor;
