@@ -22,6 +22,7 @@
         "@angular/platform-browser-dynamic": "^17.3.12",
         "@angular/router": "^17.3.12",
         "js-sha256": "^0.11.0",
+        "jwt-decode": "^4.0.0",
         "ngx-jsonapi": "^2.1.1",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",

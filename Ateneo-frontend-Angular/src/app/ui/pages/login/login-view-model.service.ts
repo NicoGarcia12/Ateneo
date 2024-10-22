@@ -9,7 +9,7 @@ import { Professor } from '../../../domain/entities/professor';
 export class LoginViewModelService {
     public constructor(private loginUseCase: LoginUseCase) {}
 
-    public login(email: string, password: string): Observable<Professor> {
+    public login(email: string, password: string): Observable<any> {
         return this.loginUseCase.execute({ email, password });
     }
 }

@@ -17,7 +17,7 @@ export class LoginUseCase implements useCase<Professor, ILoginUseCase> {
 
     constructor(private httpClient: HttpClient) {}
 
-    execute(params: ILoginUseCase): Observable<Professor> {
+    execute(params: ILoginUseCase): Observable<any> {
         return this.httpClient.post<Professor>(this.apiUrl, params);
     }
 }

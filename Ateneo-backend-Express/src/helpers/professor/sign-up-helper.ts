@@ -7,10 +7,9 @@ export const SignUpHelper = async (professor: Omit<Professor, 'id' | 'emailActiv
         const existingProfessor = await prisma.professor.findUnique({
             where: { email: professor.email }
         });
-        console.log(existingProfessor);
+
         if (existingProfessor) {
             throw new Error();
-        } else {
         }
 
         await prisma.professor.create({

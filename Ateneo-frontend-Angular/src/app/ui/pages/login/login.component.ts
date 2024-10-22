@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
 import { sha256 } from 'js-sha256';
+import { TokenService } from './token.service';
 
 @Component({
     selector: 'app-login',
@@ -19,10 +20,14 @@ export class LoginComponent implements OnInit {
         private fb: FormBuilder,
         private loginViewModelService: LoginViewModelService,
         private notifyService: NotifyService,
+        private tokenService: TokenService,
         private router: Router
     ) {}
 
     public ngOnInit(): void {
+        if (this.tokenService.hasToken()) {
+            this.router.navigate(['/dashboard']);
+        }
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required]]
@@ -44,13 +49,14 @@ export class LoginComponent implements OnInit {
         user.password = sha256(user.password);
 
         this.loginViewModelService.login(user.email, user.password).subscribe(
-            () => {
+            (response) => {
+                this.tokenService.setToken(response.token);
+                this.router.navigate(['/dashboard']);
                 this.loadingLogin = false;
-                this.router.navigate(['dashboard']);
             },
             (error: HttpErrorResponse) => {
-                this.loadingLogin = false;
                 this.notifyService.notify(error.error.message, 'error', 'Cerrar');
+                this.loadingLogin = false;
                 throw error.error.message;
             }
         );

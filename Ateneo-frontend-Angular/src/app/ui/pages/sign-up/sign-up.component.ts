@@ -70,7 +70,7 @@ export class SignUpComponent implements OnInit {
             },
             error: (error: HttpErrorResponse) => {
                 this.signUpLoading = false;
-                this.notifyService.notify(error.error.message, 'error', 'Cerrar');
+                this.notifyService.notify(error.error.message !== undefined ? error.error.message : 'No se pudo conectar con el servidor, intente de nuevo más tarde', 'error', 'Cerrar');
                 throw error.error.message;
             }
         });
