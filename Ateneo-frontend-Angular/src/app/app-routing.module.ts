@@ -10,7 +10,7 @@ import { AuthGuard } from './ui/shared/auth.guard';
 const routes: Routes = [
     { path: '', component: LandingComponent },
     { path: 'sign-up', component: SignUpComponent },
-    { path: 'login', component: LoginComponent },
+    { path: 'login', component: LoginComponent},
     // { path: 'reset-password', component: ResetPasswordComponent },
     {
         path: 'dashboard',

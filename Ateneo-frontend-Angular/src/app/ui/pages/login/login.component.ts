@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        if (this.tokenService.hasToken()) {
+        if (this.tokenService.professor) {
             this.router.navigate(['/dashboard']);
         }
         this.loginForm = this.fb.group({

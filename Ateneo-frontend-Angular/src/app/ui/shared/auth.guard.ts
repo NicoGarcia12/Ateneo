@@ -20,14 +20,7 @@ export class AuthGuard implements CanActivate {
         }
 
         this.router.navigate(['/login']);
-        return false;
-    }
 
-    public decodeToken(token: string): any {
-        try {
-            return jwtDecode(token);
-        } catch (error) {
-            return null;
-        }
+        return false;
     }
 }
