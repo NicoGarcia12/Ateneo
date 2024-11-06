@@ -28,6 +28,10 @@
             button {
                 width: fit-content;
             }
+
+            mat-error {
+                text-align: center;
+            }
         }
     }
 }

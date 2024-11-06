@@ -10,8 +10,8 @@ async function main() {
             lastName: 'Doe',
             email: 'john.doe@example.com',
             password: 'password123',
-            emailActivated: true,
-        },
+            emailActivated: true
+        }
     });
 
     const professor2 = await prisma.professor.create({
@@ -20,8 +20,8 @@ async function main() {
             lastName: 'Smith',
             email: 'jane.smith@example.com',
             password: 'password456',
-            emailActivated: true,
-        },
+            emailActivated: true
+        }
     });
 
     // Crear tres materias: una para el primer profesor y dos para el segundo
@@ -32,9 +32,9 @@ async function main() {
             institution: 'Universidad Nacional',
             degree: 'Licenciatura en Matemáticas',
             professor: {
-                connect: { id: professor1.id },
-            },
-        },
+                connect: { id: professor1.id }
+            }
+        }
     });
 
     await prisma.subject.create({
@@ -44,9 +44,9 @@ async function main() {
             institution: 'Universidad Nacional',
             degree: 'Licenciatura en Física',
             professor: {
-                connect: { id: professor2.id },
-            },
-        },
+                connect: { id: professor2.id }
+            }
+        }
     });
 
     await prisma.subject.create({
@@ -56,9 +56,9 @@ async function main() {
             institution: 'Universidad Nacional',
             degree: 'Licenciatura en Química',
             professor: {
-                connect: { id: professor2.id },
-            },
-        },
+                connect: { id: professor2.id }
+            }
+        }
     });
 
     console.log('Datos insertados exitosamente.');

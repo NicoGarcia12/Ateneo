@@ -7,6 +7,6 @@ export interface Student {
     lastName: string;
     dni: bigint;
     email: string;
-    absences: Absence[];
-    studentGrades: StudentGrade[];
+    absences: Array<Absence>;
+    studentGrades: Array<StudentGrade>;
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
-import { TokenService } from '../pages/login/token.service';
+import { TokenService } from './services/token.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -12,15 +13,16 @@ export class AuthGuard implements CanActivate {
         private router: Router
     ) {}
 
-    public canActivate(): boolean {
-        this.tokenService.getUserFromToken();
-
-        if (this.tokenService.professor) {
-            return true;
-        }
-
-        this.router.navigate(['/login']);
-
-        return false;
+    public canActivate(): Observable<boolean> {
+        return this.tokenService.professor$.pipe(
+            map((professor) => {
+                if (professor) {
+                    return true;
+                } else {
+                    this.router.navigate(['/login']);
+                    return false;
+                }
+            })
+        );
     }
 }

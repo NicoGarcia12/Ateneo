@@ -9,8 +9,7 @@ import { ErrorModule } from './ui/pages/error/error.module';
 import { LoginModule } from './ui/pages/login/login.module';
 import { SignUpModule } from './ui/pages/sign-up/sign-up.module';
 import { DashboardModule } from './ui/pages/dashboard/dashboard.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [AppComponent],
@@ -23,7 +22,8 @@ import { HttpClient } from '@angular/common/http';
         LoginModule,
         SignUpModule,
         DashboardModule,
-        AppRoutingModule
+        AppRoutingModule,
+        CommonModule
     ],
     providers: [],
     bootstrap: [AppComponent]

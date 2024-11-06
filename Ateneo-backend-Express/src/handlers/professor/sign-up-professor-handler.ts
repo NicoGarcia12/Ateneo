@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { SignUpController } from '../../controllers/professor/sign-up-controller';
+import { SignUpProfessorController } from '../../controllers/professor/sign-up-professor-controller';
 
-export const SignUpHandler = async (req: Request, res: Response): Promise<Response> => {
+export const SignUpProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { email, firstName, lastName, password } = req.body;
 
-        const response = await SignUpController(email, password, firstName, lastName);
+        const response = await SignUpProfessorController(email, password, firstName, lastName);
 
         return res.status(200).json({ message: response });
     } catch (error: any) {

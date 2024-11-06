@@ -9,9 +9,9 @@ export interface Grade {
     date: Date;
     description: string;
     subject: Subject;
-    studentGrades: StudentGrade[];
-    derivedGradeRel: GradeRelationship[];
-    baseGradeRel: GradeRelationship[];
+    studentGrades: Array<StudentGrade>;
+    derivedGradeRel: Array<GradeRelationship>;
+    baseGradeRel: Array<GradeRelationship>;
 }
 
 export enum GradeType {

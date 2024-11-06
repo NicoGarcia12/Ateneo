@@ -1,0 +1,62 @@
+<div class="subjects-component-container">
+    <h3 class="subjects-title">Materias</h3>
+
+    <button class="primary-button" mat-flat-button (click)="switchForm()">
+        {{ showForm ? 'Ocultar Formulario' : 'Agregar Materia' }}
+    </button>
+
+    <div *ngIf="showForm; else subjectsContainer" class="form-container">
+        <form [formGroup]="subjectForm" (ngSubmit)="addSubject()">
+            <div class="mat-form-field-container">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre de la materia</mat-label>
+                    <input matInput formControlName="name" placeholder="Nombre de la Materia" />
+                    <mat-error *ngIf="hasError('name', 'required')">El nombre es requerido</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Año académico</mat-label>
+                    <input matInput formControlName="academicYear" type="number" placeholder="Año Académico" />
+                    <mat-error *ngIf="hasError('academicYear', 'required')">El año académico es requerido</mat-error>
+                    <mat-error *ngIf="hasError('academicYear', 'invalidYear')">El año no es válido</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="mat-form-field-container">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución</mat-label>
+                    <input matInput formControlName="institution" placeholder="Institución" />
+                    <mat-error *ngIf="hasError('institution', 'required')">La institución es requerida</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Título</mat-label>
+                    <input matInput formControlName="degree" placeholder="Título" />
+                    <mat-error *ngIf="hasError('degree', 'required')">El título es requerido</mat-error>
+                </mat-form-field>
+            </div>
+
+            <app-submit [withText]="!addSubjectLoading" [loading]="addSubjectLoading" [disabled]="subjectForm.invalid">
+                Iniciar Sesión
+            </app-submit>
+        </form>
+    </div>
+
+    <ng-template #subjectsContainer>
+        <div class="subjects-container">
+            <div class="subjects-empty" *ngIf="!subjects.length; else subjectsList">
+                <mat-card class="no-subjects-card">
+                    <span class="mat-card-text">No hay materias cargadas</span>
+                </mat-card>
+            </div>
+            <ng-template #subjectsList>
+                <div class="subjects">
+                    <mat-card *ngFor="let subject of subjects" class="subject-card">
+                        <span class="mat-card-text" title="{{ subject.name }}">{{ subject.name }}</span>
+                        <span class="mat-card-text" title="{{ subject.institution }}">{{ subject.institution }}</span>
+                        <span class="mat-card-text" title="{{ subject.degree }}">{{ subject.degree }}</span>
+                    </mat-card>
+                </div>
+            </ng-template>
+        </div>
+    </ng-template>
+</div>

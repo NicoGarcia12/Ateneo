@@ -13,6 +13,9 @@ export class NotifyService {
     ) {}
 
     public notify(notification: string, severity: Severity = 'error', button: string | undefined = undefined, duration: number = 4): void {
+        if (notification === undefined) {
+            notification = 'No se pudo conectar con el servidor, intente de nuevo más tarde';
+        }
         this.zone.run((): void => {
             this.snackBar.open(notification, button, {
                 duration: duration * 1000,

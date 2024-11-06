@@ -5,5 +5,5 @@ export interface Class {
     id: string;
     date: Date;
     subject: Subject;
-    absences: Absence[];
+    absences: Array<Absence>;
 }

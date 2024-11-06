@@ -9,6 +9,6 @@ export interface Subject {
     institution: string;
     degree: string;
     professor: Professor;
-    classes: Class[];
-    grades: Grade[];
+    classes: Array<Class>;
+    grades: Array<Grade>;
 }
