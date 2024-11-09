@@ -2,10 +2,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getAllSubjectsByIdProffessorHelper = async (idProffessor: string) => {
+export const GetAllSubjectsByIdProfessorHelper = async (idProfessor: string) => {
     try {
         const subjects = await prisma.subject.findMany({
-            where: { professorId: idProffessor },
+            where: { professorId: idProfessor },
             include: {
                 classes: false,
                 grades: false

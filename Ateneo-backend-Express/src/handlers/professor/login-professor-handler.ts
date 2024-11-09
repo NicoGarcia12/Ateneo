@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { LoginController } from '../../controllers/professor/login-controller';
+import { LoginProfessorController } from '../../controllers/professor/login-professor-controller';
 import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -7,11 +7,11 @@ dotenv.config();
 
 const secretKey = process.env['JWT_SECRET_KEY'];
 
-export const LoginHandler = async (req: Request, res: Response): Promise<Response> => {
+export const LoginProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { email, password } = req.body;
 
-        const professor = await LoginController(email, password);
+        const professor = await LoginProfessorController(email, password);
 
         if (!secretKey) {
             throw new Error('La clave secreta para JWT no está definida');

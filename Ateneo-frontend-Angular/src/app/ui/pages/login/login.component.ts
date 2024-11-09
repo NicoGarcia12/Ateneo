@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
 import { sha256 } from 'js-sha256';
-import { TokenService } from './token.service';
+import { TokenService } from '../../shared/services/token.service';
 
 @Component({
     selector: 'app-login',
@@ -25,9 +25,10 @@ export class LoginComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        if (this.tokenService.professor) {
-            this.router.navigate(['/dashboard']);
+        if (this.tokenService.getUserFromToken() !== null) {
+            this.router.navigate(['/dashboard/subjects']);
         }
+
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required]]
@@ -51,11 +52,11 @@ export class LoginComponent implements OnInit {
         this.loginViewModelService.login(user.email, user.password).subscribe(
             (response) => {
                 this.tokenService.setToken(response.token);
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/dashboard/subjects']);
                 this.loadingLogin = false;
             },
             (error: HttpErrorResponse) => {
-                this.notifyService.notify(error.error.message, 'error', 'Cerrar');
+                this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
                 this.loadingLogin = false;
                 throw error.error.message;
             }

@@ -9,15 +9,20 @@ interface ILoginUseCase {
     password: string;
 }
 
+interface ILoginResponse {
+    token: string;
+    professor: Professor;
+}
+
 @Injectable({
     providedIn: 'root'
 })
-export class LoginUseCase implements useCase<Professor, ILoginUseCase> {
+export class LoginUseCase implements useCase<ILoginResponse, ILoginUseCase> {
     private apiUrl = 'http://localhost:3001/professors/login';
 
     constructor(private httpClient: HttpClient) {}
 
-    execute(params: ILoginUseCase): Observable<any> {
-        return this.httpClient.post<Professor>(this.apiUrl, params);
+    execute(params: ILoginUseCase): Observable<ILoginResponse> {
+        return this.httpClient.post<ILoginResponse>(this.apiUrl, params);
     }
 }

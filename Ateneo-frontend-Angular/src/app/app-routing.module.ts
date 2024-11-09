@@ -4,23 +4,22 @@ import { LandingComponent } from './ui/pages/landing/landing.component';
 import { ErrorComponent } from './ui/pages/error/error.component';
 import { LoginComponent } from './ui/pages/login/login.component';
 import { SignUpComponent } from './ui/pages/sign-up/sign-up.component';
-import { DashboardComponent } from './ui/pages/dashboard/dashboard.component';
 import { AuthGuard } from './ui/shared/auth.guard';
+import { DashboardComponent } from './ui/pages/dashboard/dashboard.component';
+import { SubjectsComponent } from './ui/pages/dashboard/subjects/subjects.component';
 
 const routes: Routes = [
     { path: '', component: LandingComponent },
     { path: 'sign-up', component: SignUpComponent },
-    { path: 'login', component: LoginComponent},
-    // { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'login', component: LoginComponent },
     {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuard]
-        // children: [
-        //   { path: 'profile', component: ProfileComponent },
-        //   { path: 'subject ', component: MateriaComponent },
-        //   { path: '', redirectTo: 'profile', pathMatch: 'full' },
-        // ],
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', redirectTo: 'subjects', pathMatch: 'full' }, // Redirección automática a subjects
+            { path: 'subjects', component: SubjectsComponent }
+        ]
     },
     { path: '**', component: ErrorComponent }
 ];

@@ -7,5 +7,5 @@ export interface Professor {
     email: string;
     password: string;
     emailActivated: boolean;
-    subjects: Subject[];
+    subjects: Array<Subject>;
 }

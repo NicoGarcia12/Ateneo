@@ -7,6 +7,7 @@
         <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
             <button class="primary-button" mat-flat-button (click)="goTo('/')">Materias</button>
             <button class="primary-button" mat-flat-button color="warn" (click)="goTo('/')">Perfil</button>
+            <button class="secondary-button" mat-flat-button color="warn" (click)="logOut()">Cerrar Sesión</button>
         </div>
         <ng-template #landingLinks>
             <div class="links-landing-container">
@@ -24,6 +25,7 @@
                 <ng-container *ngIf="dashboard; else mobileLandingLinks">
                     <button mat-menu-item (click)="goTo('/')">Materias</button>
                     <button mat-menu-item (click)="goTo('/')">Perfil</button>
+                    <button mat-menu-item (click)="logOut()">Cerrar Sesión</button>
                 </ng-container>
 
                 <ng-template #mobileLandingLinks>

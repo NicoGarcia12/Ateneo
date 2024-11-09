@@ -65,12 +65,12 @@ export class SignUpComponent implements OnInit {
         this.signUpViewModelService.signUp(email, password, firstName, lastName).subscribe({
             next: (success) => {
                 this.signUpLoading = false;
-                this.notifyService.notify(success.message, 'success');
+                this.notifyService.notify(success.message, 'success-notify');
                 this.router.navigate(['/login']);
             },
             error: (error: HttpErrorResponse) => {
                 this.signUpLoading = false;
-                this.notifyService.notify(error.error.message !== undefined ? error.error.message : 'No se pudo conectar con el servidor, intente de nuevo más tarde', 'error', 'Cerrar');
+                this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
                 throw error.error.message;
             }
         });

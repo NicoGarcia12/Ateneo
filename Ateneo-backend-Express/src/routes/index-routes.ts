@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import professorRouter from './professor';
-import subjectRouter from './subject';
+import professorRouter from './professor/index-professor-routes';
+import subjectRouter from './subject/index-subject-routes';
 
 const router = Router();
 

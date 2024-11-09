@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const LoginHelper = async (email: string) => {
+export const LoginProfessorHelper = async (email: string) => {
     try {
         const professor = await prisma.professor.findUnique({
             where: { email }

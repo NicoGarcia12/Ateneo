@@ -3,7 +3,7 @@
     <div class="form-container">
         <h1>Crea tu cuenta</h1>
         <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
-            <div [ngClass]="{ row: !isMobile, column: isMobile }">
+            <div class="mat-form-field-container" [ngClass]="{ row: !isMobile, column: isMobile }">
                 <mat-form-field appearance="outline">
                     <mat-label>Nombres</mat-label>
                     <input matInput formControlName="firstName" placeholder="Nombres" />
@@ -17,7 +17,7 @@
                 </mat-form-field>
             </div>
 
-            <div [ngClass]="{ row: !isMobile, column: isMobile }">
+            <div class="mat-form-field-container" [ngClass]="{ row: !isMobile, column: isMobile }">
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email" placeholder="Email" />
@@ -33,7 +33,7 @@
                     <mat-error *ngIf="hasError('password', 'pattern')"> La contraseña debe tener al menos una letra y un número </mat-error>
                 </mat-form-field>
             </div>
-            <app-submit [withText]="!signUpLoading" [loading]="signUpLoading" [disabled]="signUpForm.invalid"> Iniciar Sesión </app-submit>
+            <app-submit [withText]="!signUpLoading" [loading]="signUpLoading" [disabled]="signUpForm.invalid"> Registrarse </app-submit>
         </form>
     </div>
 </div>
