@@ -4,25 +4,33 @@ import { TokenService } from '../../../shared/services/token.service';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Subject } from '../../../../domain/entities/subject';
+import { AddSubjectUseCase } from '../../../../domain/use-cases/subject-use-cases/add-subject-use-case';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SubjectsViewModelService {
+    private professorId: string | undefined;
+
     constructor(
         private getAllSubjectsUseCase: GetAllSubjectsUseCase,
+        private addSubjectUseCase: AddSubjectUseCase,
         private tokenService: TokenService
-    ) {}
+    ) {
+        const professor = this.tokenService.getUserFromToken();
+        this.professorId = professor?.id;
+    }
 
     public getAllSubjects(): Observable<Array<Subject>> {
-        const professor = this.tokenService.getUserFromToken();
+        return this.getAllSubjectsUseCase
+            .execute({ idProfessor: this.professorId! })
+            .pipe(map((response: GetAllSubjectsResponse) => response.subjects));
+    }
 
-        if (professor && professor.id) {
-            return this.getAllSubjectsUseCase
-                .execute({ idProfessor: professor.id })
-                .pipe(map((response: GetAllSubjectsResponse) => response.subjects)); // Extrae el array de materias
-        } else {
-            return throwError(() => new Error('Ocurrió un error al obtener el Id del profesor'));
-        }
+    public addSubject(subject: Subject): Observable<any> {
+        return this.addSubjectUseCase.execute({
+            subject,
+            idProfessor: this.professorId!
+        });
     }
 }

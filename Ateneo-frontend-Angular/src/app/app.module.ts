@@ -10,6 +10,7 @@ import { LoginModule } from './ui/pages/login/login.module';
 import { SignUpModule } from './ui/pages/sign-up/sign-up.module';
 import { DashboardModule } from './ui/pages/dashboard/dashboard.module';
 import { CommonModule } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { CommonModule } from '@angular/common';
         SignUpModule,
         DashboardModule,
         AppRoutingModule,
+        MatSnackBarModule,
         CommonModule
     ],
     providers: [],

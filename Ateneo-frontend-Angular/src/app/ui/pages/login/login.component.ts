@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
                 this.loadingLogin = false;
             },
             (error: HttpErrorResponse) => {
-                this.notifyService.notify(error.error.message, 'error', 'Cerrar');
+                this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
                 this.loadingLogin = false;
                 throw error.error.message;
             }

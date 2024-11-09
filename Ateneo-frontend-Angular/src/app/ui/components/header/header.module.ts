@@ -8,7 +8,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [HeaderComponent],
-    imports: [MatButtonModule, CommonModule, MatMenuModule, MatIconModule, MatSnackBarModule],
+    imports: [MatButtonModule, CommonModule, MatMenuModule, MatIconModule],
     exports: [HeaderComponent]
 })
 export class HeaderModule {}

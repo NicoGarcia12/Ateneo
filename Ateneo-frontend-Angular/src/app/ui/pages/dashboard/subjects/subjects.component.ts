@@ -36,7 +36,7 @@ export class SubjectsComponent implements OnInit {
                 this.subjects = subjects;
             },
             (error) => {
-                this.notifyService.notify(error.error.message, 'error', 'Cerrar');
+                this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
                 throw error.error.message;
             }
         );
@@ -72,18 +72,19 @@ export class SubjectsComponent implements OnInit {
 
         const newSubject = this.subjectForm.value as Subject;
 
-        // this.subjectsViewModel.addSubject(newSubject).subscribe(
-        //     (subject) => {
-        //         this.subjects.push(subject);
-        //         this.subjectForm.reset();
-        //         this.showForm = false;
-        // this.addSubjectLoading = false;
-        //     },
-        //     (error) => {
-        //                         this.notifyService.notify(error.error.message, 'error', 'Cerrar');
-        // this.addSubjectLoading = false;
-        // throw error.error.message;
-        //     }
-        // );
+        this.subjectsViewModel.addSubject(newSubject).subscribe(
+            (subject) => {
+                this.subjects.push(subject);
+                this.subjectForm.reset();
+                this.showForm = false;
+                this.addSubjectLoading = false;
+            },
+            (error) => {
+                this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
+                this.showForm = false;
+                this.addSubjectLoading = false;
+                throw error.error.message;
+            }
+        );
     }
 }
