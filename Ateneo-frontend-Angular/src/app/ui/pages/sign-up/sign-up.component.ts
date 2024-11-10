@@ -6,6 +6,7 @@ import { SignUpViewModelService } from './sign-up-view-model.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
 import { sha256 } from 'js-sha256';
+import { TokenService } from '../../shared/services/token.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -22,10 +23,15 @@ export class SignUpComponent implements OnInit {
         private router: Router,
         private resolutionService: ResolutionService,
         private signUpViewModelService: SignUpViewModelService,
-        private notifyService: NotifyService
+        private notifyService: NotifyService,
+        private tokenService: TokenService
     ) {}
 
     public ngOnInit(): void {
+        if (this.tokenService.getUserFromToken() !== null) {
+            this.router.navigate(['/dashboard/subjects']);
+        }
+
         this.signUpForm = this.fb.group({
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],

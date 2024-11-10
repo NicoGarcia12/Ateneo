@@ -24,7 +24,7 @@ export class NotifyService {
 
         this.zone.run((): void => {
             this.snackBar.open(notification, button, {
-                duration: duration * 100000,
+                duration: duration * 1000,
                 verticalPosition: 'top',
                 horizontalPosition: 'right',
                 panelClass: [severity]

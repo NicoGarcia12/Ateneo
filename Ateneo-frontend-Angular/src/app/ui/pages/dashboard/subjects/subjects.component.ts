@@ -30,7 +30,10 @@ export class SubjectsComponent implements OnInit {
             degree: ['', Validators.required],
             academicYear: ['', [Validators.required, this.academicYearValidator]]
         });
+        this.getAllSubjects();
+    }
 
+    private getAllSubjects(): void {
         this.subjectsViewModel.getAllSubjects().subscribe(
             (subjects) => {
                 this.subjects = subjects;
@@ -41,6 +44,7 @@ export class SubjectsComponent implements OnInit {
             }
         );
     }
+
     public academicYearValidator(control: AbstractControl): ValidationErrors | null {
         const year = control.value;
 
@@ -73,16 +77,18 @@ export class SubjectsComponent implements OnInit {
         const newSubject = this.subjectForm.value as Subject;
 
         this.subjectsViewModel.addSubject(newSubject).subscribe(
-            (subject) => {
-                this.subjects.push(subject);
+            (success) => {
+                this.notifyService.notify(success.message, 'success-notify');
+                this.addSubjectLoading = false;
                 this.subjectForm.reset();
                 this.showForm = false;
-                this.addSubjectLoading = false;
+                this.getAllSubjects();
             },
             (error) => {
                 this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
-                this.showForm = false;
                 this.addSubjectLoading = false;
+                this.subjectForm.reset();
+                this.showForm = false;
                 throw error.error.message;
             }
         );

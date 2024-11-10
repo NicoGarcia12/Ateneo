@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Professor {
-  id             String    @id @default(uuid())
+  id             String    @id
   firstName      String
   lastName       String
   email          String    @unique
   password       String
-  // resetPassword  DateTime
+  resetPassword  DateTime?
   emailActivated Boolean
   subjects       Subject[]
 }
 
 model Student {
-  id            String         @id @default(uuid())
+  id            String         @id
   firstName     String
   lastName      String
   dni           BigInt         @unique
@@ -29,7 +29,7 @@ model Student {
 }
 
 model Class {
-  id        String    @id @default(uuid())
+  id        String    @id
   date      DateTime
   subject   Subject   @relation(fields: [subjectId], references: [id])
   subjectId String
@@ -37,7 +37,7 @@ model Class {
 }
 
 model Absence {
-  id        String  @id @default(uuid())
+  id        String  @id
   class     Class   @relation(fields: [classId], references: [id])
   classId   String
   student   Student @relation(fields: [studentId], references: [id])
@@ -46,7 +46,7 @@ model Absence {
 }
 
 model GradeRelationship {
-  id             String @id @default(uuid())
+  id             String @id
   weight         Float
   derivedGrade   Grade  @relation("DerivedGrade", fields: [derivedGradeId], references: [id])
   derivedGradeId String
@@ -55,7 +55,7 @@ model GradeRelationship {
 }
 
 model Subject {
-  id           String    @id @default(uuid())
+  id           String    @id
   name         String
   academicYear Int
   institution  String
@@ -67,7 +67,7 @@ model Subject {
 }
 
 model Grade {
-  id              String              @id @default(uuid())
+  id              String              @id
   name            String
   type            GradeType
   date            DateTime
@@ -80,7 +80,7 @@ model Grade {
 }
 
 model StudentGrade {
-  id        String  @id @default(uuid())
+  id        String  @id
   value     Float
   grade     Grade   @relation(fields: [gradeId], references: [id])
   gradeId   String
