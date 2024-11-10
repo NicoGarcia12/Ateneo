@@ -29,6 +29,7 @@ export class SignUpComponent implements OnInit {
 
     public ngOnInit(): void {
         if (this.tokenService.getUserFromToken() !== null) {
+            this.notifyService.notify('Si quieres crear una cuenta, cierra la sesión activa', 'info-notify', 'Cerrar');
             this.router.navigate(['/dashboard/subjects']);
         }
 
