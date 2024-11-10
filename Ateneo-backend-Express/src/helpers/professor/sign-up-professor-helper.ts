@@ -1,11 +1,12 @@
 import { PrismaClient, Professor } from '@prisma/client';
+import { generateId } from '../../utils/generate-id';
 
 const prisma = new PrismaClient();
 
-export const SignUpProfessorHelper = async (professor: Omit<Professor, 'id' | 'emailActivated'>): Promise<string> => {
+export const SignUpProfessorHelper = async (email: string, password: string, firstName: string, lastName: string): Promise<string> => {
     try {
         const existingProfessor = await prisma.professor.findUnique({
-            where: { email: professor.email }
+            where: { email: email }
         });
 
         if (existingProfessor) {
@@ -14,10 +15,11 @@ export const SignUpProfessorHelper = async (professor: Omit<Professor, 'id' | 'e
 
         await prisma.professor.create({
             data: {
-                email: professor.email,
-                firstName: professor.firstName,
-                lastName: professor.lastName,
-                password: professor.password,
+                id: generateId(),
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                password: password,
                 emailActivated: true
             }
         });

@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
 import { GetAllSubjectsByIdProfessorController } from '../../controllers/subject/get-all-subjects-controller';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export const GetAllSubjectsByIdProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {

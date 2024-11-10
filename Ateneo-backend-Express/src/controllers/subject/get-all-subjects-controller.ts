@@ -4,10 +4,7 @@ import { GetAllSubjectsByIdProfessorHelper } from '../../helpers/subject/get-all
 export const GetAllSubjectsByIdProfessorController = async (idProfessor: string): Promise<Array<Subject>> => {
     try {
         return await GetAllSubjectsByIdProfessorHelper(idProfessor);
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            throw new Error(error.message);
-        }
-        throw new Error('An unknown error occurred');
+    } catch (error: any) {
+        throw new Error(error.message);
     }
 };
