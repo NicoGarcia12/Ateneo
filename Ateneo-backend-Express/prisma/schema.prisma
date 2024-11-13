@@ -26,6 +26,7 @@ model Student {
   email         String
   absences      Absence[]
   studentGrades StudentGrade[]
+  subjects      Subject[]      @relation("SubjectsStudents")
 }
 
 model Class {
@@ -64,6 +65,7 @@ model Subject {
   professorId  String
   classes      Class[]
   grades       Grade[]
+  students     Student[] @relation("SubjectsStudents")
 }
 
 model Grade {

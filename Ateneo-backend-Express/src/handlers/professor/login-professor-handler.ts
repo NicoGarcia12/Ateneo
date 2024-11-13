@@ -25,7 +25,7 @@ export const LoginProfessorHandler = async (req: Request, res: Response): Promis
 
         return res.status(200).json({ token, professor });
     } catch (error: any) {
-        if (error.message === 'No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo.') {
+        if (error.message === 'No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo') {
             return res.status(401).json({ message: error.message });
         }
         if (error.message === 'La clave secreta para JWT no está definida') {
