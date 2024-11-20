@@ -6,7 +6,7 @@ export const LoginProfessorController = async (email: string, password: string):
     try {
         const professor: Professor | null = await LoginProfessorHelper(email);
         if (!professor || !bcrypt.compare(password, professor.password)) {
-            throw new Error('No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo.');
+            throw new Error('No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo');
         }
 
         return professor;
