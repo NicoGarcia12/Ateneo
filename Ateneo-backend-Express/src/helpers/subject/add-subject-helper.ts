@@ -3,7 +3,7 @@ import { generateId } from '../../utils/generate-id';
 
 const prisma = new PrismaClient();
 
-export const addSubjectHelper = async (idProfessor: string, academicYear: number, name: string, institution: string, degree: string) => {
+export const AddSubjectToProfessorHelper = async (idProfessor: string, academicYear: number, name: string, institution: string, degree: string) => {
     try {
         await prisma.subject.create({
             data: {
