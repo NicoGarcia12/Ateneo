@@ -18,12 +18,12 @@ export const LoginProfessorHandler = async (req: Request, res: Response): Promis
         }
 
         const token = jwt.sign(
-            { id: professor.id, firstName: professor.firstName, lastName: professor.lastName, email: professor.email },
+            { id: professor?.id, firstName: professor?.firstName, lastName: professor?.lastName, email: professor?.email },
             secretKey,
-            { expiresIn: '12m' }
+            { expiresIn: '3m' }
         );
 
-        return res.status(200).json({ token, professor });
+        return res.status(200).json({ token });
     } catch (error: any) {
         if (error.message === 'No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo') {
             return res.status(401).json({ message: error.message });

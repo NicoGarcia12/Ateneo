@@ -3,7 +3,13 @@ import { GetSubjectHelper } from '../../helpers/subject/get-subject-helper';
 
 export const GetSubjectController = async (idSubject: string): Promise<Subject | null> => {
     try {
-        return await GetSubjectHelper(idSubject);
+        const subject = await GetSubjectHelper(idSubject);
+
+        if (!subject) {
+            throw new Error('No existe una materia con ese id');
+        }
+
+        return subject;
     } catch (error: any) {
         throw new Error(error.message);
     }
