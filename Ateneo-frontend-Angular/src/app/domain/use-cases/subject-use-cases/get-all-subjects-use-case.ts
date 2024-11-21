@@ -12,13 +12,13 @@ export interface IGetAllSubjectsParams {
     providedIn: 'root'
 })
 export class GetAllSubjectsUseCase implements useCase<Array<Subject>, IGetAllSubjectsParams> {
-    private BASE_URL = 'http://localhost:3001/subjects/professor';
+    private BASE_URL = 'http://localhost:3001/professors';
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetAllSubjectsParams): Observable<Array<Subject>> {
         return this.httpClient
-            .get<{ subjects: Array<Subject> }>(`${this.BASE_URL}/${params.idProfessor}`)
+            .get<{ subjects: Array<Subject> }>(`${this.BASE_URL}/${params.idProfessor}/subjects`)
             .pipe(map((response) => response.subjects));
     }
 }

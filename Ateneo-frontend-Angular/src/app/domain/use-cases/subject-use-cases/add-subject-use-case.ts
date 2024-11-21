@@ -13,11 +13,11 @@ export interface IAddSubjectParams {
     providedIn: 'root'
 })
 export class AddSubjectUseCase implements useCase<any, IAddSubjectParams> {
-    private BASE_URL = 'http://localhost:3001/subjects/professor';
+    private BASE_URL = 'http://localhost:3001/professors';
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IAddSubjectParams): Observable<any> {
-        return this.httpClient.post<any>(`${this.BASE_URL}/${params.idProfessor}`, params);
+        return this.httpClient.post<any>(`${this.BASE_URL}/${params.idProfessor}/subjects`, params);
     }
 }
