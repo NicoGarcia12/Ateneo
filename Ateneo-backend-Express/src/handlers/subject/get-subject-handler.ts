@@ -8,10 +8,6 @@ export const GetSubjectHandler = async (req: Request, res: Response): Promise<Re
 
         const subject = await GetSubjectController(idSubject);
 
-        if (!subject) {
-            throw new Error('No existe una materia con ese id');
-        }
-
         return res.status(200).json({ subject });
     } catch (error: any) {
         if (error.message === 'No existe una materia con ese id') {

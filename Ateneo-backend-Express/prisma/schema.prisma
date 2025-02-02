@@ -23,7 +23,8 @@ model Student {
   firstName     String
   lastName      String
   dni           BigInt         @unique
-  email         String
+  email         String?
+  phone         String?
   absences      Absence[]
   studentGrades StudentGrade[]
   subjects      Subject[]      @relation("SubjectsStudents")
