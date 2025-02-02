@@ -33,7 +33,7 @@ export const GetSubjectHelper = async (idSubject: string) => {
 
         return subject;
     } catch (error: unknown) {
-        throw new Error('Error fetching subject data');
+        throw new Error('Error al buscar la materia');
     } finally {
         await prisma.$disconnect();
     }
