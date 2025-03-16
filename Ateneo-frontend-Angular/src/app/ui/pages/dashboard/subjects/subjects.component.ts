@@ -4,6 +4,8 @@ import { SubjectsViewModelService } from './subjectsViewModel.service';
 import { Subject } from '../../../../domain/entities/subject';
 import { TokenService } from '../../../shared/services/token.service';
 import { NotifyService } from '../../../shared/services/notify.service';
+import { Router } from '@angular/router';
+import { DashboardTitleService } from '../dashboard-title.service';
 
 @Component({
     selector: 'app-subjects',
@@ -20,7 +22,9 @@ export class SubjectsComponent implements OnInit {
         private fb: FormBuilder,
         private subjectsViewModel: SubjectsViewModelService,
         private notifyService: NotifyService,
-        public tokenService: TokenService
+        private router: Router,
+        private dashboardTitleService: DashboardTitleService,
+        private tokenService: TokenService
     ) {}
 
     ngOnInit(): void {
@@ -30,6 +34,7 @@ export class SubjectsComponent implements OnInit {
             degree: ['', Validators.required],
             academicYear: ['', [Validators.required, this.academicYearValidator]]
         });
+        this.dashboardTitleService.setTitle(`Bienvenido ${this.tokenService.getUserFromToken()?.firstName}`);
         this.getAllSubjects();
     }
 
@@ -92,5 +97,9 @@ export class SubjectsComponent implements OnInit {
                 throw error.error.message;
             }
         );
+    }
+
+    public openSubject(idSubject: string): void {
+        this.router.navigate([`/dashboard/subject/${idSubject}`]);
     }
 }

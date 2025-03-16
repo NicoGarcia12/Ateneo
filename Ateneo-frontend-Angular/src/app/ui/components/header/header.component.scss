@@ -2,14 +2,16 @@
 
 .header-container {
     background-color: $grey-color;
-    height: fit-content;
     padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
     align-items: center;
+    gap: 16px;
 
     .image-container {
+        grid-column: span 2;
         display: flex;
+        align-items: center;
         justify-content: flex-start;
 
         img {
@@ -17,18 +19,23 @@
         }
     }
 
-    .image-landing {
-        opacity: 0;
+    .header-title {
+        grid-column: span 4;
+
+        h6 {
+            display: block;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: $white-color;
+        }
     }
 
     .links-header-desktop {
+        grid-column: span 6;
         display: flex;
-        gap: 12px;
-    }
-
-    .links-dashboard-container,
-    .links-landing-container {
-        display: flex;
+        justify-content: flex-end;
         gap: 12px;
     }
 
@@ -39,13 +46,15 @@
 
 @media (max-width: 600px) {
     .header-container {
-        padding: 16px;
-        display: flex;
-        justify-content: space-between;
-
         .image-container {
-            justify-content: flex-start;
-            flex: 1;
+            grid-column: span 3;
+            img {
+                width: 60px;
+            }
+        }
+
+        .header-title {
+            grid-column: span 6;
         }
 
         .links-header-desktop {
@@ -53,10 +62,10 @@
         }
 
         .mobile-header {
+            grid-column: span 3;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            flex: 1;
 
             mat-icon {
                 font-size: 24px;

@@ -7,6 +7,7 @@ import { SignUpComponent } from './ui/pages/sign-up/sign-up.component';
 import { AuthGuard } from './ui/shared/auth.guard';
 import { DashboardComponent } from './ui/pages/dashboard/dashboard.component';
 import { SubjectsComponent } from './ui/pages/dashboard/subjects/subjects.component';
+import { SubjectDetailsComponent } from './ui/pages/dashboard/subjects/subject-details/subject-details.component';
 
 const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -17,8 +18,9 @@ const routes: Routes = [
         component: DashboardComponent,
         canActivate: [AuthGuard],
         children: [
-            { path: '', redirectTo: 'subjects', pathMatch: 'full' }, // Redirección automática a subjects
-            { path: 'subjects', component: SubjectsComponent }
+            { path: '', redirectTo: 'subjects', pathMatch: 'full' },
+            { path: 'subjects', component: SubjectsComponent },
+            { path: 'subject/:idSubject', component: SubjectDetailsComponent }
         ]
     },
     { path: '**', component: ErrorComponent }

@@ -50,7 +50,7 @@
             </div>
             <ng-template #subjectsList>
                 <div class="subjects">
-                    <mat-card *ngFor="let subject of subjects" class="subject-card">
+                    <mat-card *ngFor="let subject of subjects" class="subject-card" (click)="openSubject(subject.id)">
                         <span class="mat-card-text" title="{{ subject.name }}">{{ subject.name }}</span>
                         <span class="mat-card-text" title="{{ subject.institution }}">{{ subject.institution }}</span>
                         <span class="mat-card-text" title="{{ subject.degree }}">{{ subject.degree }}</span>

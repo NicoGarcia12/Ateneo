@@ -16,12 +16,12 @@ export class SubjectsViewModelService {
         private getAllSubjectsUseCase: GetAllSubjectsUseCase,
         private addSubjectUseCase: AddSubjectUseCase,
         private tokenService: TokenService
-    ) {
-        const professor = this.tokenService.getUserFromToken();
-        this.professorId = professor?.id;
-    }
+    ) {}
 
     public getAllSubjects(): Observable<Array<Subject>> {
+        const professor = this.tokenService.getUserFromToken();
+        this.professorId = professor?.id;
+
         return this.getAllSubjectsUseCase.execute({ idProfessor: this.professorId! });
     }
 

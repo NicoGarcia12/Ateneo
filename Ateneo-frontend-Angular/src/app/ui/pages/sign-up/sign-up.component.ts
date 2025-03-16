@@ -7,6 +7,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
 import { sha256 } from 'js-sha256';
 import { TokenService } from '../../shared/services/token.service';
+import { DashboardTitleService } from '../dashboard/dashboard-title.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -24,6 +25,7 @@ export class SignUpComponent implements OnInit {
         private resolutionService: ResolutionService,
         private signUpViewModelService: SignUpViewModelService,
         private notifyService: NotifyService,
+        private dashboardTitleService: DashboardTitleService,
         private tokenService: TokenService
     ) {}
 
@@ -32,6 +34,8 @@ export class SignUpComponent implements OnInit {
             this.notifyService.notify('Si quieres crear una cuenta, cierra la sesión activa', 'info-notify', 'Cerrar');
             this.router.navigate(['/dashboard/subjects']);
         }
+
+        this.dashboardTitleService.setTitle(``);
 
         this.signUpForm = this.fb.group({
             firstName: ['', [Validators.required]],
