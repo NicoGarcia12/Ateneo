@@ -2,37 +2,31 @@
     <div class="students-table-container">
         <div class="table-wrapper">
             <mat-table [dataSource]="dataSource" class="student-table">
-                <!-- Columna Identificación -->
                 <ng-container matColumnDef="identification">
                     <mat-header-cell *matHeaderCellDef>Identificación</mat-header-cell>
                     <mat-cell *matCellDef="let student">{{ student.identification }}</mat-cell>
                 </ng-container>
 
-                <!-- Columna Estudiante -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef>Estudiante</mat-header-cell>
                     <mat-cell *matCellDef="let student">{{ student.name }}</mat-cell>
                 </ng-container>
 
-                <!-- Columna Nota 1 -->
                 <ng-container matColumnDef="grade1">
                     <mat-header-cell *matHeaderCellDef>Nota 1</mat-header-cell>
                     <mat-cell *matCellDef="let student">{{ student.grade1 }}</mat-cell>
                 </ng-container>
 
-                <!-- Columna Nota 2 -->
                 <ng-container matColumnDef="grade2">
                     <mat-header-cell *matHeaderCellDef>Nota 2</mat-header-cell>
                     <mat-cell *matCellDef="let student">{{ student.grade2 }}</mat-cell>
                 </ng-container>
 
-                <!-- Columna Nota n -->
                 <ng-container matColumnDef="gradeN">
                     <mat-header-cell *matHeaderCellDef>Nota n</mat-header-cell>
                     <mat-cell *matCellDef="let student">{{ student.gradeN }}</mat-cell>
                 </ng-container>
 
-                <!-- Columna Asistencias -->
                 <ng-container matColumnDef="attendance">
                     <mat-header-cell *matHeaderCellDef>Asistencias</mat-header-cell>
                     <mat-cell *matCellDef="let student">{{ student.attendance }}</mat-cell>

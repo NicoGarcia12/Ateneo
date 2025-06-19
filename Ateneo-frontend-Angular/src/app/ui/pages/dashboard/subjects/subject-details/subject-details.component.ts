@@ -19,7 +19,6 @@ interface StudentData {
 export class SubjectDetailsComponent implements OnInit {
     public idSubject: string = '';
 
-    // Configuración para Angular Material Table
     public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
 
     public dataSource: StudentData[] = [
