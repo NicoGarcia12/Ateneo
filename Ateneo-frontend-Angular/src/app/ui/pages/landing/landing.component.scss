@@ -1,14 +1,25 @@
 @import '../../../../assets/styles/colors.scss';
 
+:host {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+}
+
 .landing-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 40px;
-    margin-top: 40px;
 
     h1 {
         text-align: center;
+        margin: 0;
     }
 
     .landing-cards-container {
@@ -81,7 +92,18 @@
         }
     }
 
+    @media (max-width: 768px) {
+        padding: 32px 20px;
+        gap: 32px;
+
+        .landing-cards-container {
+            gap: 24px;
+        }
+    }
+
     @media (max-width: 600px) {
+        padding: 24px 16px;
+
         .landing-cards-container {
             flex-direction: column;
 
@@ -93,6 +115,10 @@
                 bottom: 32px;
             }
         }
+    }
+
+    @media (max-width: 480px) {
+        padding: 20px 12px;
     }
 
     @media (max-width: 360px) {

@@ -1,0 +1,169 @@
+@import '../../../../../../assets/styles/colors.scss';
+
+.subject-details-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    padding: 12px;
+    gap: 12px;
+}
+
+.students-table-container {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    max-height: 15rem;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    width: 100%;
+
+    .table-wrapper {
+        max-height: 15rem;
+        overflow-y: auto;
+        overflow-x: auto;
+        border-radius: 8px;
+        width: 100%;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        &::-webkit-scrollbar:horizontal {
+            height: 8px;
+        }
+    }
+    .student-table {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+
+        ::ng-deep .mat-mdc-table {
+            width: 100% !important;
+            border-radius: 8px;
+            overflow: hidden;
+            table-layout: auto;
+        }
+        ::ng-deep .mat-mdc-header-cell {
+            background-color: $primary-color !important;
+            color: white !important;
+            text-align: center !important;
+            font-weight: bold !important;
+            border: 1px solid #333 !important;
+            padding: 8px !important;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        ::ng-deep .mat-mdc-cell {
+            text-align: center !important;
+            border: 1px solid #333 !important;
+            padding: 8px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        ::ng-deep .mat-mdc-row {
+            width: 100% !important;
+
+            &:nth-child(odd) {
+                background-color: $secondary-color !important;
+            }
+        }
+
+        ::ng-deep .mat-mdc-header-row {
+            width: 100% !important;
+        }
+
+        ::ng-deep .mat-column-identification {
+            width: 15%;
+            min-width: 120px;
+        }
+
+        ::ng-deep .mat-column-name {
+            width: 35%;
+            min-width: 180px;
+        }
+
+        ::ng-deep .mat-column-grade1,
+        ::ng-deep .mat-column-grade2,
+        ::ng-deep .mat-column-gradeN {
+            width: 12%;
+            min-width: 70px;
+        }
+
+        ::ng-deep .mat-column-attendance {
+            width: 14%;
+            min-width: 100px;
+        }
+    }
+}
+
+.calendar-container {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+}
+
+.buttons-container {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+    .subject-details-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 2fr 1fr 1fr;
+    }
+
+    .students-table-container {
+        grid-column: 1 / -1;
+        grid-row: 1 / 2;
+    }
+
+    .calendar-container {
+        grid-column: 1 / -1;
+        grid-row: 2 / 3;
+    }
+
+    .buttons-container {
+        grid-column: 1 / -1;
+        grid-row: 3 / 4;
+    }
+}

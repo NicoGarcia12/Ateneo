@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
 import { sha256 } from 'js-sha256';
 import { TokenService } from '../../shared/services/token.service';
+import { DashboardTitleService } from '../dashboard/dashboard-title.service';
 
 @Component({
     selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
         private loginViewModelService: LoginViewModelService,
         private notifyService: NotifyService,
         private tokenService: TokenService,
+        private dashboardTitleService: DashboardTitleService,
         private router: Router
     ) {}
 
@@ -28,6 +30,8 @@ export class LoginComponent implements OnInit {
         if (this.tokenService.getUserFromToken() !== null) {
             this.router.navigate(['/dashboard/subjects']);
         }
+
+        this.dashboardTitleService.setTitle(``);
 
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],

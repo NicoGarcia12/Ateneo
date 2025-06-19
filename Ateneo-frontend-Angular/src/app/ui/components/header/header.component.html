@@ -1,11 +1,13 @@
 <div class="header-container">
-    <div class="image-container" [ngClass]="{ 'image-landing': isLanding }">
+    <div class="image-container" [ngClass]="{ 'image-landing': !dashboard }">
         <img src="../../../../assets/images/Ateneo-logo.png" alt="Ateneo" (click)="goTo('/')" />
     </div>
-
+    <div class="header-title" [ngClass]="{ 'header-title-landing': !dashboard }">
+        <h6 title="{{ headerTitle }}">{{ headerTitle }}</h6>
+    </div>
     <div class="links-header-desktop" *ngIf="!isMobile; else mobileHeader">
         <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
-            <button class="primary-button" mat-flat-button (click)="goTo('/')">Materias</button>
+            <button class="primary-button" mat-flat-button (click)="goTo('/dashboard/subjects')">Materias</button>
             <button class="primary-button" mat-flat-button color="warn" (click)="goTo('/')">Perfil</button>
             <button class="secondary-button" mat-flat-button color="warn" (click)="logOut()">Cerrar Sesión</button>
         </div>
@@ -23,11 +25,10 @@
             </button>
             <mat-menu #menu="matMenu">
                 <ng-container *ngIf="dashboard; else mobileLandingLinks">
-                    <button mat-menu-item (click)="goTo('/')">Materias</button>
+                    <button mat-menu-item (click)="goTo('/dashboard/subjects')">Materias</button>
                     <button mat-menu-item (click)="goTo('/')">Perfil</button>
                     <button mat-menu-item (click)="logOut()">Cerrar Sesión</button>
                 </ng-container>
-
                 <ng-template #mobileLandingLinks>
                     <button mat-menu-item (click)="goTo('/login')">Iniciar Sesión</button>
                     <button mat-menu-item (click)="goTo('/sign-up')">Registrarse</button>

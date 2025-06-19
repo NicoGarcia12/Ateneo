@@ -1,0 +1,42 @@
+<div class="subject-details-container">
+    <div class="students-table-container">
+        <div class="table-wrapper">
+            <mat-table [dataSource]="dataSource" class="student-table">
+                <ng-container matColumnDef="identification">
+                    <mat-header-cell *matHeaderCellDef>Identificación</mat-header-cell>
+                    <mat-cell *matCellDef="let student">{{ student.identification }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Estudiante</mat-header-cell>
+                    <mat-cell *matCellDef="let student">{{ student.name }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="grade1">
+                    <mat-header-cell *matHeaderCellDef>Nota 1</mat-header-cell>
+                    <mat-cell *matCellDef="let student">{{ student.grade1 }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="grade2">
+                    <mat-header-cell *matHeaderCellDef>Nota 2</mat-header-cell>
+                    <mat-cell *matCellDef="let student">{{ student.grade2 }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="gradeN">
+                    <mat-header-cell *matHeaderCellDef>Nota n</mat-header-cell>
+                    <mat-cell *matCellDef="let student">{{ student.gradeN }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="attendance">
+                    <mat-header-cell *matHeaderCellDef>Asistencias</mat-header-cell>
+                    <mat-cell *matCellDef="let student">{{ student.attendance }}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+    <div class="calendar-container">Acá va a ir el calendario</div>
+    <div class="buttons-container">Acá van a ir los botones</div>
+</div>

@@ -3,6 +3,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { ResolutionService } from '../../shared/services/resolution.service';
 import { TokenService } from '../../shared/services/token.service';
+import { DashboardTitleService } from '../../pages/dashboard/dashboard-title.service';
+import { SectionService } from '../../shared/services/section.service';
 
 @Component({
     selector: 'app-header',
@@ -12,21 +14,28 @@ import { TokenService } from '../../shared/services/token.service';
 export class HeaderComponent implements OnInit {
     public dashboard: boolean = false;
     public isMobile: boolean = false;
-    public isLanding: boolean = false;
     public professorExists: boolean = false;
+    public headerTitle: string = 'Dashboard';
 
     public constructor(
         private router: Router,
         private resolutionService: ResolutionService,
-        private tokenService: TokenService
+        private tokenService: TokenService,
+        private dashboardTitleService: DashboardTitleService,
+        private sectionService: SectionService
     ) {}
 
     public ngOnInit(): void {
-        this.isLanding = this.router.url === '/';
-        this.dashboard = this.router.url.includes('dashboard');
+        this.sectionService.dashboardSection.subscribe((isDashboard) => {
+            this.dashboard = isDashboard;
+        });
 
         this.tokenService.professor$.subscribe((professor) => {
             this.professorExists = !!professor;
+        });
+
+        this.dashboardTitleService.title$.subscribe((title) => {
+            this.headerTitle = title;
         });
 
         this.resolutionService.screenWidth$.subscribe((width) => {
