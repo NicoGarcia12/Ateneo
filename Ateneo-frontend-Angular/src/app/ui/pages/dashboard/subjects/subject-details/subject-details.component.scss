@@ -5,7 +5,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: auto 1fr;
     padding: 12px;
     gap: 12px;
 }
@@ -129,9 +129,70 @@
     border-radius: 4px;
     padding: 12px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: #f9f9f9;
+
+    h3 {
+        margin: 0 0 12px 0;
+        color: $primary-color;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    ::ng-deep .mat-calendar {
+        width: 100%;
+        max-width: 400px;
+        border: 2px solid $primary-color;
+        border-radius: 4px;
+    }
+
+    ::ng-deep .mat-calendar-header {
+        background-color: $primary-color;
+        color: white;
+        border-radius: 4px 4px 0 0;
+    }
+
+    ::ng-deep .mat-calendar-period-button {
+        color: white !important;
+    }
+
+    ::ng-deep .mat-calendar-period-button::after,
+    ::ng-deep .mat-calendar-period-button .mat-calendar-period-button-arrow,
+    ::ng-deep .mat-calendar-period-button svg,
+    ::ng-deep .mat-calendar-period-button .mat-icon {
+        color: white !important;
+        fill: white !important;
+        border-top-color: white !important;
+        border-color: white !important;
+    }
+
+    ::ng-deep .mat-calendar-previous-button,
+    ::ng-deep .mat-calendar-next-button {
+        color: white !important;
+    }
+
+    ::ng-deep .mat-calendar-table-header th {
+        color: $primary-color;
+        font-weight: bold;
+    }
+
+    ::ng-deep .mat-calendar-table-header-divider,
+    ::ng-deep .mat-calendar-table .mat-calendar-table-header-divider,
+    ::ng-deep .mat-calendar-body-label,
+    ::ng-deep .mat-calendar-table .mat-calendar-body-label {
+        display: none !important;
+    }
+
+    ::ng-deep .mat-calendar-body-selected {
+        background-color: $primary-color;
+        color: white;
+    }
+
+    ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+        border-color: $primary-color;
+    }
 }
 
 .buttons-container {
@@ -149,7 +210,7 @@
 @media (max-width: 768px) {
     .subject-details-container {
         grid-template-columns: 1fr;
-        grid-template-rows: 2fr 1fr 1fr;
+        grid-template-rows: auto auto auto;
     }
 
     .students-table-container {

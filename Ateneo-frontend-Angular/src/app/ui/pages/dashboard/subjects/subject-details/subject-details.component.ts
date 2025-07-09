@@ -18,6 +18,7 @@ interface StudentData {
 })
 export class SubjectDetailsComponent implements OnInit {
     public idSubject: string = '';
+    public selectedDate: Date | null = new Date();
 
     public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
 
