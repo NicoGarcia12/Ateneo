@@ -185,17 +185,12 @@
         display: none !important;
     }
 
+    ::ng-deep .mat-calendar-body-cell-content {
+        color: $grey-color;
+    }
+
     ::ng-deep .mat-calendar-body-selected {
         background-color: $primary-color;
-        color: white;
-    }
-
-    ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
-        border-color: $primary-color;
-    }
-
-    ::ng-deep .mat-calendar-body-cell-content {
-        background: $primary-color;
         color: white;
     }
 
@@ -206,6 +201,7 @@
     }
 
     ::ng-deep .mat-calendar-body-today {
+        background: $primary-color;
         color: $terciary-color;
     }
 }
