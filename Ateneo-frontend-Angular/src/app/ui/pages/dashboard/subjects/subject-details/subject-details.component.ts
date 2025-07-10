@@ -20,6 +20,19 @@ export class SubjectDetailsComponent implements OnInit {
     public idSubject: string = '';
     public selectedDate: Date | null = new Date();
 
+    public specialDates: Date[] = [
+        new Date('2025-07-01'),
+        new Date('2025-07-02'),
+        new Date('2025-07-03'),
+        new Date('2025-07-04'),
+        new Date('2025-07-05'),
+        new Date('2025-07-06'),
+        new Date('2025-07-07'),
+        new Date('2025-07-08'),
+        new Date('2025-07-09'),
+        new Date('2025-07-10')
+    ];
+
     public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
 
     public dataSource: StudentData[] = [
@@ -53,4 +66,9 @@ export class SubjectDetailsComponent implements OnInit {
         // TODO Tengo que cambiar para que muestre la materia que está, eso lo hago porque la pido al principio y cuando tengo los datos muestro el name
         this.dashboardTitleService.setTitle('Detalles de la materia');
     }
+
+    public dateClass = (d: Date) => {
+        const fecha = d.toISOString().split('T')[0];
+        return this.specialDates.some((s) => s.toISOString().split('T')[0] === fecha) ? 'special-date' : '';
+    };
 }

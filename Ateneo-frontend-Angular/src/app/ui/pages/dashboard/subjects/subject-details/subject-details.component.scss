@@ -193,6 +193,21 @@
     ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
         border-color: $primary-color;
     }
+
+    ::ng-deep .mat-calendar-body-cell-content {
+        background: $primary-color;
+        color: white;
+    }
+
+    ::ng-deep .special-date .mat-calendar-body-cell-content {
+        border: 2px solid $terciary-color;
+        border-radius: 50%;
+        box-sizing: border-box;
+    }
+
+    ::ng-deep .mat-calendar-body-today {
+        color: $terciary-color;
+    }
 }
 
 .buttons-container {
