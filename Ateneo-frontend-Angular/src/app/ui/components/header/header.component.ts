@@ -32,7 +32,12 @@ export class HeaderComponent implements OnInit {
         const dialogRef = this.openDialogService.openDialog({
             title: 'Mi perfil',
             contentTemplate: this.profileModalTemplate,
-            primaryButton: { show: true, text: 'Console', disabled: false, loading: false },
+            primaryButton: {
+                show: true,
+                text: 'Console',
+                disabled: false,
+                loading: false
+            },
             secondaryButtonText: 'Cerrar'
         });
 

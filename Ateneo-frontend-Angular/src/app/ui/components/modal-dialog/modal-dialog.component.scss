@@ -1,4 +1,6 @@
 @import '../../../../../src/assets/styles/colors';
+@import '../../../../../src/assets/styles/elements.scss';
+@import '../../../../../src/assets/styles/typographies.scss';
 
 /* stylelint-disable-next-line selector-class-pattern */
 ::ng-deep .mdc-dialog__container {
@@ -10,11 +12,12 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
-    background: white;
+    background: $white-color;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 0;
     padding: 24px;
     overflow-x: hidden;
+    border-radius: 12px;
 }
 
 .dialog-content {
@@ -24,35 +27,25 @@
     align-self: stretch;
     max-height: 360px;
     overflow-y: auto;
+    font-size: 1rem;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    color: $grey-color;
 }
 
 .dialog-title {
-    color: #3a3a3a;
-    font-size: 25px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 32px;
+    @extend h5;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
 }
 
 .dialog-p {
-    color: #888889;
-    font-size: 16px;
-    font-style: normal;
+    color: $grey-color;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 20px;
     margin-top: 0;
 }
 
-.content-dialog {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 24px;
-    align-self: stretch;
-}
-
-// Botones alineados en una fila, uno a cada extremo
 .button-actions-row {
     display: flex;
     flex-direction: row;
@@ -63,35 +56,30 @@
 }
 
 .button-actions .button-cancel {
-    border-radius: 8px;
-    border: 1px solid #0c9;
-    background-color: white;
-    color: #0c9;
+    @extend .secondary-button;
     margin: 0;
 }
 
 .button-actions .button-submit {
-    border-radius: 8px;
-    background-color: #0c9;
-    color: white;
+    @extend .primary-button;
 }
 
 .disabled-button {
-    color: #00000042 !important;
-    background-color: #afafaf33 !important;
+    @extend .disabled-button;
 }
 
 @media (max-width: 600px) {
     .dialog-content {
         padding: 16px 16px 0;
+        font-size: 0.875rem;
     }
 
     .dialog-title {
-        font-size: 21.9px;
+        font-size: 1.2rem;
     }
 
     .dialog-p {
-        font-size: 14px;
+        font-size: 0.875rem;
     }
 
     .button-actions {
@@ -100,7 +88,7 @@
 
     .button-cancel,
     .button-submit {
-        font-size: 14px;
+        font-size: 0.875rem;
     }
 
     /* stylelint-disable-next-line selector-class-pattern */
