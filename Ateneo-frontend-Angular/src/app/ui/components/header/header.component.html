@@ -8,7 +8,7 @@
     <div class="links-header-desktop" *ngIf="!isMobile; else mobileHeader">
         <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
             <button class="primary-button" mat-flat-button (click)="goTo('/dashboard/subjects')">Materias</button>
-            <button class="primary-button" mat-flat-button color="warn" (click)="goTo('/')">Perfil</button>
+            <button class="primary-button" mat-flat-button color="warn" (click)="openProfileModal()">Perfil</button>
             <button class="secondary-button" mat-flat-button color="warn" (click)="logOut()">Cerrar Sesión</button>
         </div>
         <ng-template #landingLinks>
@@ -26,7 +26,7 @@
             <mat-menu #menu="matMenu">
                 <ng-container *ngIf="dashboard; else mobileLandingLinks">
                     <button mat-menu-item (click)="goTo('/dashboard/subjects')">Materias</button>
-                    <button mat-menu-item (click)="goTo('/')">Perfil</button>
+                    <button mat-menu-item (click)="openProfileModal()">Perfil</button>
                     <button mat-menu-item (click)="logOut()">Cerrar Sesión</button>
                 </ng-container>
                 <ng-template #mobileLandingLinks>
@@ -37,3 +37,20 @@
         </div>
     </ng-template>
 </div>
+
+<ng-template #profileModalTemplate>
+    <div class="profile-modal-content">
+        <h5>Información de perfil</h5>
+        <p *ngIf="professorExists">Bienvenido, profesor.</p>
+        <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos mollitia voluptatem vitae voluptatum eos rem debitis non
+            exercitationem rerum quod praesentium doloribus, ut veritatis incidunt. Harum ipsum sit vitae totam. Lorem, ipsum dolor sit amet
+            consectetur adipisicing elit. A quos cum accusantium at eveniet, maiores dolorem reiciendis sint autem ab dignissimos nemo
+            adipisci minima assumenda odio voluptas atque inventore harum. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam
+            itaque voluptatem adipisci accusamus dolore corporis, tenetur maxime enim quam nemo dolorem excepturi, sunt voluptatum? Eum
+            labore sequi assumenda itaque neque. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia eveniet quasi,
+            consequuntur sequi suscipit eligendi consequatur libero temporibus aliquam neque dolorum eos sint possimus pariatur! Et eum
+            officia impedit expedita.
+        </p>
+    </div>
+</ng-template>

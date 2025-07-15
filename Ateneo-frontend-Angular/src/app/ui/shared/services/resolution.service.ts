@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, fromEvent } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ResolutionService {
-    private screenWidth = new BehaviorSubject<number>(window.innerWidth);
+    private screenWidthSubject: BehaviorSubject<number> = new BehaviorSubject<number>(window.innerWidth);
+    public screenWidth$: Observable<number> = this.screenWidthSubject.asObservable();
 
     public constructor() {
-        this.detectResolutionChange();
-    }
-
-    public get screenWidth$() {
-        return this.screenWidth.asObservable();
-    }
-
-    private detectResolutionChange() {
-        fromEvent(window, 'resize').subscribe(() => {
-            this.screenWidth.next(window.innerWidth);
+        window.addEventListener('resize', () => {
+            this.checkSizeScreen(window.innerWidth);
         });
+    }
+
+    public checkSizeScreen(width: number): void {
+        this.screenWidthSubject.next(width);
+    }
+
+    public isScreenSizeBelow(width: number): boolean {
+        return this.screenWidthSubject.getValue() <= width;
     }
 }

@@ -1,0 +1,123 @@
+@import '../../../../../src/assets/styles/colors';
+
+/* stylelint-disable-next-line selector-class-pattern */
+::ng-deep .mdc-dialog__container {
+    max-width: 600px !important;
+}
+
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    background: white;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    margin-top: 0;
+    padding: 24px;
+    overflow-x: hidden;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: stretch;
+    max-height: 360px;
+    overflow-y: auto;
+}
+
+.dialog-title {
+    color: #3a3a3a;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+}
+
+.dialog-p {
+    color: #888889;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    margin-top: 0;
+}
+
+.content-dialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 24px;
+    align-self: stretch;
+}
+
+// Botones alineados en una fila, uno a cada extremo
+.button-actions-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 0;
+}
+
+.button-actions .button-cancel {
+    border-radius: 8px;
+    border: 1px solid #0c9;
+    background-color: white;
+    color: #0c9;
+    margin: 0;
+}
+
+.button-actions .button-submit {
+    border-radius: 8px;
+    background-color: #0c9;
+    color: white;
+}
+
+.disabled-button {
+    color: #00000042 !important;
+    background-color: #afafaf33 !important;
+}
+
+@media (max-width: 600px) {
+    .dialog-content {
+        padding: 16px 16px 0;
+    }
+
+    .dialog-title {
+        font-size: 21.9px;
+    }
+
+    .dialog-p {
+        font-size: 14px;
+    }
+
+    .button-actions {
+        padding: 0 16px 16px;
+    }
+
+    .button-cancel,
+    .button-submit {
+        font-size: 14px;
+    }
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    ::ng-deep .mdc-dialog__container {
+        max-width: 480px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .button-actions {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    /* stylelint-disable-next-line selector-class-pattern */
+    ::ng-deep .mdc-dialog__container {
+        max-width: 280px !important;
+    }
+}
