@@ -1,36 +1,13 @@
 {
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "endOfLine": "lf",
+    "htmlWhitespaceSensitivity": "css",
     "printWidth": 140,
-    "proseWrap": "never",
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
     "singleQuote": true,
     "tabWidth": 4,
     "trailingComma": "none",
-    "useTabs": false,
-    "overrides": [
-        {
-            "files": "*.ts",
-            "options": {
-                "parser": "typescript"
-            }
-        },
-        {
-            "files": "*.json",
-            "options": {
-                "parser": "json",
-                "proseWrap": "never",
-                "singleQuote": false
-            }
-        },
-        {
-            "files": "*.md",
-            "options": {
-                "parser": "markdown"
-            }
-        },
-        {
-            "files": "*.{sass,scss}",
-            "options": {
-                "parser": "scss"
-            }
-        }
-    ]
+    "useTabs": false
 }
