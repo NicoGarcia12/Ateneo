@@ -11,6 +11,7 @@ import { SignUpModule } from './ui/pages/sign-up/sign-up.module';
 import { DashboardModule } from './ui/pages/dashboard/dashboard.module';
 import { CommonModule } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ModalDialogModule } from './ui/components/modal-dialog/modal-dialog.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         DashboardModule,
         AppRoutingModule,
         MatSnackBarModule,
+        ModalDialogModule,
         CommonModule
     ],
     providers: [],

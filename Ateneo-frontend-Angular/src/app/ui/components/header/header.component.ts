@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { OpenDialogService } from '../../shared/services/open-dialog.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { ResolutionService } from '../../shared/services/resolution.service';
@@ -17,13 +18,42 @@ export class HeaderComponent implements OnInit {
     public professorExists: boolean = false;
     public headerTitle: string = 'Dashboard';
 
+    @ViewChild('profileModalTemplate') profileModalTemplate!: TemplateRef<any>;
+
     public constructor(
         private router: Router,
         private resolutionService: ResolutionService,
         private tokenService: TokenService,
         private dashboardTitleService: DashboardTitleService,
-        private sectionService: SectionService
+        private sectionService: SectionService,
+        private openDialogService: OpenDialogService
     ) {}
+    public openProfileModal(): void {
+        const dialogRef = this.openDialogService.openDialog({
+            title: 'Mi perfil',
+            contentTemplate: this.profileModalTemplate,
+            primaryButton: {
+                show: true,
+                text: 'Console',
+                disabled: false,
+                loading: false
+            },
+            secondaryButtonText: 'Cerrar'
+        });
+
+        dialogRef.componentInstance.onPrimaryButtonClick = () => {
+            dialogRef.componentInstance.data.primaryButton.loading = true;
+            dialogRef.componentInstance.data.primaryButton.disabled = true;
+            setTimeout(() => {
+                dialogRef.componentInstance.data.primaryButton.loading = false;
+                dialogRef.componentInstance.data.primaryButton.disabled = false;
+                console.log('¡Acción completada desde el modal de perfil!');
+                setTimeout(() => {
+                    dialogRef.close();
+                }, 5000);
+            }, 5000);
+        };
+    }
 
     public ngOnInit(): void {
         this.sectionService.dashboardSection.subscribe((isDashboard) => {

@@ -1,0 +1,24 @@
+<mat-card class="dialog-container">
+    <div class="dialog-content">
+        <h2 class="dialog-title">{{ data.title }}</h2>
+        <p *ngIf="data.text" class="dialog-p">{{ data.text }}</p>
+        <ng-container *ngIf="data.contentTemplate" [ngTemplateOutlet]="data.contentTemplate"></ng-container>
+    </div>
+    <div class="button-actions-row">
+        <button mat-flat-button class="secondary-button" type="button" tabindex="-1" (click)="onSecondaryButtonClick()">
+            {{ data.secondaryButtonText }}
+        </button>
+
+        <app-submit
+            *ngIf="data.primaryButton.show"
+            type="button"
+            [disabled]="data.primaryButton.disabled"
+            [loading]="data.primaryButton.loading"
+            [withText]="true"
+            class="primary"
+            (click)="onPrimaryButtonClick()"
+        >
+            {{ data.primaryButton.text }}
+        </app-submit>
+    </div>
+</mat-card>

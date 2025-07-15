@@ -12,7 +12,10 @@
     <ng-container *ngIf="loading; else content">
         <mat-spinner
             class="spinner"
-            [ngClass]="{ 'primary-spinner': class === 'primary', 'secondary-spinner': class === 'secondary' }"
+            [ngClass]="{
+                'primary-spinner': class === 'primary',
+                'secondary-spinner': class === 'secondary'
+            }"
             diameter="20"
         ></mat-spinner>
     </ng-container>
