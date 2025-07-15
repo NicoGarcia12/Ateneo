@@ -22,7 +22,9 @@ export class SubjectsViewModelService {
         const professor = this.tokenService.getUserFromToken();
         this.professorId = professor?.id;
 
-        return this.getAllSubjectsUseCase.execute({ idProfessor: this.professorId! });
+        return this.getAllSubjectsUseCase.execute({
+            idProfessor: this.professorId!
+        });
     }
 
     public addSubject(subject: Subject): Observable<any> {

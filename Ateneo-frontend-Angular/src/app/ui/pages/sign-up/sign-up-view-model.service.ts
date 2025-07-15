@@ -9,6 +9,11 @@ export class SignUpViewModelService {
     public constructor(private signUpUseCase: SignUpUseCase) {}
 
     public signUp(email: string, password: string, firstName: string, lastName: string): Observable<any> {
-        return this.signUpUseCase.execute({ email, password, firstName, lastName });
+        return this.signUpUseCase.execute({
+            email,
+            password,
+            firstName,
+            lastName
+        });
     }
 }
