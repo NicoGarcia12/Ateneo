@@ -5,5 +5,4 @@ const studentRouter = Router();
 
 studentRouter.get('/:idStudent', GetStudentHandler);
 
-
 export default studentRouter;
