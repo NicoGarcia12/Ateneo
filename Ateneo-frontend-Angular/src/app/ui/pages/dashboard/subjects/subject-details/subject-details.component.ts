@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { OpenDialogService } from '../../../../shared/services/open-dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardTitleService } from '../../dashboard-title.service';
 
@@ -17,25 +18,17 @@ interface StudentData {
     styleUrl: './subject-details.component.scss'
 })
 export class SubjectDetailsComponent implements OnInit {
+    public showAltModal = false;
+    public toggleModalView(): void {
+        this.showAltModal = !this.showAltModal;
+    }
+    public studentSearch: string = '';
+    public filteredStudents: StudentData[] = [];
+    public selectedStudent: StudentData | null = null;
+    public selectedStudents: Array<StudentData & { justificado: boolean }> = [];
     public idSubject: string = '';
     public selectedDate: Date | null = new Date();
-
-    public specialDates: Date[] = [
-        new Date('2025-07-01'),
-        new Date('2025-07-02'),
-        new Date('2025-07-03'),
-        new Date('2025-07-04'),
-        new Date('2025-07-05'),
-        new Date('2025-07-06'),
-        new Date('2025-07-07'),
-        new Date('2025-07-08'),
-        new Date('2025-07-09'),
-        new Date('2025-07-10')
-    ];
-
-    public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
-
-    public dataSource: StudentData[] = [
+    public studentsList: StudentData[] = [
         {
             identification: '12345678',
             name: 'Ana García Rodríguez',
@@ -118,13 +111,36 @@ export class SubjectDetailsComponent implements OnInit {
         }
     ];
 
+    @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
+    @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
+
+    public specialDates: Date[] = [
+        new Date('2025-07-01'),
+        new Date('2025-07-02'),
+        new Date('2025-07-03'),
+        new Date('2025-07-04'),
+        new Date('2025-07-05'),
+        new Date('2025-07-06'),
+        new Date('2025-07-07'),
+        new Date('2025-07-08'),
+        new Date('2025-07-09'),
+        new Date('2025-07-10')
+    ];
+
+    public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
+
+    public dataSource: StudentData[] = [...this.studentsList];
+
     public constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private dashboardTitleService: DashboardTitleService
+        private dashboardTitleService: DashboardTitleService,
+        private openDialogService: OpenDialogService
     ) {}
 
     public ngOnInit(): void {
+        // El select filtra sobre studentsList, excluyendo los que ya están en la tabla
+        this.filterStudents();
         this.activatedRoute.paramMap.subscribe((params) => {
             if (params.get('idSubject') === null) {
                 this.router.navigate(['/dashboard/subjects']);
@@ -137,8 +153,54 @@ export class SubjectDetailsComponent implements OnInit {
         this.dashboardTitleService.setTitle('Detalles de la materia');
     }
 
+    public filterStudents(): void {
+        const search = this.studentSearch.trim().toLowerCase();
+        this.filteredStudents = this.studentsList
+            .filter((student) => !this.dataSource.some((s) => s.identification === student.identification))
+            .filter((student) => student.name.toLowerCase().includes(search));
+        if (this.filteredStudents.length === 0) {
+            this.selectedStudent = null;
+        }
+    }
+
     public dateClass = (d: Date) => {
         const fecha = d.toISOString().split('T')[0];
         return this.specialDates.some((s) => s.toISOString().split('T')[0] === fecha) ? 'special-date' : '';
     };
+
+    public onDateSelected(date: Date | null): void {
+        if (!date) return;
+        const fecha = date.toISOString().split('T')[0];
+        const ocupada = this.specialDates.some((s) => s.toISOString().split('T')[0] === fecha);
+        const dialogRef = this.openDialogService.openDialog({
+            title: ocupada ? 'Fecha ocupada' : 'Puedes cargar la clase y las inasistencias de ella:',
+            contentTemplate: ocupada ? this.modalOcupadaTemplate : this.modalLibreTemplate,
+            secondaryButtonText: 'Cerrar',
+            primaryButton: { text: 'Aceptar', show: true }
+        });
+        if (dialogRef && dialogRef.afterClosed) {
+            dialogRef.afterClosed().subscribe(() => this.resetModalState());
+        }
+    }
+
+    public resetModalState(): void {
+        this.selectedStudents = [];
+        this.studentSearch = '';
+        this.selectedStudent = null;
+        this.filteredStudents = [...this.dataSource];
+        this.showAltModal = false;
+    }
+    public addSelectedStudent(student: StudentData): void {
+        if (!student) return;
+        if (!this.selectedStudents.some((s) => s.identification === student.identification)) {
+            this.selectedStudents.push({ ...student, justificado: false });
+            this.filterStudents();
+            this.selectedStudent = null;
+        }
+    }
+
+    public removeSelectedStudent(student: StudentData & { justificado: boolean }): void {
+        this.selectedStudents = this.selectedStudents.filter((s) => s.identification !== student.identification);
+        this.filterStudents();
+    }
 }
