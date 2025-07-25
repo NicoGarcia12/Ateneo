@@ -74,7 +74,6 @@
                 <mat-option *ngFor="let student of filteredStudents" [value]="student">
                     {{ student.name }}
                 </mat-option>
-                <mat-checkbox class="custom-checkbox"></mat-checkbox>
             </mat-select>
         </mat-form-field>
     </ng-container>
@@ -87,7 +86,7 @@
                 class="selected-student-item"
                 style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px"
             >
-                <mat-icon>close</mat-icon>
+                <mat-icon (click)="removeSelectedStudent(student)">close</mat-icon>
                 <span>{{ student.name }}</span>
                 <span class="justificado-label">Justificado</span>
                 <mat-checkbox [(ngModel)]="student.justificado" class="custom-checkbox"></mat-checkbox>

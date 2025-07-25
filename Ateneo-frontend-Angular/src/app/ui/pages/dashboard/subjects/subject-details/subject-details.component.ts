@@ -139,8 +139,7 @@ export class SubjectDetailsComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        // El select filtra sobre studentsList, excluyendo los que ya están en la tabla
-        this.filterStudents();
+        this.filteredStudents = [...this.studentsList];
         this.activatedRoute.paramMap.subscribe((params) => {
             if (params.get('idSubject') === null) {
                 this.router.navigate(['/dashboard/subjects']);
@@ -155,9 +154,17 @@ export class SubjectDetailsComponent implements OnInit {
 
     public filterStudents(): void {
         const search = this.studentSearch.trim().toLowerCase();
-        this.filteredStudents = this.studentsList
-            .filter((student) => !this.dataSource.some((s) => s.identification === student.identification))
-            .filter((student) => student.name.toLowerCase().includes(search));
+        if (!search) {
+            this.filteredStudents = this.studentsList.filter(
+                (student) => !this.selectedStudents.some((sel) => sel.identification === student.identification)
+            );
+        } else {
+            this.filteredStudents = this.studentsList.filter(
+                (student) =>
+                    !this.selectedStudents.some((sel) => sel.identification === student.identification) &&
+                    student.name.toLowerCase().includes(search)
+            );
+        }
         if (this.filteredStudents.length === 0) {
             this.selectedStudent = null;
         }
@@ -187,7 +194,7 @@ export class SubjectDetailsComponent implements OnInit {
         this.selectedStudents = [];
         this.studentSearch = '';
         this.selectedStudent = null;
-        this.filteredStudents = [...this.dataSource];
+        this.filteredStudents = [...this.studentsList];
         this.showAltModal = false;
     }
     public addSelectedStudent(student: StudentData): void {
