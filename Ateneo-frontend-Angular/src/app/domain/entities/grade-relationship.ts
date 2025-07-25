@@ -3,6 +3,8 @@ import { Grade } from './grade';
 export interface GradeRelationship {
     id: string;
     weight: number;
-    derivedGrade: Grade;
-    baseGrade: Grade;
+    derivedGradeId: string;
+    derivedGrade?: Grade;
+    baseGradeId: string;
+    baseGrade?: Grade;
 }

@@ -6,16 +6,13 @@ export interface Grade {
     id: string;
     name: string;
     type: GradeType;
-    date: Date;
+    date: string;
     description: string;
-    subject: Subject;
-    studentGrades: Array<StudentGrade>;
-    derivedGradeRel: Array<GradeRelationship>;
-    baseGradeRel: Array<GradeRelationship>;
+    subjectId: string;
+    subject?: Subject;
+    studentGrades: StudentGrade[];
+    derivedGradeRel: GradeRelationship[];
+    baseGradeRel: GradeRelationship[];
 }
 
-export enum GradeType {
-    Final = 'Final',
-    Weighted = 'Weighted',
-    Arithmetic = 'Arithmetic'
-}
+export type GradeType = 'Final' | 'Weighted' | 'Arithmetic';
