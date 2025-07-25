@@ -49,12 +49,12 @@
 </ng-template>
 
 <ng-template #modalLibre>
-    <button class="primary-button" mat-flat-button (click)="toggleModalView()">
+    <button class="primary-button button-toggle-modal-libre" mat-flat-button (click)="toggleModalView()">
         {{ showAltModal ? 'Cargar inasistencias' : 'Ver inasistencias cargadas' }}
     </button>
     <ng-container *ngIf="!showAltModal; else altModalContent">
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nombre del Alumno</mat-label>
+            <mat-label>Alumno con inasistencia</mat-label>
             <input
                 matInput
                 placeholder="Nombre del Alumno"
@@ -75,6 +75,18 @@
                     {{ student.name }}
                 </mat-option>
             </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width class-description">
+            <mat-label>Descripción de la clase (opcional)</mat-label>
+            <textarea
+                matInput
+                [(ngModel)]="classDescription"
+                placeholder="Agrega una descripción para la clase"
+                rows="3"
+                class="class-description-textarea"
+                maxlength="140"
+            ></textarea>
+            <div class="char-counter">{{ classDescription.length || 0 }}/140</div>
         </mat-form-field>
     </ng-container>
     <ng-template #altModalContent>

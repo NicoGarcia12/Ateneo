@@ -4,14 +4,13 @@ import { OpenDialogService } from '../../../../shared/services/open-dialog.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardTitleService } from '../../dashboard-title.service';
 
-// Removed local declaration of StudentData
-
 @Component({
     selector: 'app-subject-details',
     templateUrl: './subject-details.component.html',
     styleUrls: ['./subject-details.component.scss']
 })
 export class SubjectDetailsComponent implements OnInit {
+    public classDescription: string = '';
     public showAltModal = false;
     public selectedStudent: StudentData | null = null;
     public idSubject: string = '';
@@ -130,6 +129,7 @@ export class SubjectDetailsComponent implements OnInit {
         this.filteredStudents = [...this.studentsList];
         this.selectedStudent = null;
         this.showAltModal = false;
+        this.classDescription = '';
     }
 
     public addSelectedStudent(student: StudentData): void {
