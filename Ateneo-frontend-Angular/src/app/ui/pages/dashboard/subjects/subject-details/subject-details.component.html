@@ -1,7 +1,7 @@
 <div class="subject-details-container">
     <div class="students-table-container">
         <div class="table-wrapper">
-            <mat-table [dataSource]="dataSource" class="students-table">
+            <mat-table [dataSource]="studentsList" class="students-table">
                 <ng-container matColumnDef="identification">
                     <mat-header-cell *matHeaderCellDef>Identificación</mat-header-cell>
                     <mat-cell *matCellDef="let student">{{ student.identification }}</mat-cell>
