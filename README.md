@@ -17,7 +17,7 @@
 
 ---
 
-## 🚦 Requisitos previos
+## 🚦 Requisitos previos al desarrollo
 
 | Programa            | Comando de verificación/instalación                | Uso                        |
 |---------------------|----------------------------------------------------|----------------------------|
