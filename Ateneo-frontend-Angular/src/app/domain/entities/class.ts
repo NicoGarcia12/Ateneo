@@ -3,7 +3,9 @@ import { Subject } from './subject';
 
 export interface Class {
     id: string;
-    date: Date;
-    subject: Subject;
-    absences: Array<Absence>;
+    date: string;
+    subjectId: string;
+    subject?: Subject;
+    absences: Absence[];
+    description?: string;
 }

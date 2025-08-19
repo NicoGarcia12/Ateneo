@@ -1,0 +1,21 @@
+# Dependencias y archivos generados por Node.js (backend)
+Ateneo-backend-Express/node_modules/
+Ateneo-backend-Express/dist/
+Ateneo-backend-Express/.env
+Ateneo-backend-Express/.env.local
+Ateneo-backend-Express/.DS_Store
+Ateneo-backend-Express/prisma/dev.db
+
+# Dependencias y archivos generados por Angular (frontend)
+Ateneo-frontend-Angular/node_modules/
+Ateneo-frontend-Angular/dist/
+Ateneo-frontend-Angular/.env
+Ateneo-frontend-Angular/.env.local
+Ateneo-frontend-Angular/.DS_Store
+Ateneo-frontend-Angular/.angular/
+
+# Configuraciones y archivos temporales de editores y sistema
+.vscode/
+*.log
+Thumbs.db
+.DS_Store

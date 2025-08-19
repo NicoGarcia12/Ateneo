@@ -6,6 +6,7 @@ export interface Professor {
     lastName: string;
     email: string;
     password: string;
+    resetPassword?: string;
     emailActivated: boolean;
-    subjects: Array<Subject>;
+    subjects: Subject[];
 }

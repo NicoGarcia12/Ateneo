@@ -4,6 +4,8 @@ import { Student } from './student';
 export interface StudentGrade {
     id: string;
     value: number;
-    grade: Grade;
-    student: Student;
+    gradeId: string;
+    grade?: Grade;
+    studentId: string;
+    student?: Student;
 }
