@@ -10,6 +10,104 @@ import { DashboardTitleService } from '../../dashboard-title.service';
     styleUrls: ['./subject-details.component.scss']
 })
 export class SubjectDetailsComponent implements OnInit {
+    public loadedClass: {
+        absentStudents: Array<StudentData & { justificado: boolean }>;
+        description: string;
+    } = {
+        absentStudents: [
+            {
+                identification: '12345678',
+                name: 'Ana García Rodríguez',
+                grade1: 8.5,
+                grade2: 9.2,
+                gradeN: 7.8,
+                attendance: '95%',
+                justificado: false
+            },
+            {
+                identification: '87654321',
+                name: 'Carlos López Martínez',
+                grade1: 7.3,
+                grade2: 8.1,
+                gradeN: 8.9,
+                attendance: '88%',
+                justificado: true
+            },
+            {
+                identification: '12345678',
+                name: 'Ana García Rodríguez',
+                grade1: 8.5,
+                grade2: 9.2,
+                gradeN: 7.8,
+                attendance: '95%',
+                justificado: false
+            },
+            {
+                identification: '87654321',
+                name: 'Carlos López Martínez',
+                grade1: 7.3,
+                grade2: 8.1,
+                gradeN: 8.9,
+                attendance: '88%',
+                justificado: true
+            },
+            {
+                identification: '12345678',
+                name: 'Ana García Rodríguez',
+                grade1: 8.5,
+                grade2: 9.2,
+                gradeN: 7.8,
+                attendance: '95%',
+                justificado: false
+            },
+            {
+                identification: '87654321',
+                name: 'Carlos López Martínez',
+                grade1: 7.3,
+                grade2: 8.1,
+                gradeN: 8.9,
+                attendance: '88%',
+                justificado: true
+            },
+            {
+                identification: '12345678',
+                name: 'Ana García Rodríguez',
+                grade1: 8.5,
+                grade2: 9.2,
+                gradeN: 7.8,
+                attendance: '95%',
+                justificado: false
+            },
+            {
+                identification: '87654321',
+                name: 'Carlos López Martínez',
+                grade1: 7.3,
+                grade2: 8.1,
+                gradeN: 8.9,
+                attendance: '88%',
+                justificado: true
+            },
+            {
+                identification: '12345678',
+                name: 'Ana García Rodríguez',
+                grade1: 8.5,
+                grade2: 9.2,
+                gradeN: 7.8,
+                attendance: '95%',
+                justificado: false
+            },
+            {
+                identification: '87654321',
+                name: 'Carlos López Martínez',
+                grade1: 7.3,
+                grade2: 8.1,
+                gradeN: 8.9,
+                attendance: '88%',
+                justificado: true
+            }
+        ],
+        description: 'Clase sobre funciones matemáticas. Se repasaron ejercicios y se resolvieron dudas.'
+    };
     public classDescription: string = '';
     public showAltModal = false;
     public selectedStudent: StudentData | null = null;
@@ -68,7 +166,7 @@ export class SubjectDetailsComponent implements OnInit {
         new Date('2025-07-07'),
         new Date('2025-07-08'),
         new Date('2025-07-09'),
-        new Date('2025-07-10')
+        new Date('2025-08-10')
     ];
 
     public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
@@ -93,11 +191,7 @@ export class SubjectDetailsComponent implements OnInit {
     }
 
     public filterStudents(): void {
-        this.filteredStudents = this.viewModel.filterStudents(
-            this.studentsList,
-            this.selectedStudents,
-            this.studentSearch
-        );
+        this.filteredStudents = this.viewModel.filterStudents(this.studentsList, this.selectedStudents, this.studentSearch);
         if (this.filteredStudents.length === 0) {
             this.selectedStudent = null;
         }
@@ -113,10 +207,10 @@ export class SubjectDetailsComponent implements OnInit {
         const fecha = date.toISOString().split('T')[0];
         const ocupada = this.specialDates.some((s) => s.toISOString().split('T')[0] === fecha);
         const dialogRef = this.openDialogService.openDialog({
-            title: ocupada ? 'Fecha ocupada' : 'Puedes cargar la clase y las inasistencias de ella:',
+            title: ocupada ? 'Clase del día ' + fecha : 'Puedes cargar la clase y las inasistencias de ella:',
             contentTemplate: ocupada ? this.modalOcupadaTemplate : this.modalLibreTemplate,
             secondaryButtonText: 'Cerrar',
-            primaryButton: { text: 'Aceptar', show: true }
+            primaryButton: { show: false }
         });
         if (dialogRef && dialogRef.afterClosed) {
             dialogRef.afterClosed().subscribe(() => this.resetModalState());

@@ -18,9 +18,7 @@ export class SubjectDetailsViewModelService {
     ): StudentData[] {
         const search = studentSearch.trim().toLowerCase();
         if (!search) {
-            return studentsList.filter(
-                (student) => !selectedStudents.some((sel) => sel.identification === student.identification)
-            );
+            return studentsList.filter((student) => !selectedStudents.some((sel) => sel.identification === student.identification));
         } else {
             return studentsList.filter(
                 (student) =>
