@@ -201,7 +201,7 @@ export class SubjectDetailsComponent implements OnInit {
 
     public toggleEditMode(): void {
         this.isEditingClass = !this.isEditingClass;
-        
+
         // Actualizar el botón primario del diálogo actual
         if (this.currentDialogRef && this.currentDialogRef.componentInstance) {
             this.currentDialogRef.componentInstance.data.primaryButton = {
@@ -264,15 +264,13 @@ export class SubjectDetailsComponent implements OnInit {
         // Aquí iría la lógica para borrar la clase del backend
         console.log('Borrando clase...');
         // Por ejemplo: this.classService.deleteClass(classId)
-        
+
         // Remover la fecha seleccionada de specialDates para que no aparezca marcada
         if (this.selectedDate) {
             const fechaSeleccionada = this.selectedDate.toISOString().split('T')[0];
-            this.specialDates = this.specialDates.filter(date => 
-                date.toISOString().split('T')[0] !== fechaSeleccionada
-            );
+            this.specialDates = this.specialDates.filter((date) => date.toISOString().split('T')[0] !== fechaSeleccionada);
         }
-        
+
         // Cerrar el modal principal después de borrar
         if (this.currentDialogRef) {
             this.currentDialogRef.close();
