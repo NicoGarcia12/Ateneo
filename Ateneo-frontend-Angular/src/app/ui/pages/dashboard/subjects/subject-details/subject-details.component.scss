@@ -270,6 +270,70 @@
     font-size: 0.95rem;
 }
 
+.modal-libre-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.full-width-btn {
+    width: 100%;
+}
+
+.inputs-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.modal-clase-cargada {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.edit-students-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.inasistencias-actions {
+    text-align: center;
+    min-width: 120px;
+
+    mat-icon {
+        cursor: pointer;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+}
+
+.no-inasistencias {
+    text-align: center;
+    color: $grey-color;
+    font-style: normal;
+    padding: 20px 0;
+}
+
+.char-counter {
+    font-size: 12px;
+    color: #666;
+    text-align: right;
+    margin-top: 4px;
+}
+
 @media (max-width: 768px) {
     .subject-details-container {
         grid-template-columns: 1fr;
@@ -290,25 +354,4 @@
         grid-column: 1 / -1;
         grid-row: 3 / 4;
     }
-}
-
-// Estilos para el modal libre (sin clase cargada)
-.modal-libre-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.full-width-btn {
-    width: 100%;
-}
-
-.inputs-column {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.full-width {
-    width: 100%;
 }
