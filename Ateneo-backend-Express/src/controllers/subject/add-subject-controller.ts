@@ -1,4 +1,5 @@
 import { AddSubjectToProfessorHelper } from '../../helpers/subject/add-subject-helper';
+import { InternalError } from '../../utils/custom-errors';
 
 export const AddSubjectToProfessorController = async (
     idProfessor: string,
@@ -10,6 +11,6 @@ export const AddSubjectToProfessorController = async (
     try {
         return await AddSubjectToProfessorHelper(idProfessor, academicYear, name, institution, degree);
     } catch (error: any) {
-        throw new Error(error.message);
+        throw error;
     }
 };

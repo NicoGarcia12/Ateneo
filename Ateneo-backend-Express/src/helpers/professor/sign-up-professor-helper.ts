@@ -1,5 +1,6 @@
 import { PrismaClient, Professor } from '@prisma/client';
 import { generateId } from '../../utils/generate-id';
+import { ConflictError } from '../../utils/custom-errors';
 
 const prisma = new PrismaClient();
 
@@ -8,11 +9,9 @@ export const SignUpProfessorHelper = async (email: string, password: string, fir
         const existingProfessor = await prisma.professor.findUnique({
             where: { email: email }
         });
-
         if (existingProfessor) {
-            throw new Error();
+            throw new ConflictError('El email ya está registrado');
         }
-
         await prisma.professor.create({
             data: {
                 id: generateId(),
@@ -23,14 +22,9 @@ export const SignUpProfessorHelper = async (email: string, password: string, fir
                 emailActivated: true
             }
         });
-
         return 'Profesor registrado exitosamente';
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            throw new Error('El email ya está registrado');
-        } else {
-            throw new Error('Se produjo un error desconocido');
-        }
+    } catch (error: any) {
+        throw error;
     } finally {
         await prisma.$disconnect();
     }

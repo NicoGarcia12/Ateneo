@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { generateId } from '../../utils/generate-id';
+import { InternalError } from '../../utils/custom-errors';
 
 const prisma = new PrismaClient();
 
@@ -25,8 +26,8 @@ export const AddSubjectToProfessorHelper = async (
         });
 
         return 'Materia creada exitosamente';
-    } catch (error: unknown) {
-        throw new Error('Error al crear la materia');
+    } catch (error: any) {
+        throw new InternalError(error.message || 'Error al crear la materia');
     } finally {
         await prisma.$disconnect();
     }

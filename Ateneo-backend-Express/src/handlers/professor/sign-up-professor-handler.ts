@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { SignUpProfessorController } from '../../controllers/professor/sign-up-professor-controller';
+import { handleControllerError } from '../../utils/error-handler';
 
 export const SignUpProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -9,10 +10,6 @@ export const SignUpProfessorHandler = async (req: Request, res: Response): Promi
 
         return res.status(200).json({ message: response });
     } catch (error: any) {
-        if (error.message === 'El email ya está registrado') {
-            return res.status(409).json({ message: error.message });
-        } else {
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
+        return handleControllerError(error, res);
     }
 };

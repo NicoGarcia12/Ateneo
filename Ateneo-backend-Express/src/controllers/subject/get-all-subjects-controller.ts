@@ -5,6 +5,6 @@ export const GetAllSubjectsByIdProfessorController = async (idProfessor: string)
     try {
         return await GetAllSubjectsByIdProfessorHelper(idProfessor);
     } catch (error: any) {
-        throw new Error(error.message);
+        throw error;
     }
 };

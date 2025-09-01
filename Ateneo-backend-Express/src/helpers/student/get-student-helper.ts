@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { InternalError } from '../../utils/custom-errors';
 
 const prisma = new PrismaClient();
 
@@ -17,8 +18,9 @@ export const GetStudentHelper = async (idstudent: string) => {
         });
 
         return student;
-    } catch (error: unknown) {
-        throw new Error('Error al buscar el alumno');
+    } catch (error: any) {
+        // error.message podría ser: error de conexión, error de sintaxis SQL, error de timeout, etc.
+        throw new InternalError(error.message || 'Error al buscar el estudiante');
     } finally {
         await prisma.$disconnect();
     }

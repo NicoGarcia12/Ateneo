@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AddSubjectToProfessorController } from '../../controllers/subject/add-subject-controller';
+import { handleControllerError } from '../../utils/error-handler';
 
 export const AddSubjectToProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -10,6 +11,6 @@ export const AddSubjectToProfessorHandler = async (req: Request, res: Response):
 
         return res.status(200).json({ message: response });
     } catch (error: any) {
-        return res.status(500).json({ message: 'Error interno del servidor' });
+        return handleControllerError(error, res);
     }
 };

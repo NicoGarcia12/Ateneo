@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { NotFoundError, InternalError } from '../../utils/custom-errors';
 
 const prisma = new PrismaClient();
 
@@ -30,10 +31,9 @@ export const GetAllSubjectsByIdProfessorHelper = async (idProfessor: string) => 
                 }
             }
         });
-
         return subjects;
     } catch (error: unknown) {
-        throw new Error('Error al buscar las materias del profesor');
+        throw new InternalError('Error al buscar las materias del profesor');
     } finally {
         await prisma.$disconnect();
     }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { GetAllSubjectsByIdProfessorController } from '../../controllers/subject/get-all-subjects-controller';
+import { handleControllerError } from '../../utils/error-handler';
 
 export const GetAllSubjectsByIdProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -9,6 +10,6 @@ export const GetAllSubjectsByIdProfessorHandler = async (req: Request, res: Resp
 
         return res.status(200).json({ subjects });
     } catch (error: any) {
-        return res.status(500).json({ message: 'Error interno del servidor' });
+        return handleControllerError(error, res);
     }
 };
