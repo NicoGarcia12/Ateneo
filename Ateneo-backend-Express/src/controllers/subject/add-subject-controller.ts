@@ -1,11 +1,12 @@
-import { AddSubjectToProfessorHelper } from 'helpers/subject/add-subject-helper';
+import { AddSubjectHelper } from 'helpers/subject/add-subject-helper';
 
-export const AddSubjectToProfessorController = async (
-    idProfessor: string,
+
+export const AddSubjectController = async (
     academicYear: number,
     name: string,
     institution: string,
-    degree: string
+    degree: string,
+    professorId?: string
 ): Promise<string> => {
-    return await AddSubjectToProfessorHelper(idProfessor, academicYear, name, institution, degree);
+    return await AddSubjectHelper({ academicYear, name, institution, degree, professorId });
 };
