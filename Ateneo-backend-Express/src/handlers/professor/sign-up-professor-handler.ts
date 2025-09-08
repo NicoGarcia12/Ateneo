@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { SignUpProfessorController } from '../../controllers/professor/sign-up-professor-controller';
-import { handleControllerError } from '../../utils/error-handler';
+import { SignUpProfessorController } from 'controllers/professor/sign-up-professor-controller';
+import { handleControllerError } from 'src/utils/error-handler';
 
 export const SignUpProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {

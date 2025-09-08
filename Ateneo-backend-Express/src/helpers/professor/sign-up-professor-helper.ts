@@ -1,6 +1,6 @@
 import { PrismaClient, Professor } from '@prisma/client';
-import { generateId } from '../../utils/generate-id';
-import { ConflictError } from '../../utils/custom-errors';
+import { generateId } from 'src/utils/generate-id';
+import { ConflictError } from 'src/utils/custom-errors';
 
 const prisma = new PrismaClient();
 

@@ -1,5 +1,5 @@
 import { Student } from '@prisma/client';
-import { GetStudentsBySubjectHelper } from '../../helpers/subject/get-students-by-subject-helper';
+import { GetStudentsBySubjectHelper } from 'helpers/subject/get-students-by-subject-helper';
 
 type SanitizedStudent = Omit<Student, 'dni'> & { dni: string };
 

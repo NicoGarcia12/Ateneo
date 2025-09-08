@@ -1,6 +1,6 @@
-import { SignUpProfessorHelper } from '../../helpers/professor/sign-up-professor-helper';
+import { SignUpProfessorHelper } from 'helpers/professor/sign-up-professor-helper';
 import bcrypt from 'bcrypt';
-import { InternalError } from '../../utils/custom-errors';
+import { InternalError } from 'src/utils/custom-errors';
 
 export const SignUpProfessorController = async (email: string, password: string, firstName: string, lastName: string): Promise<string> => {
     password = await bcrypt.hash(password, 10);

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { LoginProfessorController } from '../../controllers/professor/login-professor-controller';
-import { handleControllerError } from '../../utils/error-handler';
-import { InternalError } from '../../utils/custom-errors';
+import { LoginProfessorController } from 'controllers/professor/login-professor-controller';
+import { handleControllerError } from 'src/utils/error-handler';
+import { InternalError } from 'src/utils/custom-errors';
 import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 

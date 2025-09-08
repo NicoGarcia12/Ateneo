@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { GetAllSubjectsByIdProfessorController } from '../../controllers/subject/get-all-subjects-controller';
-import { GetSubjectController } from '../../controllers/subject/get-subject-controller';
-import { handleControllerError } from '../../utils/error-handler';
+import { GetSubjectController } from 'controllers/subject/get-subject-controller';
+import { handleControllerError } from 'src/utils/error-handler';
 
 export const GetSubjectHandler = async (req: Request, res: Response): Promise<Response> => {
     try {

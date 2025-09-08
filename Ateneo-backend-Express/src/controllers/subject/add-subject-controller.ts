@@ -1,4 +1,4 @@
-import { AddSubjectToProfessorHelper } from '../../helpers/subject/add-subject-helper';
+import { AddSubjectToProfessorHelper } from 'helpers/subject/add-subject-helper';
 
 export const AddSubjectToProfessorController = async (
     idProfessor: string,

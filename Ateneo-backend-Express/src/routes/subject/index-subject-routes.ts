@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { GetSubjectHandler } from '../../handlers/subject/get-subject-handler';
-import { AddStudentToSubjectHandler } from '../../handlers/subject/add-student-to-subject-handler';
-import { GetStudentsBySubjectHandler } from '../../handlers/subject/get-students-by-subject-handler';
+import { GetSubjectHandler } from 'handlers/subject/get-subject-handler';
+import { AddStudentToSubjectHandler } from 'handlers/subject/add-student-to-subject-handler';
+import { GetStudentsBySubjectHandler } from 'handlers/subject/get-students-by-subject-handler';
 
 const subjectRouter = Router();
 

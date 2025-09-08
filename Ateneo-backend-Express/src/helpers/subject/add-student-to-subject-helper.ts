@@ -1,7 +1,7 @@
 // Archivo movido desde helpers/student a helpers/subject
 
 import { PrismaClient } from '@prisma/client';
-import { NotFoundError, ConflictError, InternalError } from '../../utils/custom-errors';
+import { NotFoundError, ConflictError, InternalError } from 'src/utils/custom-errors';
 
 const prisma = new PrismaClient();
 
@@ -46,10 +46,7 @@ export const AddStudentToSubjectHelper = async (idStudent: string, idSubject: st
 
         return 'Estudiante agregado a la materia exitosamente';
     } catch (error: any) {
-        if (error instanceof NotFoundError || error instanceof ConflictError) {
-            throw error;
-        }
-        throw new InternalError(error.message || 'Error interno al agregar estudiante');
+        throw error;
     } finally {
         await prisma.$disconnect();
     }

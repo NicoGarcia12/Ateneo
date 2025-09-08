@@ -1,6 +1,6 @@
 import { Subject } from '@prisma/client';
-import { GetSubjectHelper } from '../../helpers/subject/get-subject-helper';
-import { NotFoundError, InternalError } from '../../utils/custom-errors';
+import { GetSubjectHelper } from 'helpers/subject/get-subject-helper';
+import { NotFoundError } from 'src/utils/custom-errors';
 
 export const GetSubjectController = async (idSubject: string): Promise<Subject | null> => {
     const subject = await GetSubjectHelper(idSubject);

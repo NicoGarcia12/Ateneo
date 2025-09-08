@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { InternalError } from '../../utils/custom-errors';
 
 const prisma = new PrismaClient();
 
@@ -27,7 +26,7 @@ export const LoginProfessorHelper = async (email: string): Promise<PartialProfes
         });
         return professor;
     } catch (error: any) {
-        throw new InternalError(error.message || 'Error al buscar al profesor');
+        throw error;
     } finally {
         await prisma.$disconnect();
     }

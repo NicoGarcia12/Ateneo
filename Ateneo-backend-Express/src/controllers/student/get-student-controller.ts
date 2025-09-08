@@ -1,6 +1,6 @@
 import { Student } from '@prisma/client';
-import { GetStudentHelper } from '../../helpers/student/get-student-helper';
-import { NotFoundError, InternalError } from '../../utils/custom-errors';
+import { GetStudentHelper } from 'helpers/student/get-student-helper';
+import { NotFoundError } from 'src/utils/custom-errors';
 
 export const GetStudentController = async (idStudent: string): Promise<Student | null> => {
     const student = await GetStudentHelper(idStudent);
