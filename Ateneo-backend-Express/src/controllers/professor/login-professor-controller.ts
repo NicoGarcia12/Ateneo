@@ -5,6 +5,7 @@ import { UnauthorizedError, InternalError } from 'src/utils/custom-errors';
 
 export const LoginProfessorController = async (email: string, password: string): Promise<PartialProfessor> => {
     const professor: PartialProfessor | null = await LoginProfessorHelper(email);
+
     if (!professor || !bcrypt.compare(password, professor.password)) {
         throw new UnauthorizedError('No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo');
     }

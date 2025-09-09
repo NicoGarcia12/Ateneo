@@ -21,10 +21,13 @@ export const AddSubjectHelper = async (params: AddSubjectParams) => {
             institution,
             degree
         };
+
         if (professorId) {
             data.professor = { connect: { id: professorId } };
         }
+
         await prisma.subject.create({ data });
+
         return 'Materia creada exitosamente';
     } catch (error: any) {
         throw error;

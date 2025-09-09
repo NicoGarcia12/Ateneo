@@ -19,7 +19,7 @@ export class AddSubjectUseCase implements useCase<any, IAddSubjectParams> {
 
     execute(params: IAddSubjectParams): Observable<any> {
         const { subject, idProfessor } = params;
-        let url = `${this.BASE_URL}/`;
+        let url = `${this.BASE_URL}/add/`;
         if (idProfessor) {
             url += `?professorId=${encodeURIComponent(idProfessor)}`;
         }

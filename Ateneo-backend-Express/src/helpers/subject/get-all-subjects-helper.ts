@@ -31,6 +31,7 @@ export const GetAllSubjectsByIdProfessorHelper = async (idProfessor: string) => 
                 }
             }
         });
+
         return subjects;
     } catch (error: unknown) {
         throw error;

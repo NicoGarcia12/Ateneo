@@ -5,9 +5,9 @@ import { AddStudentToSubjectHandler } from 'handlers/subject/add-student-to-subj
 import { GetStudentsBySubjectHandler } from 'handlers/subject/get-students-by-subject-handler';
 
 const subjectRouter = Router();
-subjectRouter.post('/', AddSubjectHandler);
-subjectRouter.get('/:idSubject', GetSubjectHandler);
-subjectRouter.post('/:idSubject/add-student/:idStudent', AddStudentToSubjectHandler);
-subjectRouter.get('/:idSubject/students', GetStudentsBySubjectHandler);
+subjectRouter.post('/add', AddSubjectHandler);
+subjectRouter.get('/:subjectId', GetSubjectHandler);
+subjectRouter.post('/:subjectId/add-student/:studentId', AddStudentToSubjectHandler);
+subjectRouter.get('/:subjectId/students', GetStudentsBySubjectHandler);
 
 export default subjectRouter;

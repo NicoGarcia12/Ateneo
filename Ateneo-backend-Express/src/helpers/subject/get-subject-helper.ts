@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { NotFoundError } from 'src/utils/custom-errors';
 
 const prisma = new PrismaClient();
 
@@ -31,6 +30,7 @@ export const GetSubjectHelper = async (idSubject: string) => {
                 }
             }
         });
+
         return subject;
     } catch (error: unknown) {
         throw error;

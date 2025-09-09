@@ -15,13 +15,6 @@ interface AddStudentParams {
 export const AddStudentHelper = async (params: AddStudentParams): Promise<Student> => {
     const { firstName, lastName, dni, email, phone } = params;
     try {
-        const existing = await prisma.student.findUnique({
-            where: { dni: typeof dni === 'string' ? BigInt(dni) : dni }
-        });
-        if (existing) {
-            throw new ConflictError('Ya existe un estudiante con ese DNI');
-        }
-
         const student = await prisma.student.create({
             data: {
                 id: generateId(),
@@ -32,6 +25,7 @@ export const AddStudentHelper = async (params: AddStudentParams): Promise<Studen
                 phone
             }
         });
+
         return student;
     } catch (error: any) {
         throw error;

@@ -4,9 +4,9 @@ import { handleControllerError } from 'src/utils/error-handler';
 
 export const GetAllSubjectsByIdProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const { idProfessor } = req.params;
+        const { professorId } = req.params;
 
-        const subjects = await GetAllSubjectsByIdProfessorController(idProfessor);
+        const subjects = await GetAllSubjectsByIdProfessorController(professorId);
 
         return res.status(200).json({ subjects });
     } catch (error: any) {

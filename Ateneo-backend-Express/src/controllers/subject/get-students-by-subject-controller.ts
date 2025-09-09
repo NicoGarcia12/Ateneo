@@ -5,6 +5,7 @@ type SanitizedStudent = Omit<Student, 'dni'> & { dni: string };
 
 export const GetStudentsBySubjectController = async (idSubject: string): Promise<SanitizedStudent[]> => {
     const students = await GetStudentsBySubjectHelper(idSubject);
+
     const studentsSanitized = students.map((student) => ({
         ...student,
         dni: student.dni?.toString()

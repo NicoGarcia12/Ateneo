@@ -5,6 +5,7 @@ import { AddStudentController } from 'src/controllers/student/add-student-contro
 export const AddStudentHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { firstName, lastName, dni, email, phone } = req.body;
+
         const subjectId = typeof req.query['subjectId'] === 'string' ? req.query['subjectId'] : undefined;
 
         const student = await AddStudentController({ firstName, lastName, dni, email, phone, subjectId });
