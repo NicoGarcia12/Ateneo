@@ -1,6 +1,5 @@
 import { AddSubjectHelper } from 'helpers/subject/add-subject-helper';
 
-
 export const AddSubjectController = async (
     academicYear: number,
     name: string,
