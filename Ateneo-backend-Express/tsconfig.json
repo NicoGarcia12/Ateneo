@@ -20,13 +20,7 @@
         "useDefineForClassFields": false,
         "lib": ["ES2022"],
         "esModuleInterop": true,
-        "skipLibCheck": true,
-        "paths": {
-            "src/*": ["src/*"],
-            "helpers/*": ["src/helpers/*"],
-            "handlers/*": ["src/handlers/*"],
-            "controllers/*": ["src/controllers/*"]
-        }
+        "skipLibCheck": true
     },
     "exclude": ["node_modules", "dist"],
     "include": ["src/**/*.ts"]

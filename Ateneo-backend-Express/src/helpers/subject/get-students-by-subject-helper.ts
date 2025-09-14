@@ -1,7 +1,5 @@
-import { PrismaClient, Student } from '@prisma/client';
-import { NotFoundError } from 'src/utils/custom-errors';
-
-const prisma = new PrismaClient();
+import { Student } from '@prisma/client';
+import { prisma } from 'src/config/prisma';
 
 export const GetStudentsBySubjectHelper = async (idSubject: string): Promise<Student[]> => {
     try {
@@ -10,14 +8,8 @@ export const GetStudentsBySubjectHelper = async (idSubject: string): Promise<Stu
             include: { students: true }
         });
 
-        if (!subject) {
-            throw new NotFoundError('No existe una materia con ese id');
-        }
-
-        return subject.students;
+        return subject?.students ?? [];
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

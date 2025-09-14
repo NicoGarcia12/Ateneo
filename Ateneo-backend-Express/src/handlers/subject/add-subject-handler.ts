@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AddSubjectController } from 'controllers/subject/add-subject-controller';
+import { AddSubjectController } from 'src/controllers/subject/add-subject-controller';
 import { handleControllerError } from 'src/utils/error-handler';
 
 export const AddSubjectHandler = async (req: Request, res: Response): Promise<Response> => {
@@ -8,7 +8,7 @@ export const AddSubjectHandler = async (req: Request, res: Response): Promise<Re
 
         const professorId = req.query['professorId'] as string | undefined;
 
-        const response = await AddSubjectController(academicYear, name, institution, degree, professorId);
+        const response = await AddSubjectController({ academicYear, name, institution, degree, professorId });
 
         return res.status(200).json({ message: response });
     } catch (error: any) {

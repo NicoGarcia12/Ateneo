@@ -1,8 +1,6 @@
-import { PrismaClient, Student } from '@prisma/client';
+import { Student } from '@prisma/client';
+import { prisma } from 'src/config/prisma';
 import { generateId } from 'src/utils/generate-id';
-import { ConflictError, InternalError } from 'src/utils/custom-errors';
-
-const prisma = new PrismaClient();
 
 interface AddStudentParams {
     firstName: string;
@@ -29,7 +27,5 @@ export const AddStudentHelper = async (params: AddStudentParams): Promise<Studen
         return student;
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

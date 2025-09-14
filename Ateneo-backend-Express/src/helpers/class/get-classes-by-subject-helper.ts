@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from 'src/config/prisma';
 
 export const GetClassesBySubjectHelper = async (subjectId: string) => {
     try {
@@ -17,7 +15,5 @@ export const GetClassesBySubjectHelper = async (subjectId: string) => {
         return classes;
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

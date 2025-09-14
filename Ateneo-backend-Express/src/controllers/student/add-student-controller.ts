@@ -1,8 +1,8 @@
 import { Student } from '@prisma/client';
 import { AddStudentHelper } from 'src/helpers/student/add-student-helper';
 import { ConflictError } from 'src/utils/custom-errors';
-import { AddStudentToSubjectHelper } from 'src/helpers/subject/add-student-to-subject-helper';
-import { GetStudentByDniHelper } from 'src/helpers/student/get-student-by-dni-helper';
+import { AddStudentToSubjectController } from 'src/controllers/subject/add-student-to-subject-controller';
+import { GetStudentByDniController } from 'src/controllers/student/get-student-by-dni-controller';
 
 interface AddStudentParams {
     firstName: string;
@@ -14,16 +14,19 @@ interface AddStudentParams {
 }
 
 export const AddStudentController = async (params: AddStudentParams): Promise<Student> => {
-    const existing = await GetStudentByDniHelper(params.dni);
-
-    if (existing) {
+    try {
+        await GetStudentByDniController({ dni: params.dni });
         throw new ConflictError('Ya existe un estudiante con ese DNI');
+    } catch (error: any) {
+        if (error.name !== 'NotFoundError') {
+            throw error;
+        }
     }
 
     const student = await AddStudentHelper(params);
 
     if (params.subjectId) {
-        await AddStudentToSubjectHelper(student.id, params.subjectId);
+        await AddStudentToSubjectController({ studentId: student.id, subjectId: params.subjectId });
     }
 
     return student;

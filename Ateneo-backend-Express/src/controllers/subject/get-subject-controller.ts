@@ -1,8 +1,13 @@
-import { GetSubjectHelper } from 'helpers/subject/get-subject-helper';
+import { GetSubjectHelper } from 'src/helpers/subject/get-subject-helper';
 import { NotFoundError } from 'src/utils/custom-errors';
 
-export const GetSubjectController = async (idSubject: string) => {
-    const subject = await GetSubjectHelper(idSubject);
+export interface GetSubjectControllerParams {
+    subjectId: string;
+}
+
+export const GetSubjectController = async (params: GetSubjectControllerParams) => {
+    const { subjectId } = params;
+    const subject = await GetSubjectHelper(subjectId);
 
     if (!subject) {
         throw new NotFoundError('No existe una materia con ese id');

@@ -1,7 +1,7 @@
-import { AddClassHelper } from 'helpers/class/add-class-helper';
+import { AddClassHelper } from 'src/helpers/class/add-class-helper';
 import { ConflictError } from 'src/utils/custom-errors';
-import { GetSubjectController } from 'controllers/subject/get-subject-controller';
-import { GetClassesBySubjectHelper } from 'src/helpers/class/get-classes-by-subject-helper';
+import { GetSubjectController } from 'src/controllers/subject/get-subject-controller';
+import { GetClassesBySubjectController } from 'src/controllers/class/get-classes-by-subject-controller';
 
 interface AddClassParams {
     date: string;
@@ -17,13 +17,17 @@ function normalizeToDayMonthYear(date: string | Date): string {
 export const AddClassController = async (params: AddClassParams): Promise<string> => {
     const { date, subjectId } = params;
 
-    await GetSubjectController(subjectId);
+    await GetSubjectController({ subjectId });
 
-    const classes = await GetClassesBySubjectHelper(subjectId);
+    await assertNoClassOnSameDate(subjectId, date);
+
+    return await AddClassHelper(params);
+};
+
+async function assertNoClassOnSameDate(subjectId: string, date: string | Date) {
+    const classes = await GetClassesBySubjectController({ subjectId });
     const newDateNorm = normalizeToDayMonthYear(date);
     if (classes.some((c) => normalizeToDayMonthYear(c.date) === newDateNorm)) {
         throw new ConflictError('Ya existe una clase para ese día y materia');
     }
-
-    return await AddClassHelper(params);
-};
+}

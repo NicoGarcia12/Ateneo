@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from 'src/config/prisma';
 import { generateId } from 'src/utils/generate-id';
-
-const prisma = new PrismaClient();
 
 interface AddSubjectParams {
     academicYear: number;
@@ -31,7 +29,5 @@ export const AddSubjectHelper = async (params: AddSubjectParams) => {
         return 'Materia creada exitosamente';
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

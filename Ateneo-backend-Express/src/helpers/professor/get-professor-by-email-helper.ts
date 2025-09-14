@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from 'src/config/prisma';
 
 export const GetProfessorByEmailHelper = async (email: string) => {
     try {
@@ -18,7 +16,5 @@ export const GetProfessorByEmailHelper = async (email: string) => {
         return professor;
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

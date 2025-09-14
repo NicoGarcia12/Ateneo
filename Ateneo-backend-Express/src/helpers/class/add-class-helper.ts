@@ -1,9 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from 'src/config/prisma';
 import { generateId } from 'src/utils/generate-id';
-import { GetSubjectHelper } from 'helpers/subject/get-subject-helper';
-import { NotFoundError } from 'src/utils/custom-errors';
-
-const prisma = new PrismaClient();
+import { GetSubjectHelper } from 'src/helpers/subject/get-subject-helper';
 
 interface AddClassParams {
     date: string;
@@ -26,7 +23,5 @@ export const AddClassHelper = async (params: AddClassParams): Promise<string> =>
         return 'Clase creada exitosamente';
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

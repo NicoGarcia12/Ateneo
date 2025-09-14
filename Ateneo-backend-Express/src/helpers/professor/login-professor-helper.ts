@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from 'src/config/prisma';
 
 export type PartialProfessor = {
     id: string;
@@ -28,7 +26,5 @@ export const LoginProfessorHelper = async (email: string): Promise<PartialProfes
         return professor;
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

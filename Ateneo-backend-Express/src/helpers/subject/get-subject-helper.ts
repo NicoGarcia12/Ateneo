@@ -1,18 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from 'src/config/prisma';
 
-const prisma = new PrismaClient();
-
-export const GetSubjectHelper = async (idSubject: string) => {
+export const GetSubjectHelper = async (subjectId: string) => {
     try {
         const subject = await prisma.subject.findUnique({
-            where: { id: idSubject },
-            select: {
-                id: true,
-                name: true,
-                academicYear: true,
-                institution: true,
-                degree: true,
-                professorId: true,
+            where: { id: subjectId },
+            include: {
                 students: {
                     select: {
                         id: true
@@ -32,9 +24,7 @@ export const GetSubjectHelper = async (idSubject: string) => {
         });
 
         return subject;
-    } catch (error: unknown) {
+    } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };

@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { GetStudentsBySubjectController } from 'controllers/subject/get-students-by-subject-controller';
+import { GetStudentsBySubjectController } from 'src/controllers/subject/get-students-by-subject-controller';
 import { handleControllerError } from 'src/utils/error-handler';
 
 export const GetStudentsBySubjectHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { subjectId } = req.params;
 
-        const students = await GetStudentsBySubjectController(subjectId);
+        const students = await GetStudentsBySubjectController({ subjectId });
 
         return res.status(200).json({ students });
     } catch (error: any) {

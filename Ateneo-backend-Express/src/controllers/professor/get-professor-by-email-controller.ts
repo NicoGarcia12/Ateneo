@@ -1,7 +1,12 @@
-import { GetProfessorByEmailHelper } from 'helpers/professor/get-professor-by-email-helper';
+import { GetProfessorByEmailHelper } from 'src/helpers/professor/get-professor-by-email-helper';
 import { NotFoundError } from 'src/utils/custom-errors';
 
-export const GetProfessorByEmailController = async (email: string) => {
+export interface GetProfessorByEmailControllerParams {
+    email: string;
+}
+
+export const GetProfessorByEmailController = async (params: GetProfessorByEmailControllerParams) => {
+    const { email } = params;
     const professor = await GetProfessorByEmailHelper(email);
 
     if (!professor) {

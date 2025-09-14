@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { LoginProfessorController } from 'controllers/professor/login-professor-controller';
+import { LoginProfessorController } from 'src/controllers/professor/login-professor-controller';
 import { handleControllerError } from 'src/utils/error-handler';
 import { InternalError } from 'src/utils/custom-errors';
 import * as jwt from 'jsonwebtoken';
@@ -13,7 +13,7 @@ export const LoginProfessorHandler = async (req: Request, res: Response): Promis
     try {
         const { email, password } = req.body;
 
-        const professor = await LoginProfessorController(email, password);
+        const professor = await LoginProfessorController({ email, password });
 
         if (!secretKey) {
             throw new InternalError('La clave secreta para JWT no está definida');

@@ -1,9 +1,16 @@
 import { Subject } from '@prisma/client';
-import { GetAllSubjectsByIdProfessorHelper } from 'helpers/subject/get-all-subjects-helper';
-import { GetProfessorController } from 'controllers/professor/get-professor-controller';
+import { GetAllSubjectsByIdProfessorHelper } from 'src/helpers/subject/get-all-subjects-helper';
+import { GetProfessorController } from 'src/controllers/professor/get-professor-controller';
 
-export const GetAllSubjectsByIdProfessorController = async (idProfessor: string): Promise<Array<Subject>> => {
-    await GetProfessorController(idProfessor);
+export interface GetAllSubjectsByIdProfessorControllerParams {
+    professorId: string;
+}
 
-    return await GetAllSubjectsByIdProfessorHelper(idProfessor);
+export const GetAllSubjectsByIdProfessorController = async (
+    params: GetAllSubjectsByIdProfessorControllerParams
+): Promise<Array<Subject>> => {
+    const { professorId } = params;
+    await GetProfessorController({ professorId });
+
+    return await GetAllSubjectsByIdProfessorHelper(professorId);
 };

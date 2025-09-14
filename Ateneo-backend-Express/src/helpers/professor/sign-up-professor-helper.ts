@@ -1,8 +1,6 @@
-import { PrismaClient, Professor } from '@prisma/client';
+import { Professor } from '@prisma/client';
+import { prisma } from 'src/config/prisma';
 import { generateId } from 'src/utils/generate-id';
-import { ConflictError } from 'src/utils/custom-errors';
-
-const prisma = new PrismaClient();
 
 export const SignUpProfessorHelper = async (email: string, password: string, firstName: string, lastName: string): Promise<string> => {
     try {
@@ -20,7 +18,5 @@ export const SignUpProfessorHelper = async (email: string, password: string, fir
         return 'Profesor registrado exitosamente';
     } catch (error: any) {
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 };
