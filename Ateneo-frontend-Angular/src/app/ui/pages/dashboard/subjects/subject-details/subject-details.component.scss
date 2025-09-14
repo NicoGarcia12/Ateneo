@@ -5,7 +5,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: auto 1fr;
     padding: 12px;
     gap: 12px;
 }
@@ -48,7 +48,7 @@
             height: 8px;
         }
     }
-    .student-table {
+    .students-table {
         width: 100%;
         border-radius: 8px;
         overflow: hidden;
@@ -61,7 +61,7 @@
         }
         ::ng-deep .mat-mdc-header-cell {
             background-color: $primary-color !important;
-            color: white !important;
+            color: $white-color !important;
             text-align: center !important;
             font-weight: bold !important;
             border: 1px solid #333 !important;
@@ -78,7 +78,7 @@
             text-align: center !important;
             border: 1px solid #333 !important;
             padding: 8px !important;
-            white-space: nowrap;
+            $white-color-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             display: flex !important;
@@ -125,13 +125,88 @@
 .calendar-container {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
-    border: 1px solid black;
     border-radius: 4px;
     padding: 12px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: #f9f9f9;
+
+    h3 {
+        margin: 0 0 12px 0;
+        color: $primary-color;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    ::ng-deep .mat-calendar {
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid $primary-color;
+        border-radius: 4px;
+    }
+
+    ::ng-deep .mat-calendar-header {
+        background-color: $primary-color;
+        color: $white-color;
+        border-radius: 4px 4px 0 0;
+    }
+
+    ::ng-deep .mat-calendar-period-button {
+        color: $white-color !important;
+    }
+
+    ::ng-deep .mat-calendar-period-button::after,
+    ::ng-deep .mat-calendar-period-button .mat-calendar-period-button-arrow,
+    ::ng-deep .mat-calendar-period-button svg,
+    ::ng-deep .mat-calendar-period-button .mat-icon {
+        color: $white-color !important;
+        fill: $white-color !important;
+        border-top-color: $white-color !important;
+        border-color: $white-color !important;
+    }
+
+    ::ng-deep .mat-calendar-previous-button,
+    ::ng-deep .mat-calendar-next-button {
+        color: $white-color !important;
+    }
+
+    ::ng-deep .mat-calendar-table-header th {
+        color: $primary-color;
+        font-weight: bold;
+    }
+
+    ::ng-deep .mat-calendar-table-header-divider,
+    ::ng-deep .mat-calendar-table .mat-calendar-table-header-divider,
+    ::ng-deep .mat-calendar-body-label,
+    ::ng-deep .mat-calendar-table .mat-calendar-body-label {
+        display: none !important;
+    }
+
+    ::ng-deep .mat-calendar-body-cell-content {
+        color: $grey-color;
+    }
+
+    ::ng-deep .mat-calendar-body-selected {
+        background-color: $primary-color;
+        color: $white-color;
+    }
+
+    ::ng-deep .special-date .mat-calendar-body-cell-content {
+        border: 2px solid $terciary-color;
+        border-radius: 50%;
+        box-sizing: border-box;
+    }
+
+    ::ng-deep .mat-calendar-body-today {
+        background: $primary-color;
+        color: $terciary-color;
+    }
+}
+
+.button-toggle-modal-libre {
+    min-height: 50px;
 }
 
 .buttons-container {
@@ -143,13 +218,126 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f9f9f9;
+    background-color: $white-color;
+}
+
+.class-description-textarea {
+    resize: none;
+}
+
+.char-counter {
+    text-align: right;
+    font-size: 12px;
+    color: $grey-color;
+    margin-top: 2px;
+}
+
+.inasistencias-table {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.inasistencias-header {
+    .inasistencias-nombre,
+    .inasistencias-justificado {
+        font-weight: bold;
+    }
+}
+
+.inasistencias-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.inasistencias-nombre {
+    flex: 1 1 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1rem;
+    padding-right: 12px;
+}
+
+.inasistencias-justificado {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+}
+
+.modal-libre-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.full-width-btn {
+    width: 100%;
+}
+
+.inputs-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.modal-clase-cargada {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.edit-students-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.inasistencias-actions {
+    text-align: center;
+    min-width: 120px;
+
+    mat-icon {
+        cursor: pointer;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+}
+
+.no-inasistencias {
+    text-align: center;
+    color: $grey-color;
+    font-style: normal;
+    padding: 20px 0;
+}
+
+.char-counter {
+    font-size: 12px;
+    color: #666;
+    text-align: right;
+    margin-top: 4px;
 }
 
 @media (max-width: 768px) {
     .subject-details-container {
         grid-template-columns: 1fr;
-        grid-template-rows: 2fr 1fr 1fr;
+        grid-template-rows: auto auto auto;
     }
 
     .students-table-container {

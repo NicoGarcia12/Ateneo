@@ -32,6 +32,11 @@
     color: $grey-color;
 }
 
+.scroll-content {
+    max-height: 360px;
+    overflow-y: auto;
+}
+
 .dialog-title {
     @extend h5;
     font-weight: 600;

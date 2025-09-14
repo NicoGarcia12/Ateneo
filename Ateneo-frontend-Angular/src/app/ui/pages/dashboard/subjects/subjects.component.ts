@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { SubjectsViewModelService } from './subjectsViewModel.service';
+import { SubjectsViewModelService } from './subjects-view-model.service';
 import { Subject } from '../../../../domain/entities/subject';
 import { TokenService } from '../../../shared/services/token.service';
 import { NotifyService } from '../../../shared/services/notify.service';

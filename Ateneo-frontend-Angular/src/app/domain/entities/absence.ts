@@ -3,7 +3,9 @@ import { Student } from './student';
 
 export interface Absence {
     id: string;
-    class: Class;
-    student: Student;
+    classId: string;
+    class?: Class;
+    studentId: string;
+    student?: Student;
     justified: boolean;
 }

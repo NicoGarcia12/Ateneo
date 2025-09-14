@@ -1,3 +1,10 @@
-node_modules
-# Keep environment variables out of version control
+# Dependencias y archivos generados por Node.js
+node_modules/
+dist/
+
+# Variables de entorno (no subir nunca)
 .env
+.env.local
+
+# Archivos temporales del sistema
+.DS_Store

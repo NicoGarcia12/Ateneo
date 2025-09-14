@@ -2,7 +2,9 @@
     <div class="dialog-content">
         <h2 class="dialog-title">{{ data.title }}</h2>
         <p *ngIf="data.text" class="dialog-p">{{ data.text }}</p>
-        <ng-container *ngIf="data.contentTemplate" [ngTemplateOutlet]="data.contentTemplate"></ng-container>
+        <div class="scroll-content">
+            <ng-container *ngIf="data.contentTemplate" [ngTemplateOutlet]="data.contentTemplate"></ng-container>
+        </div>
     </div>
     <div class="button-actions-row">
         <button mat-flat-button class="secondary-button" type="button" tabindex="-1" (click)="onSecondaryButtonClick()">
