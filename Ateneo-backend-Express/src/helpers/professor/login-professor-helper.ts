@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from 'src/config/prisma';
 
 export type PartialProfessor = {
     id: string;
@@ -24,14 +22,9 @@ export const LoginProfessorHelper = async (email: string): Promise<PartialProfes
                 emailActivated: true
             }
         });
+
         return professor;
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            throw new Error('Error al buscar al profesor: ' + error.message);
-        } else {
-            throw new Error('Se produjo un error desconocido');
-        }
-    } finally {
-        await prisma.$disconnect();
+    } catch (error: any) {
+        throw error;
     }
 };

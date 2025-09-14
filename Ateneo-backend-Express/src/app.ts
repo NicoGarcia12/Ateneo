@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import router from './routes/index-routes';
+import router from 'src/routes/index-routes';
 
 dotenv.config();
 

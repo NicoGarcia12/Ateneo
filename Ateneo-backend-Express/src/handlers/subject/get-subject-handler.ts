@@ -1,19 +1,15 @@
 import { Request, Response } from 'express';
-import { GetAllSubjectsByIdProfessorController } from '../../controllers/subject/get-all-subjects-controller';
-import { GetSubjectController } from '../../controllers/subject/get-subject-controller';
+import { GetSubjectController } from 'src/controllers/subject/get-subject-controller';
+import { handleControllerError } from 'src/utils/error-handler';
 
 export const GetSubjectHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const { idSubject } = req.params;
+        const { subjectId } = req.params;
 
-        const subject = await GetSubjectController(idSubject);
+        const subject = await GetSubjectController({ subjectId });
 
         return res.status(200).json({ subject });
     } catch (error: any) {
-        if (error.message === 'No existe una materia con ese id') {
-            return res.status(404).json({ message: error.message });
-        } else {
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
+        return handleControllerError(error, res);
     }
 };

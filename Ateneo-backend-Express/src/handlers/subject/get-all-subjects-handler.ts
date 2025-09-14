@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
-import { GetAllSubjectsByIdProfessorController } from '../../controllers/subject/get-all-subjects-controller';
+import { GetAllSubjectsByIdProfessorController } from 'src/controllers/subject/get-all-subjects-controller';
+import { handleControllerError } from 'src/utils/error-handler';
 
 export const GetAllSubjectsByIdProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const { idProfessor } = req.params;
+        const { professorId } = req.params;
 
-        const subjects = await GetAllSubjectsByIdProfessorController(idProfessor);
+        const subjects = await GetAllSubjectsByIdProfessorController({ professorId });
 
         return res.status(200).json({ subjects });
     } catch (error: any) {
-        return res.status(500).json({ message: 'Error interno del servidor' });
+        return handleControllerError(error, res);
     }
 };
