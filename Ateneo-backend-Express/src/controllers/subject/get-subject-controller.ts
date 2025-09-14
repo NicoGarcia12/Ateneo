@@ -1,16 +1,17 @@
-import { Subject } from '@prisma/client';
-import { GetSubjectHelper } from '../../helpers/subject/get-subject-helper';
+import { GetSubjectHelper } from 'src/helpers/subject/get-subject-helper';
+import { NotFoundError } from 'src/utils/custom-errors';
 
-export const GetSubjectController = async (idSubject: string): Promise<Subject | null> => {
-    try {
-        const subject = await GetSubjectHelper(idSubject);
+export interface GetSubjectControllerParams {
+    subjectId: string;
+}
 
-        if (!subject) {
-            throw new Error('No existe una materia con ese id');
-        }
+export const GetSubjectController = async (params: GetSubjectControllerParams) => {
+    const { subjectId } = params;
+    const subject = await GetSubjectHelper(subjectId);
 
-        return subject;
-    } catch (error: any) {
-        throw new Error(error.message);
+    if (!subject) {
+        throw new NotFoundError('No existe una materia con ese id');
     }
+
+    return subject;
 };

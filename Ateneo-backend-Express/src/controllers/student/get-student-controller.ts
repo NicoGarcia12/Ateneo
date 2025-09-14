@@ -1,16 +1,17 @@
-import { Student } from '@prisma/client';
-import { GetStudentHelper } from '../../helpers/student/get-student-helper';
+import { GetStudentHelper } from 'src/helpers/student/get-student-helper';
+import { NotFoundError } from 'src/utils/custom-errors';
 
-export const GetStudentController = async (idStudent: string): Promise<Student | null> => {
-    try {
-        const student = await GetStudentHelper(idStudent);
+export interface GetStudentControllerParams {
+    studentId: string;
+}
 
-        if (!student) {
-            throw new Error('No existe un estudiante con ese id');
-        }
+export const GetStudentController = async (params: GetStudentControllerParams) => {
+    const { studentId } = params;
+    const student = await GetStudentHelper(studentId);
 
-        return student;
-    } catch (error: any) {
-        throw new Error(error.message);
+    if (!student) {
+        throw new NotFoundError('No existe un estudiante con ese id');
     }
+
+    return student;
 };

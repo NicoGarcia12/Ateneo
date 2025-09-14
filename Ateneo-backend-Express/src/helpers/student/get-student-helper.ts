@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from 'src/config/prisma';
 
-const prisma = new PrismaClient();
-
-export const GetStudentHelper = async (idstudent: string) => {
+export const GetStudentHelper = async (studentId: string) => {
     try {
         const student = await prisma.student.findUnique({
-            where: { id: idstudent },
+            where: { id: studentId },
             select: {
                 id: true,
                 firstName: true,
@@ -17,9 +15,7 @@ export const GetStudentHelper = async (idstudent: string) => {
         });
 
         return student;
-    } catch (error: unknown) {
-        throw new Error('Error al buscar el alumno');
-    } finally {
-        await prisma.$disconnect();
+    } catch (error: any) {
+        throw error;
     }
 };

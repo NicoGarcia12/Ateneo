@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
-import { LoginProfessorController } from '../../controllers/professor/login-professor-controller';
+import { LoginProfessorController } from 'src/controllers/professor/login-professor-controller';
+import { handleControllerError } from 'src/utils/error-handler';
+import { InternalError } from 'src/utils/custom-errors';
 import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -11,10 +13,10 @@ export const LoginProfessorHandler = async (req: Request, res: Response): Promis
     try {
         const { email, password } = req.body;
 
-        const professor = await LoginProfessorController(email, password);
+        const professor = await LoginProfessorController({ email, password });
 
         if (!secretKey) {
-            throw new Error('La clave secreta para JWT no está definida');
+            throw new InternalError('La clave secreta para JWT no está definida');
         }
 
         const token = jwt.sign(
@@ -25,13 +27,6 @@ export const LoginProfessorHandler = async (req: Request, res: Response): Promis
 
         return res.status(200).json({ token });
     } catch (error: any) {
-        if (error.message === 'No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo') {
-            return res.status(401).json({ message: error.message });
-        }
-        if (error.message === 'La clave secreta para JWT no está definida') {
-            return res.status(500).json({ message: 'Error en la generación del token' });
-        } else {
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
+        return handleControllerError(error, res);
     }
 };

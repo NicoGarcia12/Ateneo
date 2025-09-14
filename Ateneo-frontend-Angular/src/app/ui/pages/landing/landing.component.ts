@@ -17,8 +17,8 @@ export class LandingComponent implements OnInit, OnDestroy {
             content: 'Organiza y administra tus materias de forma rápida y eficiente. Accede a toda la información fácilmente.'
         },
         {
-            title: 'Calificaciones Simplificadas',
-            content: 'Registra y calcula las notas finales de tus alumnos en simples pasos, de manera sencilla.'
+            title: 'Gestioná notas',
+            content: 'Registra y calcula las notas finales de tus estudiantes en simples pasos, de manera sencilla.'
         },
         {
             title: 'Registro de Asistencia',

@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from 'src/config/prisma';
 
 export const GetAllSubjectsByIdProfessorHelper = async (idProfessor: string) => {
     try {
@@ -32,9 +30,7 @@ export const GetAllSubjectsByIdProfessorHelper = async (idProfessor: string) => 
         });
 
         return subjects;
-    } catch (error: unknown) {
-        throw new Error('Error al buscar las materias del profesor');
-    } finally {
-        await prisma.$disconnect();
+    } catch (error: any) {
+        throw error;
     }
 };

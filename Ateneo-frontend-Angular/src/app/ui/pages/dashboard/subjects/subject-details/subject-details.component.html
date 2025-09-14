@@ -59,23 +59,23 @@
 
             <div *ngIf="isEditingClass" class="edit-students-section">
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Agregar alumno con inasistencia</mat-label>
+                    <mat-label>Agregar estudiante con inasistencia</mat-label>
                     <input
                         matInput
-                        placeholder="Buscar alumno por nombre"
+                        placeholder="Buscar estudiante por nombre"
                         [(ngModel)]="studentSearch"
                         (ngModelChange)="filterStudents()"
                         autocomplete="off"
                     />
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Seleccionar alumno</mat-label>
+                    <mat-label>Seleccionar estudiante</mat-label>
                     <mat-select
                         [(ngModel)]="selectedStudent"
                         [disabled]="filteredStudentsForEdit.length === 0"
                         (selectionChange)="addStudentToLoadedClass($event.value)"
                     >
-                        <mat-option *ngIf="filteredStudentsForEdit.length === 0" disabled>Ningún alumno encontrado</mat-option>
+                        <mat-option *ngIf="filteredStudentsForEdit.length === 0" disabled>Ningún estudiante encontrado</mat-option>
                         <mat-option *ngFor="let student of filteredStudentsForEdit" [value]="student">
                             {{ student.name }}
                         </mat-option>
@@ -85,7 +85,7 @@
 
             <div class="inasistencias-table">
                 <div *ngIf="loadedClass.absentStudents.length > 0" class="inasistencias-row inasistencias-header">
-                    <div class="inasistencias-nombre">Alumno</div>
+                    <div class="inasistencias-nombre">Estudiante</div>
                     <div class="inasistencias-justificado">Justificado</div>
                     <div *ngIf="isEditingClass" class="inasistencias-actions"></div>
                 </div>
@@ -133,23 +133,23 @@
         <ng-container *ngIf="!showAltModal; else altModalContent">
             <div class="inputs-column">
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Alumno con inasistencia</mat-label>
+                    <mat-label>Estudiante con inasistencia</mat-label>
                     <input
                         matInput
-                        placeholder="Nombre del Alumno"
+                        placeholder="Nombre del Estudiante"
                         [(ngModel)]="studentSearch"
                         (ngModelChange)="filterStudents()"
                         autocomplete="off"
                     />
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Seleccionar alumno</mat-label>
+                    <mat-label>Seleccionar estudiante</mat-label>
                     <mat-select
                         [(ngModel)]="selectedStudent"
                         [disabled]="filteredStudents.length === 0"
                         (selectionChange)="addSelectedStudent($event.value)"
                     >
-                        <mat-option *ngIf="filteredStudents.length === 0" disabled>Ningún alumno encontrado</mat-option>
+                        <mat-option *ngIf="filteredStudents.length === 0" disabled>Ningún estudiante encontrado</mat-option>
                         <mat-option *ngFor="let student of filteredStudents" [value]="student">
                             {{ student.name }}
                         </mat-option>
@@ -172,7 +172,7 @@
         <ng-template #altModalContent>
             <div class="alt-modal-content">
                 <h3>Inasistencias seleccionadas</h3>
-                <div *ngIf="selectedStudents.length === 0">No hay alumnos seleccionados.</div>
+                <div *ngIf="selectedStudents.length === 0">No hay estudiantes seleccionados.</div>
                 <div
                     *ngFor="let student of selectedStudents"
                     class="selected-student-item"
