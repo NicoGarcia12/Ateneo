@@ -3,6 +3,7 @@ import { useCase } from '../use-case.interface';
 import { map, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Subject } from '../../entities/subject';
+import { buildApiUrl } from '../../../utils/api';
 
 export interface IGetAllSubjectsParams {
     idProfessor: string;
@@ -12,7 +13,7 @@ export interface IGetAllSubjectsParams {
     providedIn: 'root'
 })
 export class GetAllSubjectsUseCase implements useCase<Array<Subject>, IGetAllSubjectsParams> {
-    private BASE_URL = 'http://localhost:3001/professors';
+    private BASE_URL = buildApiUrl('professors');
 
     constructor(private httpClient: HttpClient) {}
 

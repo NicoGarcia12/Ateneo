@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterOutlet } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { LandingModule } from './ui/pages/landing/landing.module';
 import { ErrorModule } from './ui/pages/error/error.module';
@@ -25,6 +26,7 @@ import { ModalDialogModule } from './ui/components/modal-dialog/modal-dialog.mod
         SignUpModule,
         DashboardModule,
         AppRoutingModule,
+        HttpClientModule,
         MatSnackBarModule,
         ModalDialogModule,
         CommonModule

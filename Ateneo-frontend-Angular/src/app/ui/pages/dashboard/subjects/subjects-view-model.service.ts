@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { GetAllSubjectsUseCase } from '../../../../domain/use-cases/subject-use-cases/get-all-subjects-use-case';
+import { GetAllSubjectsUseCase } from '../../../../domain/use-cases/subject/get-all-subjects-use-case';
 import { TokenService } from '../../../shared/services/token.service';
 import { Observable } from 'rxjs';
 import { Subject } from '../../../../domain/entities/subject';
-import { AddSubjectUseCase } from '../../../../domain/use-cases/subject-use-cases/add-subject-use-case';
+import { AddSubjectUseCase } from '../../../../domain/use-cases/subject/add-subject-use-case';
 
 @Injectable({
     providedIn: 'root'

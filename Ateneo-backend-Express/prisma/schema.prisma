@@ -37,7 +37,6 @@ model Class {
   subject   Subject   @relation(fields: [subjectId], references: [id])
   subjectId String
   absences  Absence[]
-  description String?
 }
 
 model Absence {

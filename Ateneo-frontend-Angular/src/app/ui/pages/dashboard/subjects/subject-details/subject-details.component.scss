@@ -194,9 +194,24 @@
     }
 
     ::ng-deep .special-date .mat-calendar-body-cell-content {
-        border: 2px solid $terciary-color;
+        background: transparent !important;
+        color: $grey-color !important;
+        border: 2px solid $primary-color;
         border-radius: 50%;
         box-sizing: border-box;
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 2px auto;
+    }
+
+    ::ng-deep .special-date.mat-calendar-body-selected .mat-calendar-body-cell-content,
+    ::ng-deep .mat-calendar-body-selected.special-date .mat-calendar-body-cell-content {
+        background-color: $primary-color !important;
+        color: $white-color !important;
+        border: none !important;
     }
 
     ::ng-deep .mat-calendar-body-today {

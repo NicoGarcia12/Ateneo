@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginUseCase } from '../../../domain/use-cases/professor-use-cases/login-use-case';
+import { LoginUseCase } from '../../../domain/use-cases/professor/login-use-case';
 import { Observable } from 'rxjs';
 import { Professor } from '../../../domain/entities/professor';
 

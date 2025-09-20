@@ -3,6 +3,7 @@ import { Professor } from '../../entities/professor';
 import { useCase } from '../use-case.interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { buildApiUrl } from '../../../utils/api';
 
 interface ISignUpUseCase {
     email: string;
@@ -15,7 +16,7 @@ interface ISignUpUseCase {
     providedIn: 'root'
 })
 export class SignUpUseCase implements useCase<string, ISignUpUseCase> {
-    private apiUrl = 'http://localhost:3001/professors/sign-up';
+    private apiUrl = buildApiUrl('professors', 'sign-up');
 
     constructor(private httpClient: HttpClient) {}
 

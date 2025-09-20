@@ -1,104 +1,44 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { SubjectDetailsViewModelService, StudentData } from './subject-details-view-model.service';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { SubjectDetailsViewModelService } from './subject-details-view-model.service';
+import { Student } from '../../../../../domain/entities/student';
 import { OpenDialogService } from '../../../../shared/services/open-dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardTitleService } from '../../dashboard-title.service';
+import { Subscription } from 'rxjs';
+import { NotifyService } from '../../../../shared/services/notify.service';
+import { MatCalendar } from '@angular/material/datepicker';
 
 @Component({
     selector: 'app-subject-details',
     templateUrl: './subject-details.component.html',
     styleUrls: ['./subject-details.component.scss']
 })
-export class SubjectDetailsComponent implements OnInit {
+export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public loadedClass: {
-        absentStudents: Array<StudentData & { justificado: boolean }>;
+        absentStudents: Array<Student & { justificado: boolean }>;
         description: string;
     } = {
-        absentStudents: [
-            {
-                identification: '12345678',
-                name: 'Ana García Rodríguez',
-                grade1: 8.5,
-                grade2: 9.2,
-                gradeN: 7.8,
-                attendance: '95%',
-                justificado: false
-            },
-            {
-                identification: '87654321',
-                name: 'Carlos López Martínez',
-                grade1: 7.3,
-                grade2: 8.1,
-                gradeN: 8.9,
-                attendance: '88%',
-                justificado: true
-            }
-        ],
+        absentStudents: [],
         description: 'Clase sobre funciones matemáticas. Se repasaron ejercicios y se resolvieron dudas.'
     };
     public classDescription: string = '';
     public showAltModal = false;
-    public selectedStudent: StudentData | null = null;
+    public selectedStudent: Student | null = null;
     public idSubject: string = '';
-    public selectedDate: Date | null = new Date();
+    public selectedDate: Date | null = null;
     public isEditingClass = false;
     private currentDialogRef: any = null;
-
-    public studentsList: StudentData[] = [
-        {
-            identification: '12345678',
-            name: 'Ana García Rodríguez',
-            grade1: 8.5,
-            grade2: 9.2,
-            gradeN: 7.8,
-            attendance: '95%'
-        },
-        {
-            identification: '87654321',
-            name: 'Carlos López Martínez',
-            grade1: 7.3,
-            grade2: 8.1,
-            gradeN: 8.9,
-            attendance: '88%'
-        },
-        {
-            identification: '11223344',
-            name: 'María José Fernández',
-            grade1: 9.1,
-            grade2: 8.7,
-            gradeN: 9.5,
-            attendance: '92%'
-        },
-        {
-            identification: '44332211',
-            name: 'Juan Pablo Morales',
-            grade1: 6.8,
-            grade2: 7.5,
-            gradeN: 7.2,
-            attendance: '85%'
-        }
-    ];
-
-    public filteredStudents: StudentData[] = [...this.studentsList];
-    public filteredStudentsForEdit: StudentData[] = [];
-    public selectedStudents: Array<StudentData & { justificado: boolean }> = [];
+    public studentsList: Student[] = [];
+    public filteredStudents: Student[] = [...this.studentsList];
+    public filteredStudentsForEdit: Student[] = [];
+    public selectedStudents: Array<Student & { justificado: boolean }> = [];
     public studentSearch: string = '';
 
     @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
     @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
+    @ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
 
-    public specialDates: Date[] = [
-        new Date('2025-07-01'),
-        new Date('2025-07-02'),
-        new Date('2025-07-03'),
-        new Date('2025-07-04'),
-        new Date('2025-07-05'),
-        new Date('2025-07-06'),
-        new Date('2025-07-07'),
-        new Date('2025-07-08'),
-        new Date('2025-07-09'),
-        new Date('2025-08-10')
-    ];
+    public specialDates: Date[] = [];
 
     public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
 
@@ -107,7 +47,8 @@ export class SubjectDetailsComponent implements OnInit {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private dashboardTitleService: DashboardTitleService,
-        private openDialogService: OpenDialogService
+        private openDialogService: OpenDialogService,
+        private notifyService: NotifyService
     ) {}
 
     public ngOnInit(): void {
@@ -115,10 +56,35 @@ export class SubjectDetailsComponent implements OnInit {
         this.activatedRoute.paramMap.subscribe((params) => {
             if (params.get('idSubject') === null) {
                 this.router.navigate(['/dashboard/subjects']);
+                return;
             }
             this.idSubject = params.get('idSubject') as string;
+
+            this.viewModel.loadStudents(this.idSubject);
+            this.viewModel.loadClasses(this.idSubject);
+            this.studentsSubscription = this.viewModel.students$.subscribe((students) => {
+                console.log('Loaded students:', students);
+                this.studentsList = students;
+                this.filterStudents();
+            });
+            this.classesSubscription = this.viewModel.classes$.subscribe((classes) => {
+                console.log('Loaded classes:', classes);
+                this.specialDates = classes.map((c) => (c.date ? new Date(c.date) : null)).filter((d): d is Date => d !== null);
+
+                if (this.calendar) {
+                    this.calendar.updateTodaysDate();
+                }
+            });
         });
         this.dashboardTitleService.setTitle('Detalles de la materia');
+    }
+
+    private studentsSubscription?: Subscription;
+    private classesSubscription?: Subscription;
+
+    public ngOnDestroy(): void {
+        this.studentsSubscription?.unsubscribe();
+        this.classesSubscription?.unsubscribe();
     }
 
     public filterStudents(): void {
@@ -169,6 +135,18 @@ export class SubjectDetailsComponent implements OnInit {
                     }
                 }
                 this.resetModalState();
+                // Limpiar la selección para permitir re-seleccionar la misma fecha posteriormente
+                this.selectedDate = null;
+                // Si el calendario existe, limpiar su selección interna y forzar actualización visual
+                if (this.calendar) {
+                    // limpiar la selección interna del MatCalendar
+                    (this.calendar as any).selected = null;
+                    try {
+                        this.calendar.updateTodaysDate();
+                    } catch (e) {
+                        // no crítico si updateTodaysDate no está disponible
+                    }
+                }
             });
         }
     }
@@ -184,7 +162,7 @@ export class SubjectDetailsComponent implements OnInit {
         this.currentDialogRef = null;
     }
 
-    public addSelectedStudent(student: StudentData): void {
+    public addSelectedStudent(student: Student): void {
         this.selectedStudents = this.viewModel.addSelectedStudent(this.selectedStudents, student);
         this.filterStudents();
         this.selectedStudent = null;
@@ -194,7 +172,7 @@ export class SubjectDetailsComponent implements OnInit {
         this.showAltModal = !this.showAltModal;
     }
 
-    public removeSelectedStudent(student: StudentData & { justificado: boolean }): void {
+    public removeSelectedStudent(student: Student & { justificado: boolean }): void {
         this.selectedStudents = this.viewModel.removeSelectedStudent(this.selectedStudents, student);
         this.filterStudents();
     }
@@ -213,13 +191,13 @@ export class SubjectDetailsComponent implements OnInit {
         }
     }
 
-    public addStudentToLoadedClass(student: StudentData): void {
+    public addStudentToLoadedClass(student: Student): void {
         if (!student) return;
 
         // Verificar si el estudiante ya está en la lista
-        const exists = this.loadedClass.absentStudents.some((s) => s.identification === student.identification);
+        const exists = this.loadedClass.absentStudents.some((s) => s.id === student.id);
         if (!exists) {
-            this.loadedClass.absentStudents.push({ ...student, justificado: false });
+            this.loadedClass.absentStudents.push({ ...student, justificado: false } as Student & { justificado: boolean });
             // Actualizar ambas listas de estudiantes filtrados
             this.filterStudents();
         }
@@ -227,16 +205,40 @@ export class SubjectDetailsComponent implements OnInit {
         this.selectedStudent = null;
     }
 
-    public removeStudentFromLoadedClass(student: StudentData & { justificado: boolean }): void {
-        this.loadedClass.absentStudents = this.loadedClass.absentStudents.filter((s) => s.identification !== student.identification);
+    public removeStudentFromLoadedClass(student: Student & { justificado: boolean }): void {
+        this.loadedClass.absentStudents = this.loadedClass.absentStudents.filter((s) => s.id !== student.id);
         // Actualizar ambas listas de estudiantes filtrados
         this.filterStudents();
     }
 
+    public addNico(): void {
+        if (!this.idSubject) {
+            console.warn('No subject id available');
+            return;
+        }
+        const random = Math.floor(Math.random() * 1000) + 1; // 1..1000
+        const dni = random.toString();
+        this.viewModel
+            .addStudent({
+                firstName: 'Nico',
+                lastName: 'Garcia',
+                dni: '5',
+                subjectId: this.idSubject
+            })
+            .subscribe({
+                next: () => {
+                    this.viewModel.loadStudents(this.idSubject);
+                    this.notifyService.notify('Alumno creado correctamente', 'success-notify');
+                },
+                error: (err) => {
+                    const message = err?.error?.message || 'Error al crear el alumno';
+                    this.notifyService.notify(message, 'error-notify');
+                }
+            });
+    }
+
     public saveClassChanges(): void {
-        // Aquí iría la lógica para guardar los cambios en el backend
         console.log('Guardando cambios de la clase...', this.loadedClass);
-        // Por ejemplo: this.classService.updateClass(this.loadedClass)
     }
 
     public confirmDeleteClass(): void {

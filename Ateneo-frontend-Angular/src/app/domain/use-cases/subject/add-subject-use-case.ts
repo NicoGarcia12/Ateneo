@@ -3,6 +3,7 @@ import { useCase } from '../use-case.interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Subject } from '../../entities/subject';
+import { buildApiUrl } from '../../../utils/api';
 
 export interface IAddSubjectParams {
     subject: Subject;
@@ -13,7 +14,7 @@ export interface IAddSubjectParams {
     providedIn: 'root'
 })
 export class AddSubjectUseCase implements useCase<any, IAddSubjectParams> {
-    private BASE_URL = 'http://localhost:3001/subjects';
+    private BASE_URL = buildApiUrl('subjects');
 
     constructor(private httpClient: HttpClient) {}
 
