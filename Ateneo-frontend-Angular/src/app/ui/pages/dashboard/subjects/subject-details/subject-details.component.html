@@ -39,11 +39,7 @@
     </div>
     <div class="calendar-container">
         <h3>Calendario de Clases</h3>
-        <mat-calendar
-            [(selected)]="selectedDate"
-            [dateClass]="dateClass"
-            (selectedChange)="onDateSelected($event)"
-        ></mat-calendar>
+        <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"></mat-calendar>
     </div>
     <div class="buttons-container">
         <button class="primary-button full-width-btn" mat-flat-button (click)="addNico()">Agregar Nico</button>
@@ -91,7 +87,9 @@
                     <div *ngIf="isEditingClass" class="inasistencias-actions"></div>
                 </div>
                 <div class="inasistencias-row" *ngFor="let student of loadedClass.absentStudents">
-                    <div class="inasistencias-nombre" title="{{ student.firstName }} {{ student.lastName }}">{{ student.firstName }} {{ student.lastName }}</div>
+                    <div class="inasistencias-nombre" title="{{ student.firstName }} {{ student.lastName }}">
+                        {{ student.firstName }} {{ student.lastName }}
+                    </div>
                     <div class="inasistencias-justificado">
                         <mat-checkbox
                             [checked]="student.justificado"

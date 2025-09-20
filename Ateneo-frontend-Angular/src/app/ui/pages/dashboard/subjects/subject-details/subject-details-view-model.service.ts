@@ -20,7 +20,7 @@ export class SubjectDetailsViewModelService {
     ) {}
 
     public loadStudents(subjectId: string): void {
-    this.getStudentsBySubjectUseCase.execute({ subjectId }).subscribe({
+        this.getStudentsBySubjectUseCase.execute({ subjectId }).subscribe({
             next: (students: Student[]) => {
                 this.studentsSubject.next(students);
             },
@@ -45,7 +45,11 @@ export class SubjectDetailsViewModelService {
         return this.addStudentUseCase.execute(params);
     }
 
-    public filterStudents(studentsList: Student[], selectedStudents: Array<Student & { justificado: boolean }>, studentSearch: string): Student[] {
+    public filterStudents(
+        studentsList: Student[],
+        selectedStudents: Array<Student & { justificado: boolean }>,
+        studentSearch: string
+    ): Student[] {
         const search = studentSearch.trim().toLowerCase();
         if (!search) {
             return studentsList.filter((student) => !selectedStudents.some((sel) => sel.id === student.id));
@@ -58,7 +62,10 @@ export class SubjectDetailsViewModelService {
         }
     }
 
-    public addSelectedStudent(selectedStudents: Array<Student & { justificado: boolean }>, student: Student): Array<Student & { justificado: boolean }> {
+    public addSelectedStudent(
+        selectedStudents: Array<Student & { justificado: boolean }>,
+        student: Student
+    ): Array<Student & { justificado: boolean }> {
         if (!student) return selectedStudents;
         if (!selectedStudents.some((s) => s.id === student.id)) {
             return [...selectedStudents, { ...student, justificado: false }];
@@ -66,7 +73,10 @@ export class SubjectDetailsViewModelService {
         return selectedStudents;
     }
 
-    public removeSelectedStudent(selectedStudents: Array<Student & { justificado: boolean }>, student: Student & { justificado: boolean }): Array<Student & { justificado: boolean }> {
+    public removeSelectedStudent(
+        selectedStudents: Array<Student & { justificado: boolean }>,
+        student: Student & { justificado: boolean }
+    ): Array<Student & { justificado: boolean }> {
         return selectedStudents.filter((s) => s.id !== student.id);
     }
 }
