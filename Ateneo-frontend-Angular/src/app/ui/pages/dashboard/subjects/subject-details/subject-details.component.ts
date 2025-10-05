@@ -125,7 +125,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         const ocupada = this.specialDates.some((s) => s.toISOString() === fecha);
         if (ocupada) {
             let classes: Array<Class> = [];
-            this.viewModel.classes$.subscribe(val => classes = val).unsubscribe();
+            this.viewModel.classes$.subscribe((val) => (classes = val)).unsubscribe();
             const clase = classes.find((c) => c.date && c.date === fecha);
             this.selectedClassId = clase?.id || null;
             this.loadedClass.description = clase?.description || '';
@@ -309,7 +309,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         const payload = {
             classId: this.selectedClassId,
             description: this.loadedClass.description,
-            absentStudents: this.loadedClass.absentStudents.map(s => ({
+            absentStudents: this.loadedClass.absentStudents.map((s) => ({
                 id: s.id,
                 justificado: s.justificado
             }))

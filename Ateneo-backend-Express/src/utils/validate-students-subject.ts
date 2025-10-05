@@ -1,5 +1,5 @@
-import { GetStudentsBySubjectController } from "src/controllers/subject/get-students-by-subject-controller";
-import { ValidationError } from "./custom-errors";
+import { GetStudentsBySubjectController } from 'src/controllers/subject/get-students-by-subject-controller';
+import { ValidationError } from './custom-errors';
 
 export async function validateStudentsSubject(subjectId: string, absentStudents: Array<{ id: string; justificado: boolean }>) {
     if (!absentStudents || absentStudents.length === 0) return;

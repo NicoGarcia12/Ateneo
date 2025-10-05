@@ -1,4 +1,3 @@
-
 export type ModelName = 'class' | 'absence' | 'student' | 'professor' | 'subject' | 'grade';
 
 export function generateId(modelName: ModelName): string {

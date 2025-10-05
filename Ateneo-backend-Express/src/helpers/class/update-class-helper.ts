@@ -20,7 +20,7 @@ export const UpdateClassHelper = async (params: UpdateClassHelperParams): Promis
 
             if (absentStudents.length > 0) {
                 await prisma.absence.createMany({
-                    data: absentStudents.map(s => ({
+                    data: absentStudents.map((s) => ({
                         id: generateId('absence'),
                         studentId: s.id,
                         classId,

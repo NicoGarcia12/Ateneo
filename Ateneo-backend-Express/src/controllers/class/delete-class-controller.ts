@@ -7,9 +7,9 @@ export const DeleteClassController = async (classId: string): Promise<string> =>
         const existing = await GetClassHelper({ classId });
 
         if (!existing) throw new NotFoundError('No existe una clase con ese id');
-        
+
         const message = await DeleteClassHelper(classId);
-        
+
         return message;
     } catch (error: any) {
         throw error;

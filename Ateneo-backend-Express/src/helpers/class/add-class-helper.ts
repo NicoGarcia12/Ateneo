@@ -19,12 +19,13 @@ export const AddClassHelper = async (params: AddClassParams): Promise<string> =>
                 date,
                 description: description ?? null,
                 subject: { connect: { id: subjectId } },
-                absences: { create: 
-                    absentStudents?.map((s) => ({
-                        id: generateId('absence'),
-                        studentId: s.id,
-                        justified: s.justificado ?? false
-                    })) || [] 
+                absences: {
+                    create:
+                        absentStudents?.map((s) => ({
+                            id: generateId('absence'),
+                            studentId: s.id,
+                            justified: s.justificado ?? false
+                        })) || []
                 }
             }
         });

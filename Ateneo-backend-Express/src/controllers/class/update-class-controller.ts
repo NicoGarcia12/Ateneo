@@ -3,7 +3,6 @@ import { GetClassController } from 'src/controllers/class/get-class-controller';
 import { validateStudentsSubject } from 'src/utils/validate-students-subject';
 import { NotFoundError } from 'src/utils/custom-errors';
 
-
 export interface UpdateClassControllerParams {
     classId: string;
     description?: string | null;
