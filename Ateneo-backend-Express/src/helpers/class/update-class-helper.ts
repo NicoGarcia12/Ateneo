@@ -1,19 +1,36 @@
 import { prisma } from 'src/config/prisma';
+import { generateId } from 'src/utils/generate-id';
 
 export interface UpdateClassHelperParams {
     classId: string;
     description?: string | null;
-    studentsWithAbsences?: string[];
+    absentStudents?: Array<{ id: string; justificado: boolean }>;
 }
 
-export const UpdateClassHelper = async (params: UpdateClassHelperParams) => {
+export const UpdateClassHelper = async (params: UpdateClassHelperParams): Promise<string> => {
+    const { classId, description, absentStudents } = params;
     try {
-        const { classId, ...updateData } = params;
-        const updated = await prisma.class.update({
+        await prisma.class.update({
             where: { id: classId },
-            data: updateData
+            data: { description: description ?? null }
         });
-        return updated;
+
+        if (absentStudents !== undefined) {
+            await prisma.absence.deleteMany({ where: { classId } });
+
+            if (absentStudents.length > 0) {
+                await prisma.absence.createMany({
+                    data: absentStudents.map((s) => ({
+                        id: generateId('absence'),
+                        studentId: s.id,
+                        classId,
+                        justified: s.justificado
+                    }))
+                });
+            }
+        }
+
+        return 'Clase actualizada exitosamente';
     } catch (error: any) {
         throw error;
     }

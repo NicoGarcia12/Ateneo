@@ -2,16 +2,18 @@ import { AddClassHelper } from 'src/helpers/class/add-class-helper';
 import { ConflictError } from 'src/utils/custom-errors';
 import { GetSubjectController } from 'src/controllers/subject/get-subject-controller';
 import { GetClassesBySubjectController } from 'src/controllers/class/get-classes-by-subject-controller';
+import { validateStudentsSubject } from 'src/utils/validate-students-subject';
 
 interface AddClassParams {
     date: string;
     description?: string;
     subjectId: string;
+    absentStudents?: Array<{ id: string; justificado: boolean }>;
 }
 
 function normalizeToDayMonthYear(date: string | Date): string {
     const d = new Date(date);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
 }
 
 export const AddClassController = async (params: AddClassParams): Promise<string> => {
@@ -20,6 +22,10 @@ export const AddClassController = async (params: AddClassParams): Promise<string
     await GetSubjectController({ subjectId });
 
     await assertNoClassOnSameDate(subjectId, date);
+
+    if (params.absentStudents) {
+        await validateStudentsSubject(subjectId, params.absentStudents);
+    }
 
     return await AddClassHelper(params);
 };

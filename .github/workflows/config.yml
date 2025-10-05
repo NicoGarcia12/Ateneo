@@ -1,0 +1,59 @@
+## Nombre del workflow, aparece en la UI de GitHub Actions
+name: Ateneo
+
+## Define cuándo se ejecuta el workflow: en cualquier push a cualquier rama
+on:
+  push: 
+
+jobs:
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    steps:
+      ## Descarga el código fuente del repo para que los siguientes pasos puedan acceder a él
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      ## Instala Node.js versión 18 (LTS, recomendado para 2025)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      ## Instala las dependencias del backend
+      - name: Install backend dependencies
+        run: |
+          cd Ateneo-backend-Express
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      ## Ejecuta Prettier en el backend
+      - name: Run Prettier check (backend)
+        run: |
+          cd Ateneo-backend-Express
+          npx prettier --check "**/*.{js,ts,tsx,jsx,css,scss,md,json,yml,yaml,html}"
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    steps:
+      ## Descarga el código fuente del repo para que los siguientes pasos puedan acceder a él
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      ## Instala Node.js versión 18 (LTS, recomendado para 2025)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      ## Instala las dependencias del frontend
+      - name: Install frontend dependencies
+        run: |
+          cd Ateneo-frontend-Angular
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      ## Ejecuta Prettier en el frontend
+      - name: Run Prettier check (frontend)
+        run: |
+          cd Ateneo-frontend-Angular
+          npx prettier --check "**/*.{js,ts,tsx,jsx,css,scss,md,json,yml,yaml,html}"

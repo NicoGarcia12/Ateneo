@@ -8,7 +8,13 @@ export const GetClassesBySubjectHelper = async (subjectId: string) => {
                 id: true,
                 date: true,
                 description: true,
-                subjectId: true
+                subjectId: true,
+                absences: {
+                    select: {
+                        justified: true,
+                        student: { select: { id: true, firstName: true, lastName: true } }
+                    }
+                }
             }
         });
 
