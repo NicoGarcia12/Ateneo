@@ -6,9 +6,8 @@ on:
   push: 
 
 jobs:
-  ateneo: # nombre interno del job, puedes agregar más pasos aquí en el futuro
-    name: Ateneo # nombre visible en la UI de GitHub Actions
-    ## El job corre en una VM Ubuntu (Linux)
+  backend:
+    name: Backend
     runs-on: ubuntu-latest
     steps:
       ## Descarga el código fuente del repo para que los siguientes pasos puedan acceder a él
@@ -21,11 +20,40 @@ jobs:
         with:
           node-version: 18
 
-      ## Instala las dependencias del proyecto usando npm (cambia a yarn si lo usás)
-      - name: Install dependencies
+      ## Instala las dependencias del backend
+      - name: Install backend dependencies
         run: |
+          cd Ateneo-backend-Express
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-      ## Ejecuta Prettier en modo chequeo sobre todos los archivos relevantes
-      - name: Run Prettier check
-        run: npx prettier --check "**/*.{js,ts,tsx,jsx,css,scss,md,json,yml,yaml,html}"
+      ## Ejecuta Prettier en el backend
+      - name: Run Prettier check (backend)
+        run: |
+          cd Ateneo-backend-Express
+          npx prettier --check "**/*.{js,ts,tsx,jsx,css,scss,md,json,yml,yaml,html}"
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    steps:
+      ## Descarga el código fuente del repo para que los siguientes pasos puedan acceder a él
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      ## Instala Node.js versión 18 (LTS, recomendado para 2025)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      ## Instala las dependencias del frontend
+      - name: Install frontend dependencies
+        run: |
+          cd Ateneo-frontend-Angular
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      ## Ejecuta Prettier en el frontend
+      - name: Run Prettier check (frontend)
+        run: |
+          cd Ateneo-frontend-Angular
+          npx prettier --check "**/*.{js,ts,tsx,jsx,css,scss,md,json,yml,yaml,html}"
