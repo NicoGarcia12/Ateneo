@@ -6,8 +6,9 @@ on:
   push: 
 
 jobs:
-  prettier:
-    ## El job se llama Ateneo y corre en una VM Ubuntu (Linux)
+  ateneo: # nombre interno del job, puedes agregar más pasos aquí en el futuro
+    name: Ateneo # nombre visible en la UI de GitHub Actions
+    ## El job corre en una VM Ubuntu (Linux)
     runs-on: ubuntu-latest
     steps:
       ## Descarga el código fuente del repo para que los siguientes pasos puedan acceder a él
