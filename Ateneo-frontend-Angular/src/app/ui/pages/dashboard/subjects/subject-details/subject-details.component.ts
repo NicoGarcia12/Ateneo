@@ -185,7 +185,9 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                                     try {
                                         (this.calendar as any).selected = null;
                                         this.calendar.updateTodaysDate();
-                                    } catch (e) {}
+                                    } catch (e) {
+                                        console.warn('No se pudo actualizar la fecha del calendario:', e);
+                                    }
                                 }
                             },
                             error: (err) => {
@@ -330,37 +332,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 this.notifyService.notify(message, 'error-notify');
             }
         });
-    }
-
-    public addClaseGenerica(): void {
-        if (!this.idSubject) {
-            this.notifyService.notify('No hay materia seleccionada', 'error-notify');
-            return;
-        }
-        const hoy = new Date();
-        const diasExtra = Math.floor(Math.random() * 31); // 0 a 30
-        const fecha = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + diasExtra);
-        const fechaISO = fecha.toISOString();
-        this.viewModel
-            .createClass(
-                {
-                    date: fechaISO,
-                    description: 'Clase generada automáticamente',
-                    absentStudents: [],
-                    subjectId: this.idSubject
-                },
-                this.idSubject
-            )
-            .subscribe({
-                next: (res: any) => {
-                    this.viewModel.loadClasses(this.idSubject);
-                    this.notifyService.notify(res?.message || 'Clase generada', 'success-notify');
-                },
-                error: (err: any) => {
-                    const message = err?.error?.message || 'Error al crear la clase';
-                    this.notifyService.notify(message, 'error-notify');
-                }
-            });
     }
 
     public confirmDeleteClass(): void {

@@ -3,8 +3,8 @@
         <div class="table-wrapper">
             <mat-table [dataSource]="studentsList" class="students-table">
                 <ng-container matColumnDef="identification">
-                    <mat-header-cell *matHeaderCellDef>Identificación</mat-header-cell>
-                    <mat-cell *matCellDef="let student">{{ student.id }}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef>DNI</mat-header-cell>
+                    <mat-cell *matCellDef="let student">{{ student.dni }}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="name">
@@ -43,7 +43,6 @@
     </div>
     <div class="buttons-container">
         <button class="primary-button full-width-btn" mat-flat-button (click)="addNico()">Agregar Nico</button>
-        <button class="primary-button full-width-btn" mat-flat-button (click)="addClaseGenerica()">Agregar Clase Genérica</button>
     </div>
 </div>
 

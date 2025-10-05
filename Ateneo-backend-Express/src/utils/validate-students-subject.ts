@@ -8,8 +8,6 @@ export async function validateStudentsSubject(subjectId: string, absentStudents:
     const studentIdsInSubject = studentsInSubject.map((s) => s.id);
 
     const invalid = absentStudents.find((s) => !studentIdsInSubject.includes(s.id));
-    console.log(studentIdsInSubject, absentStudents);
-    console.log(invalid);
 
     if (invalid) {
         throw new ValidationError(`El estudiante con ID ${invalid.id} no pertenece a esta materia`);
