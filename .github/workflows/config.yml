@@ -1,0 +1,30 @@
+## Nombre del workflow, aparece en la UI de GitHub Actions
+name: Ateneo
+
+## Define cuándo se ejecuta el workflow: en cualquier push a cualquier rama
+on:
+  push: 
+
+jobs:
+  prettier:
+    ## El job se llama Ateneo y corre en una VM Ubuntu (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      ## Descarga el código fuente del repo para que los siguientes pasos puedan acceder a él
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      ## Instala Node.js versión 18 (LTS, recomendado para 2025)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      ## Instala las dependencias del proyecto usando npm (cambia a yarn si lo usás)
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      ## Ejecuta Prettier en modo chequeo sobre todos los archivos relevantes
+      - name: Run Prettier check
+        run: npx prettier --check "**/*.{js,ts,tsx,jsx,css,scss,md,json,yml,yaml,html}"
