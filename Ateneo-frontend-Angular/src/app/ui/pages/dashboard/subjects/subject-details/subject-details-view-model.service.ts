@@ -5,6 +5,9 @@ import { GetClassesBySubjectUseCase } from '../../../../../domain/use-cases/clas
 import { Class as ClassEntity } from '../../../../../domain/entities/class';
 import { Student } from '../../../../../domain/entities/student';
 import { AddStudentUseCase, IAddStudentParams } from '../../../../../domain/use-cases/student/add-student-use-case';
+import { AddClassUseCase, IAddClassParams } from '../../../../../domain/use-cases/class/add-class-use-case';
+import { DeleteClassUseCase } from '../../../../../domain/use-cases/class/delete-class-use-case';
+import { UpdateClassUseCase, IUpdateClassParams } from '../../../../../domain/use-cases/class/update-class-use-case';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectDetailsViewModelService {
@@ -16,7 +19,10 @@ export class SubjectDetailsViewModelService {
     constructor(
         private getStudentsBySubjectUseCase: GetStudentsBySubjectUseCase,
         private addStudentUseCase: AddStudentUseCase,
-        private getClassesBySubjectUseCase: GetClassesBySubjectUseCase
+        private getClassesBySubjectUseCase: GetClassesBySubjectUseCase,
+        private addClassUseCase: AddClassUseCase,
+        private deleteClassUseCase: DeleteClassUseCase,
+        private updateClassUseCase: UpdateClassUseCase
     ) {}
 
     public loadStudents(subjectId: string): void {
@@ -78,5 +84,16 @@ export class SubjectDetailsViewModelService {
         student: Student & { justificado: boolean }
     ): Array<Student & { justificado: boolean }> {
         return selectedStudents.filter((s) => s.id !== student.id);
+    }
+
+    public updateClass(params: IUpdateClassParams) {
+        return this.updateClassUseCase.execute(params);
+    }
+    public deleteClass(id: string) {
+        return this.deleteClassUseCase.execute({ id });
+    }
+    public createClass(params: IAddClassParams, subjectId?: string) {
+        const payload = { ...params, subjectId: subjectId ?? params.subjectId };
+        return this.addClassUseCase.execute(payload);
     }
 }

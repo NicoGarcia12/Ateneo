@@ -6,7 +6,7 @@ export const SignUpProfessorHelper = async (email: string, password: string, fir
     try {
         await prisma.professor.create({
             data: {
-                id: generateId(),
+                id: generateId('professor'),
                 email: email,
                 firstName: firstName,
                 lastName: lastName,

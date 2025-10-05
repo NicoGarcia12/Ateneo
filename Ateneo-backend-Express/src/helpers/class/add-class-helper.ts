@@ -6,17 +6,26 @@ interface AddClassParams {
     date: string;
     description?: string;
     subjectId: string;
+    absentStudents?: Array<{ id: string; justificado: boolean }>;
 }
 
 export const AddClassHelper = async (params: AddClassParams): Promise<string> => {
-    const { date, description, subjectId } = params;
+    const { date, description, subjectId, absentStudents } = params;
     try {
+        const classId = generateId('class');
         await prisma.class.create({
             data: {
-                id: generateId(),
+                id: classId,
                 date,
                 description: description ?? null,
-                subject: { connect: { id: subjectId } }
+                subject: { connect: { id: subjectId } },
+                absences: { create: 
+                    absentStudents?.map((s) => ({
+                        id: generateId('absence'),
+                        studentId: s.id,
+                        justified: s.justificado ?? false
+                    })) || [] 
+                }
             }
         });
 

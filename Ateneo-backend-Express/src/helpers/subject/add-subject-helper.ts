@@ -13,7 +13,7 @@ export const AddSubjectHelper = async (params: AddSubjectParams) => {
     const { academicYear, name, institution, degree, professorId } = params;
     try {
         const data: any = {
-            id: generateId(),
+            id: generateId('subject'),
             name,
             academicYear,
             institution,

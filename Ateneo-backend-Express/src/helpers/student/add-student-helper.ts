@@ -15,7 +15,7 @@ export const AddStudentHelper = async (params: AddStudentParams): Promise<Studen
     try {
         const student = await prisma.student.create({
             data: {
-                id: generateId(),
+                id: generateId('student'),
                 firstName,
                 lastName,
                 dni: typeof dni === 'string' ? BigInt(dni) : dni,

@@ -7,6 +7,8 @@ import { DashboardTitleService } from '../../dashboard-title.service';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../../../shared/services/notify.service';
 import { MatCalendar } from '@angular/material/datepicker';
+import { Class } from 'src/app/domain/entities/class';
+import { Absence } from '../../../../../domain/entities/absence';
 
 @Component({
     selector: 'app-subject-details',
@@ -14,6 +16,7 @@ import { MatCalendar } from '@angular/material/datepicker';
     styleUrls: ['./subject-details.component.scss']
 })
 export class SubjectDetailsComponent implements OnInit, OnDestroy {
+    public selectedClassId: string | null = null;
     public loadedClass: {
         absentStudents: Array<Student & { justificado: boolean }>;
         description: string;
@@ -63,12 +66,10 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             this.viewModel.loadStudents(this.idSubject);
             this.viewModel.loadClasses(this.idSubject);
             this.studentsSubscription = this.viewModel.students$.subscribe((students) => {
-                console.log('Loaded students:', students);
                 this.studentsList = students;
                 this.filterStudents();
             });
             this.classesSubscription = this.viewModel.classes$.subscribe((classes) => {
-                console.log('Loaded classes:', classes);
                 this.specialDates = classes.map((c) => (c.date ? new Date(c.date) : null)).filter((d): d is Date => d !== null);
 
                 if (this.calendar) {
@@ -110,28 +111,88 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         return this.specialDates.some((s) => s.toISOString().split('T')[0] === fecha) ? 'special-date' : '';
     };
 
+    private formatDateToDDMMYYYY(date: Date): string {
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${dd}-${mm}-${yyyy}`;
+    }
+
     public onDateSelected(date: Date | null): void {
         if (!date) return;
-        const fecha = date.toISOString().split('T')[0];
-        const ocupada = this.specialDates.some((s) => s.toISOString().split('T')[0] === fecha);
+        const fecha = date.toISOString();
+        const fechaFormateada = this.formatDateToDDMMYYYY(date);
+        const ocupada = this.specialDates.some((s) => s.toISOString() === fecha);
+        if (ocupada) {
+            let classes: Array<Class> = [];
+            this.viewModel.classes$.subscribe(val => classes = val).unsubscribe();
+            const clase = classes.find((c) => c.date && c.date === fecha);
+            this.selectedClassId = clase?.id || null;
+            this.loadedClass.description = clase?.description || '';
+            this.loadedClass.absentStudents = (clase?.absences || []).map((abs: Absence) => {
+                const student = abs.student;
+                return {
+                    id: student?.id || abs.studentId,
+                    firstName: student?.firstName || '',
+                    lastName: student?.lastName || '',
+                    dni: student?.dni || '',
+                    absences: student?.absences || [],
+                    studentGrades: student?.studentGrades || [],
+                    subjects: student?.subjects || [],
+                    justificado: abs.justified
+                };
+            });
+        }
         this.currentDialogRef = this.openDialogService.openDialog({
-            title: ocupada ? 'Clase del día ' + fecha : 'Puedes cargar la clase y las inasistencias de ella:',
+            title: ocupada ? 'Clase del día ' + fechaFormateada : 'Puedes cargar la clase y las inasistencias de ella:',
             contentTemplate: ocupada ? this.modalOcupadaTemplate : this.modalLibreTemplate,
             secondaryButtonText: 'Cerrar',
             primaryButton: {
-                show: ocupada ? true : false,
-                text: ocupada ? (this.isEditingClass ? 'Guardar cambios' : 'Borrar clase') : '',
+                show: true,
+                text: ocupada ? (this.isEditingClass ? 'Guardar cambios' : 'Borrar clase') : 'Guardar clase',
                 disabled: false,
                 loading: false
             }
         });
         if (this.currentDialogRef && this.currentDialogRef.afterClosed) {
             this.currentDialogRef.afterClosed().subscribe((result: string | undefined) => {
-                if (result === 'PRIMARY' && ocupada) {
-                    if (this.isEditingClass) {
-                        this.saveClassChanges();
+                if (result === 'PRIMARY') {
+                    if (ocupada) {
+                        if (this.isEditingClass) {
+                            this.saveClassChanges();
+                        } else {
+                            this.confirmDeleteClass();
+                        }
                     } else {
-                        this.confirmDeleteClass();
+                        const payload = {
+                            date: fecha,
+                            description: this.classDescription,
+                            absentStudents: this.selectedStudents.map((s) => ({
+                                id: s.id,
+                                justificado: s.justificado
+                            })),
+                            subjectId: this.idSubject
+                        };
+                        this.viewModel.createClass(payload, this.idSubject).subscribe({
+                            next: (res) => {
+                                this.notifyService.notify(res?.message || 'Clase creada correctamente', 'success-notify');
+                                if (this.idSubject) {
+                                    this.viewModel.loadClasses(this.idSubject);
+                                }
+                                this.resetModalState();
+                                this.selectedDate = null;
+                                if (this.calendar) {
+                                    try {
+                                        (this.calendar as any).selected = null;
+                                        this.calendar.updateTodaysDate();
+                                    } catch (e) {}
+                                }
+                            },
+                            error: (err) => {
+                                const message = err?.error?.message || 'Error al crear la clase';
+                                this.notifyService.notify(message, 'error-notify');
+                            }
+                        });
                     }
                 }
                 this.resetModalState();
@@ -216,13 +277,16 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             console.warn('No subject id available');
             return;
         }
-        const random = Math.floor(Math.random() * 1000) + 1; // 1..1000
-        const dni = random.toString();
+        const nombres = ['Nico', 'Juan', 'Lucía', 'María', 'Pedro'];
+        const apellidos = ['García', 'Pérez', 'López', 'Martínez', 'Rodríguez'];
+        const randomNombre = nombres[Math.floor(Math.random() * nombres.length)];
+        const randomApellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+        const randomDni = (Math.floor(Math.random() * 1000) + 1).toString();
         this.viewModel
             .addStudent({
-                firstName: 'Nico',
-                lastName: 'Garcia',
-                dni: '5',
+                firstName: randomNombre,
+                lastName: randomApellido,
+                dni: randomDni,
                 subjectId: this.idSubject
             })
             .subscribe({
@@ -238,7 +302,65 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     public saveClassChanges(): void {
-        console.log('Guardando cambios de la clase...', this.loadedClass);
+        if (!this.selectedClassId) {
+            this.notifyService.notify('No hay clase seleccionada para editar', 'error-notify');
+            return;
+        }
+        const payload = {
+            classId: this.selectedClassId,
+            description: this.loadedClass.description,
+            absentStudents: this.loadedClass.absentStudents.map(s => ({
+                id: s.id,
+                justificado: s.justificado
+            }))
+        };
+        this.viewModel.updateClass(payload).subscribe({
+            next: (res) => {
+                this.notifyService.notify(res?.message || 'Clase actualizada correctamente', 'success-notify');
+                if (this.idSubject) {
+                    this.viewModel.loadClasses(this.idSubject);
+                }
+                this.isEditingClass = false;
+                if (this.currentDialogRef) {
+                    this.currentDialogRef.close();
+                }
+            },
+            error: (err) => {
+                const message = err?.error?.message || 'Error al actualizar la clase';
+                this.notifyService.notify(message, 'error-notify');
+            }
+        });
+    }
+
+    public addClaseGenerica(): void {
+        if (!this.idSubject) {
+            this.notifyService.notify('No hay materia seleccionada', 'error-notify');
+            return;
+        }
+        const hoy = new Date();
+        const diasExtra = Math.floor(Math.random() * 31); // 0 a 30
+        const fecha = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + diasExtra);
+        const fechaISO = fecha.toISOString();
+        this.viewModel
+            .createClass(
+                {
+                    date: fechaISO,
+                    description: 'Clase generada automáticamente',
+                    absentStudents: [],
+                    subjectId: this.idSubject
+                },
+                this.idSubject
+            )
+            .subscribe({
+                next: (res: any) => {
+                    this.viewModel.loadClasses(this.idSubject);
+                    this.notifyService.notify(res?.message || 'Clase generada', 'success-notify');
+                },
+                error: (err: any) => {
+                    const message = err?.error?.message || 'Error al crear la clase';
+                    this.notifyService.notify(message, 'error-notify');
+                }
+            });
     }
 
     public confirmDeleteClass(): void {
@@ -263,19 +385,25 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     public deleteClass(): void {
-        // Aquí iría la lógica para borrar la clase del backend
-        console.log('Borrando clase...');
-        // Por ejemplo: this.classService.deleteClass(classId)
-
-        // Remover la fecha seleccionada de specialDates para que no aparezca marcada
-        if (this.selectedDate) {
-            const fechaSeleccionada = this.selectedDate.toISOString().split('T')[0];
-            this.specialDates = this.specialDates.filter((date) => date.toISOString().split('T')[0] !== fechaSeleccionada);
+        if (!this.selectedClassId) {
+            this.notifyService.notify('No se encontró la clase a borrar', 'error-notify');
+            return;
         }
-
-        // Cerrar el modal principal después de borrar
-        if (this.currentDialogRef) {
-            this.currentDialogRef.close();
-        }
+        this.viewModel.deleteClass(this.selectedClassId).subscribe({
+            next: () => {
+                this.notifyService.notify('Clase eliminada correctamente', 'success-notify');
+                if (this.idSubject) {
+                    this.viewModel.loadClasses(this.idSubject);
+                }
+                this.selectedClassId = null;
+                if (this.currentDialogRef) {
+                    this.currentDialogRef.close();
+                }
+            },
+            error: (err) => {
+                const message = err?.error?.message || 'Error al borrar la clase';
+                this.notifyService.notify(message, 'error-notify');
+            }
+        });
     }
 }
