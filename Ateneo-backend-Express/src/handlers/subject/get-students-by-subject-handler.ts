@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { GetStudentsBySubjectController } from 'src/controllers/subject/get-students-by-subject-controller';
+import { GetStudentsBySubjectController } from 'src/controllers/student/get-students-by-subject-controller';
 import { handleControllerError } from 'src/utils/error-handler';
 
 export const GetStudentsBySubjectHandler = async (req: Request, res: Response): Promise<Response> => {

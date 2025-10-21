@@ -1,5 +1,5 @@
 import { Student } from '@prisma/client';
-import { GetStudentsBySubjectHelper } from 'src/helpers/subject/get-students-by-subject-helper';
+import { GetStudentsBySubjectHelper } from 'src/helpers/student/get-students-by-subject-helper';
 import { GetSubjectController } from 'src/controllers/subject/get-subject-controller';
 
 type SanitizedStudent = Omit<Student, 'dni'> & { dni: string };
@@ -15,10 +15,10 @@ export const GetStudentsBySubjectController = async (params: GetStudentsBySubjec
 
     const students = await GetStudentsBySubjectHelper(subjectId);
 
-    const studentsSanitized = students.map((student) => ({
+    const studentsSanitized: SanitizedStudent[] = students.map((student) => ({
         ...student,
         dni: student.dni?.toString()
-    }));
+    })) as SanitizedStudent[];
 
     return studentsSanitized;
 };
