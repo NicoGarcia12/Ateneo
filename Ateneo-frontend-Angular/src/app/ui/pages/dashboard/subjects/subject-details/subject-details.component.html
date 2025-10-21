@@ -42,7 +42,7 @@
         <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"></mat-calendar>
     </div>
     <div class="buttons-container">
-        <button class="primary-button full-width-btn" mat-flat-button (click)="addNico()">Agregar Nico</button>
+        <button class="primary-button full-width-btn" mat-flat-button (click)="addStudent()">Agregar alumno</button>
     </div>
 </div>
 
@@ -184,5 +184,11 @@
                 </div>
             </div>
         </ng-template>
+    </div>
+</ng-template>
+
+<ng-template #addStudentModal>
+    <div class="modal-add-student">
+        <h5>Input DNI</h5>
     </div>
 </ng-template>

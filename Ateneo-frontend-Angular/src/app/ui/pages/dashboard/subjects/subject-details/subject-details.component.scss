@@ -362,6 +362,12 @@
     margin-top: 4px;
 }
 
+.modal-add-student {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 @media (max-width: 768px) {
     .subject-details-container {
         grid-template-columns: 1fr;

@@ -36,9 +36,11 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public filteredStudentsForEdit: Student[] = [];
     public selectedStudents: Array<Student & { justificado: boolean }> = [];
     public studentSearch: string = '';
+    private addStudentDialogRef: any = null;
 
     @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
     @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
+    @ViewChild('addStudentModal') dniModalTemplate!: TemplateRef<any>;
     @ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
 
     public specialDates: Date[] = [];
@@ -374,6 +376,20 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             error: (err) => {
                 const message = err?.error?.message || 'Error al borrar la clase';
                 this.notifyService.notify(message, 'error-notify');
+            }
+        });
+    }
+
+    public addStudent(): void {
+        this.addStudentDialogRef = this.openDialogService.openDialog({
+            title: 'Agregar alumno',
+            contentTemplate: this.dniModalTemplate,
+            secondaryButtonText: 'Cerrar',
+            primaryButton: {
+                show: false,
+                text: '',
+                disabled: true,
+                loading: false
             }
         });
     }
