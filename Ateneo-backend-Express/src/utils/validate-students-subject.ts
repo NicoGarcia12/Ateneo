@@ -1,4 +1,4 @@
-import { GetStudentsBySubjectController } from 'src/controllers/subject/get-students-by-subject-controller';
+import { GetStudentsBySubjectController } from 'src/controllers/student/get-students-by-subject-controller';
 import { ValidationError } from './custom-errors';
 
 export async function validateStudentsSubject(subjectId: string, absentStudents: Array<{ id: string; justificado: boolean }>) {
