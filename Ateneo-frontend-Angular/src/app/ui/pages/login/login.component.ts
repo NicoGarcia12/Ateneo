@@ -7,6 +7,7 @@ import { NotifyService } from '../../shared/services/notify.service';
 import { sha256 } from 'js-sha256';
 import { TokenService } from '../../shared/services/token.service';
 import { DashboardTitleService } from '../dashboard/dashboard-title.service';
+import { emailValidator } from '../../../utils/validators/email.validator';
 
 @Component({
     selector: 'app-login',
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit {
         this.dashboardTitleService.setTitle(``);
 
         this.loginForm = this.fb.group({
-            email: ['', [Validators.required, Validators.email]],
+            email: ['', [Validators.required, emailValidator()]],
             password: ['', [Validators.required]]
         });
     }

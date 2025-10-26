@@ -9,6 +9,7 @@ import { NotifyService } from '../../../../shared/services/notify.service';
 import { MatCalendar } from '@angular/material/datepicker';
 import { Class } from 'src/app/domain/entities/class';
 import { Absence } from '../../../../../domain/entities/absence';
+import { isValidEmail } from '../../../../../utils/validators/email.validator';
 
 @Component({
     selector: 'app-subject-details',
@@ -36,9 +37,15 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public filteredStudentsForEdit: Student[] = [];
     public selectedStudents: Array<Student & { justificado: boolean }> = [];
     public studentSearch: string = '';
+    private addStudentDialogRef: any = null;
+    public dniInput: string = '';
+    public isSearchingStudent: boolean = false;
+    public searchedDni: string = '';
+    public foundStudent: Student | null = null;
 
     @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
     @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
+    @ViewChild('addStudentModal') dniModalTemplate!: TemplateRef<any>;
     @ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
 
     public specialDates: Date[] = [];
@@ -78,6 +85,40 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             });
         });
         this.dashboardTitleService.setTitle('Detalles de la materia');
+    }
+    public isStudentInSubject(student: Student): boolean {
+        return this.studentsList.some((s) => s.dni === student.dni);
+    }
+
+    public openAddStudentModal(): void {
+        this.resetAddStudentModalState();
+        this.addStudentDialogRef = this.openDialogService.openDialog({
+            title: 'Agregar alumno',
+            contentTemplate: this.dniModalTemplate,
+            secondaryButtonText: 'Cancelar',
+            primaryButton: {
+                show: false,
+                text: 'Agregar alumno',
+                disabled: true,
+                loading: false
+            }
+        });
+        if (this.addStudentDialogRef && this.addStudentDialogRef.afterClosed) {
+            this.addStudentDialogRef.afterClosed().subscribe((result: string | undefined) => {
+                if (result === 'PRIMARY') {
+                    this.addStudent();
+                }
+                this.resetAddStudentModalState();
+            });
+        }
+    }
+
+    private resetAddStudentModalState(): void {
+        this.dniInput = '';
+        this.searchedDni = '';
+        this.foundStudent = null;
+        this.newStudent = { firstName: '', lastName: '', email: '', phone: '' };
+        this.isSearchingStudent = false;
     }
 
     private studentsSubscription?: Subscription;
@@ -274,33 +315,55 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         this.filterStudents();
     }
 
-    public addNico(): void {
+    public addStudent(): void {
         if (!this.idSubject) {
-            console.warn('No subject id available');
             return;
         }
-        const nombres = ['Nico', 'Juan', 'Lucía', 'María', 'Pedro'];
-        const apellidos = ['García', 'Pérez', 'López', 'Martínez', 'Rodríguez'];
-        const randomNombre = nombres[Math.floor(Math.random() * nombres.length)];
-        const randomApellido = apellidos[Math.floor(Math.random() * apellidos.length)];
-        const randomDni = (Math.floor(Math.random() * 1000) + 1).toString();
-        this.viewModel
-            .addStudent({
-                firstName: randomNombre,
-                lastName: randomApellido,
-                dni: randomDni,
-                subjectId: this.idSubject
-            })
-            .subscribe({
-                next: () => {
-                    this.viewModel.loadStudents(this.idSubject);
-                    this.notifyService.notify('Alumno creado correctamente', 'success-notify');
-                },
-                error: (err) => {
-                    const message = err?.error?.message || 'Error al crear el alumno';
-                    this.notifyService.notify(message, 'error-notify');
-                }
-            });
+
+        if (this.foundStudent && this.isStudentInSubject(this.foundStudent)) {
+            return;
+        }
+
+        if (!this.foundStudent && !this.isNewStudentFormValid) {
+            return;
+        }
+
+        const addStudentObservable = this.foundStudent
+            ? this.viewModel.addStudentToSubject({
+                  studentId: this.foundStudent.id,
+                  subjectId: this.idSubject
+              })
+            : this.viewModel.addStudent({
+                  firstName: this.newStudent.firstName,
+                  lastName: this.newStudent.lastName,
+                  dni: this.searchedDni,
+                  email: this.newStudent.email || '',
+                  phone: this.newStudent.phone || '',
+                  subjectId: this.idSubject
+              });
+
+        addStudentObservable.subscribe({
+            next: () => {
+                this.handleAddStudentSuccess();
+            },
+            error: (err) => {
+                this.handleAddStudentError(err);
+            }
+        });
+    }
+
+    private handleAddStudentSuccess(): void {
+        this.viewModel.loadStudents(this.idSubject);
+        this.notifyService.notify('Alumno agregado correctamente', 'success-notify');
+        this.resetAddStudentModalState();
+        if (this.addStudentDialogRef) {
+            this.addStudentDialogRef.close();
+        }
+    }
+
+    private handleAddStudentError(err: any): void {
+        const message = err?.error?.message || 'Error al agregar el alumno';
+        this.notifyService.notify(message, 'error-notify');
     }
 
     public saveClassChanges(): void {
@@ -376,5 +439,77 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 this.notifyService.notify(message, 'error-notify');
             }
         });
+    }
+
+    public newStudent = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: ''
+    };
+
+    public get isFirstNameInvalid(): boolean {
+        return Boolean(this.searchedDni && !this.foundStudent && this.newStudent.firstName.length === 0);
+    }
+
+    public get isLastNameInvalid(): boolean {
+        return Boolean(this.searchedDni && !this.foundStudent && this.newStudent.lastName.length === 0);
+    }
+
+    public get isEmailInvalid(): boolean {
+        // Muestra error si hay texto Y es inválido
+        return this.newStudent.email.length > 0 && !isValidEmail(this.newStudent.email);
+    }
+
+    public get isNewStudentFormValid(): boolean {
+        const hasRequiredFields = Boolean(this.newStudent && this.newStudent.firstName && this.newStudent.lastName && this.searchedDni);
+        const hasValidEmail = isValidEmail(this.newStudent.email);
+        return hasRequiredFields && hasValidEmail;
+    }
+
+    public searchStudentByDni(): void {
+        // Prevenir ejecución si el botón está deshabilitado
+        if (this.isSearchingStudent || !this.dniInput) {
+            return;
+        }
+
+        const dni = this.dniInput.trim();
+
+        // Validar que sea numérico
+        if (!dni || !/^\d+$/.test(dni)) {
+            this.notifyService.notify('Por favor, ingresa un DNI válido (solo números)', 'error-notify');
+
+            return;
+        }
+
+        this.isSearchingStudent = true;
+        this.searchedDni = dni;
+
+        this.viewModel.getStudentByDni(dni).subscribe({
+            next: (student) => {
+                this.isSearchingStudent = false;
+                this.foundStudent = student;
+                if (this.addStudentDialogRef && this.addStudentDialogRef.componentInstance) {
+                    this.addStudentDialogRef.componentInstance.data.primaryButton.show = true;
+                    this.addStudentDialogRef.componentInstance.data.primaryButton.disabled = this.isStudentInSubject(student);
+                }
+            },
+            error: () => {
+                this.isSearchingStudent = false;
+                this.foundStudent = null;
+                // Si el modal está abierto y no se encontró el alumno, mostrar el formulario y controlar el botón por validez
+                if (this.addStudentDialogRef && this.addStudentDialogRef.componentInstance) {
+                    this.addStudentDialogRef.componentInstance.data.primaryButton.show = true;
+                    this.addStudentDialogRef.componentInstance.data.primaryButton.disabled = !this.isNewStudentFormValid;
+                }
+            }
+        });
+    }
+
+    // Llamar este método en cada cambio de input del formulario de nuevo estudiante
+    public onNewStudentFormChange(): void {
+        if (this.addStudentDialogRef && this.addStudentDialogRef.componentInstance && !this.foundStudent) {
+            this.addStudentDialogRef.componentInstance.data.primaryButton.disabled = !this.isNewStudentFormValid;
+        }
     }
 }

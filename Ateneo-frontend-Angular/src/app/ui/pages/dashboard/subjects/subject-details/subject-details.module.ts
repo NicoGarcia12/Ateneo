@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SubmitModule } from '../../../../components/submit/submit.module';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
     imports: [
@@ -24,6 +26,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         FormsModule,
         MatButtonModule,
         MatCheckboxModule,
+        SubmitModule,
+        MatChipsModule,
         MatIconModule
     ],
     exports: [SubjectDetailsComponent],

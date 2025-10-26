@@ -8,6 +8,11 @@ import { AddStudentUseCase, IAddStudentParams } from '../../../../../domain/use-
 import { AddClassUseCase, IAddClassParams } from '../../../../../domain/use-cases/class/add-class-use-case';
 import { DeleteClassUseCase } from '../../../../../domain/use-cases/class/delete-class-use-case';
 import { UpdateClassUseCase, IUpdateClassParams } from '../../../../../domain/use-cases/class/update-class-use-case';
+import { GetStudentByDniUseCase } from '../../../../../domain/use-cases/student/get-student-by-dni-use-case';
+import {
+    AddStudentToSubjectUseCase,
+    IAddStudentToSubjectParams
+} from '../../../../../domain/use-cases/subject/add-student-to-subject-use-case';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectDetailsViewModelService {
@@ -19,9 +24,11 @@ export class SubjectDetailsViewModelService {
     constructor(
         private getStudentsBySubjectUseCase: GetStudentsBySubjectUseCase,
         private addStudentUseCase: AddStudentUseCase,
+        private addStudentToSubjectUseCase: AddStudentToSubjectUseCase,
         private getClassesBySubjectUseCase: GetClassesBySubjectUseCase,
         private addClassUseCase: AddClassUseCase,
         private deleteClassUseCase: DeleteClassUseCase,
+        private getStudentByDniUseCase: GetStudentByDniUseCase,
         private updateClassUseCase: UpdateClassUseCase
     ) {}
 
@@ -49,6 +56,14 @@ export class SubjectDetailsViewModelService {
 
     public addStudent(params: IAddStudentParams): Observable<Student> {
         return this.addStudentUseCase.execute(params);
+    }
+
+    public addStudentToSubject(params: IAddStudentToSubjectParams): Observable<Student> {
+        return this.addStudentToSubjectUseCase.execute(params);
+    }
+
+    public getStudentByDni(dni: string): Observable<Student> {
+        return this.getStudentByDniUseCase.execute({ dni });
     }
 
     public filterStudents(

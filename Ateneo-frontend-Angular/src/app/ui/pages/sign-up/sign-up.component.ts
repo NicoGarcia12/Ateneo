@@ -8,6 +8,7 @@ import { NotifyService } from '../../shared/services/notify.service';
 import { sha256 } from 'js-sha256';
 import { TokenService } from '../../shared/services/token.service';
 import { DashboardTitleService } from '../dashboard/dashboard-title.service';
+import { emailValidator } from '../../../utils/validators/email.validator';
 
 @Component({
     selector: 'app-sign-up',
@@ -40,7 +41,7 @@ export class SignUpComponent implements OnInit {
         this.signUpForm = this.fb.group({
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
-            email: ['', [Validators.required, Validators.email]],
+            email: ['', [Validators.required, emailValidator()]],
             password: ['', [Validators.required, Validators.minLength(10), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$/)]]
         });
 
