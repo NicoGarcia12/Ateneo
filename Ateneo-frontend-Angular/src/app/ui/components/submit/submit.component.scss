@@ -6,6 +6,10 @@
     align-items: center;
 }
 
+.full-width-button {
+    width: 100%;
+}
+
 :host ::ng-deep .spinner.primary-spinner.mat-mdc-progress-spinner {
     --mdc-circular-progress-active-indicator-color: #f5f5f5;
 }

@@ -42,7 +42,7 @@
         <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"></mat-calendar>
     </div>
     <div class="buttons-container">
-        <button class="primary-button full-width-btn" mat-flat-button (click)="addStudent()">Agregar alumno</button>
+        <button class="primary-button full-width-btn" mat-flat-button (click)="openAddStudentModal()">Agregar alumno</button>
     </div>
 </div>
 
@@ -108,7 +108,7 @@
                 </div>
             </div>
         </div>
-        <mat-form-field appearance="outline" class="full-width class-description" style="width: 100%">
+        <mat-form-field appearance="outline" class="full-width class-description">
             <mat-label>Descripción de la clase</mat-label>
             <textarea
                 matInput
@@ -172,11 +172,7 @@
             <div class="alt-modal-content">
                 <h3>Inasistencias seleccionadas</h3>
                 <div *ngIf="selectedStudents.length === 0">No hay estudiantes seleccionados.</div>
-                <div
-                    *ngFor="let student of selectedStudents"
-                    class="selected-student-item"
-                    style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px"
-                >
+                <div *ngFor="let student of selectedStudents" class="selected-student-item">
                     <mat-icon (click)="removeSelectedStudent(student)">close</mat-icon>
                     <span>{{ student.firstName }} {{ student.lastName }}</span>
                     <span class="justificado-label">Justificado</span>
@@ -189,6 +185,88 @@
 
 <ng-template #addStudentModal>
     <div class="modal-add-student">
-        <h5>Input DNI</h5>
+        <p class="student-data-title">Ingreso del DNI del alumno</p>
+        <div class="search-student-container">
+            <mat-form-field appearance="outline" class="dni-input">
+                <mat-label>DNI</mat-label>
+                <input matInput placeholder="Ingrese el DNI" [(ngModel)]="dniInput" type="text" />
+            </mat-form-field>
+            <app-submit
+                type="button"
+                [disabled]="isSearchingStudent || !dniInput"
+                [loading]="isSearchingStudent"
+                [withText]="true"
+                [class]="'primary'"
+                (click)="searchStudentByDni()"
+            >
+                Buscar
+            </app-submit>
+        </div>
+
+        <div class="search-result-container" *ngIf="searchedDni">
+            <div class="centered-modal-content">
+                <mat-chip color="primary" selected class="dni-chip">DNI buscado: {{ searchedDni }}</mat-chip>
+                <div *ngIf="foundStudent" class="student-data">
+                    <p class="student-data-title">Datos del estudiante</p>
+                    <div>Nombre: {{ foundStudent.firstName }}</div>
+                    <div>Apellido: {{ foundStudent.lastName }}</div>
+                    <div>Email: {{ foundStudent.email ? foundStudent.email : 'No tiene' }}</div>
+                    <div>Teléfono: {{ foundStudent.phone ? foundStudent.phone : 'No tiene' }}</div>
+                    <div *ngIf="foundStudent && isStudentInSubject(foundStudent)" class="already-in-subject-chip">
+                        El alumno ya está en la materia
+                    </div>
+                </div>
+                <div *ngIf="!foundStudent" class="student-create-form">
+                    <p class="create-student-title">Crear nuevo estudiante</p>
+                    <div class="form-fields-container">
+                        <mat-form-field appearance="outline" class="student-form-field">
+                            <mat-label>Nombre</mat-label>
+                            <input
+                                matInput
+                                placeholder="Nombre"
+                                [(ngModel)]="newStudent.firstName"
+                                (ngModelChange)="onNewStudentFormChange()"
+                                [class.input-error]="isFirstNameInvalid"
+                            />
+                        </mat-form-field>
+                        <div class="error-message" *ngIf="isFirstNameInvalid">El nombre es obligatorio</div>
+                        <mat-form-field appearance="outline" class="student-form-field">
+                            <mat-label>Apellido</mat-label>
+                            <input
+                                matInput
+                                placeholder="Apellido"
+                                [(ngModel)]="newStudent.lastName"
+                                (ngModelChange)="onNewStudentFormChange()"
+                                [class.input-error]="isLastNameInvalid"
+                            />
+                        </mat-form-field>
+                        <div class="error-message" *ngIf="isLastNameInvalid">El apellido es obligatorio</div>
+                        <mat-form-field appearance="outline" class="student-form-field">
+                            <mat-label>Email</mat-label>
+                            <input
+                                matInput
+                                placeholder="Email"
+                                [(ngModel)]="newStudent.email"
+                                (ngModelChange)="onNewStudentFormChange()"
+                                [class.input-error]="isEmailInvalid"
+                            />
+                        </mat-form-field>
+                        <div class="error-message" *ngIf="isEmailInvalid">El email debe tener el formato: ejemplo&#64;dominio.com</div>
+                        <mat-form-field appearance="outline" class="student-form-field">
+                            <mat-label>Teléfono</mat-label>
+                            <input
+                                matInput
+                                placeholder="Teléfono"
+                                [(ngModel)]="newStudent.phone"
+                                (ngModelChange)="onNewStudentFormChange()"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="foundStudent && isStudentInSubject(foundStudent)" class="already-in-subject-message">
+                        El alumno ya está en la materia
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-template>

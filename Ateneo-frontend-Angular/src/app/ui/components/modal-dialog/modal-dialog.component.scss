@@ -58,6 +58,8 @@
     align-items: center;
     width: 100%;
     padding-top: 0;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .button-actions .button-cancel {
@@ -103,8 +105,15 @@
 }
 
 @media (max-width: 420px) {
-    .button-actions {
+    .button-actions-row {
+        flex-direction: column;
         gap: 16px;
+        align-items: stretch;
+    }
+
+    .button-actions .button-cancel,
+    .button-actions .button-submit {
+        width: 100%;
     }
 }
 

@@ -16,6 +16,9 @@ export class ModalDialogComponent implements AfterViewInit {
     ) {}
 
     public onPrimaryButtonClick(): void {
+        if (this.data.primaryButton?.disabled) {
+            return;
+        }
         this.dialogRef.close('PRIMARY');
     }
 

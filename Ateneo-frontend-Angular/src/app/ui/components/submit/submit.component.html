@@ -1,5 +1,5 @@
 <button
-    type="{{ type }}"
+    type="submit"
     mat-flat-button
     [disabled]="disabled"
     [ngClass]="{
@@ -7,7 +7,7 @@
         'secondary-button': class === 'secondary' && !disabled,
         'disabled-button': disabled
     }"
-    class="button-content"
+    class="button-content full-width-button"
 >
     <ng-container *ngIf="loading; else content">
         <mat-spinner

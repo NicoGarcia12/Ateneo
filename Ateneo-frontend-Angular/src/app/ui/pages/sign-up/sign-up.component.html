@@ -22,7 +22,9 @@
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email" placeholder="Email" />
                     <mat-error *ngIf="hasError('email', 'required')"> El email es requerido </mat-error>
-                    <mat-error *ngIf="hasError('email', 'email')"> El email no es válido </mat-error>
+                    <mat-error *ngIf="hasError('email', 'invalidEmail')">
+                        El email debe tener el formato: ejemplo&#64;dominio.com
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
