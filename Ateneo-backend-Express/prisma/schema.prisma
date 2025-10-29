@@ -95,5 +95,5 @@ model StudentGrade {
 enum GradeType {
   Final
   Weighted
-  Arithmetic
+  Average
 }
