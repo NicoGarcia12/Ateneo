@@ -1,7 +1,7 @@
 import { prisma } from 'src/config/prisma';
 import { GradeType } from '@prisma/client';
 import { CalculateWeightedGradeHelper } from './calculate-weighted-grade-helper';
-import { CalculateArithmeticGradeHelper } from './calculate-arithmetic-grade-helper';
+import { CalculateAverageGradeHelper } from './calculate-average-grade-helper';
 
 export const RecalculateDependentGradesHelper = async (baseGradeId: string, studentId: string): Promise<void> => {
     const dependentRelationships = await prisma.gradeRelationship.findMany({
@@ -18,8 +18,8 @@ export const RecalculateDependentGradesHelper = async (baseGradeId: string, stud
 
         if (derivedGrade.type === GradeType.Weighted) {
             calculatedValue = await CalculateWeightedGradeHelper(derivedGrade.id, studentId);
-        } else if (derivedGrade.type === GradeType.Arithmetic) {
-            calculatedValue = await CalculateArithmeticGradeHelper(derivedGrade.id, studentId);
+        } else if (derivedGrade.type === GradeType.Average) {
+            calculatedValue = await CalculateAverageGradeHelper(derivedGrade.id, studentId);
         }
 
         if (calculatedValue !== null) {

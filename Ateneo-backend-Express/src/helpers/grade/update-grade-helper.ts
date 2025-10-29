@@ -13,6 +13,7 @@ export const UpdateGradeHelper = async (params: UpdateGradeHelperParams) => {
     const { id, name, date, description, baseGrades } = params;
 
     const updateData: any = {};
+
     if (name !== undefined) updateData.name = name;
     if (date !== undefined) updateData.date = date;
     if (description !== undefined) updateData.description = description;

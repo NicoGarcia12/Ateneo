@@ -15,4 +15,4 @@ export interface Grade {
     baseGradeRel: GradeRelationship[];
 }
 
-export type GradeType = 'Final' | 'Weighted' | 'Arithmetic';
+export type GradeType = 'Final' | 'Weighted' | 'Promedio';

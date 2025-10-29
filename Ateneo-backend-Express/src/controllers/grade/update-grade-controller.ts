@@ -22,12 +22,15 @@ export const UpdateGradeController = async (params: UpdateGradeParams) => {
 
         if (grade.type === GradeType.Weighted) {
             let totalWeight = 0;
+
             for (const bg of baseGrades) {
                 if (!Number.isInteger(bg.weight) || bg.weight < 0 || bg.weight > 99) {
                     throw new ValidationError('Cada peso debe ser un entero entre 0 y 99');
                 }
+
                 totalWeight += bg.weight;
             }
+
             if (totalWeight !== 100) {
                 throw new ValidationError('Los pesos de las notas base deben sumar 100');
             }

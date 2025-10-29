@@ -27,8 +27,8 @@ export const AddGradeController = async (params: AddGradeParams) => {
         throw new ValidationError('Las notas ponderadas requieren al menos una nota base');
     }
 
-    if (type === GradeType.Arithmetic && (!baseGrades || baseGrades.length === 0)) {
-        throw new ValidationError('Las notas aritméticas requieren al menos una nota base');
+    if (type === GradeType.Promedio && (!baseGrades || baseGrades.length === 0)) {
+        throw new ValidationError('Las notas de promedio requieren al menos una nota base');
     }
 
     if (type === GradeType.Weighted && baseGrades) {
@@ -36,13 +36,14 @@ export const AddGradeController = async (params: AddGradeParams) => {
 
         for (const bg of baseGrades) {
             if (!Number.isInteger(bg.weight) || bg.weight < 1 || bg.weight > 99) {
-                throw new ValidationError('Cada peso debe ser un entero entre 1 y 99');
+                throw new ValidationError('Cada porcentaje debe ser un entero entre 1 y 99');
             }
 
             totalWeight += bg.weight;
         }
+
         if (totalWeight !== 100) {
-            throw new ValidationError('Los pesos de las notas base deben sumar 100');
+            throw new ValidationError('Los porcentajes de las notas base deben sumar 100');
         }
 
         for (const bg of baseGrades) {

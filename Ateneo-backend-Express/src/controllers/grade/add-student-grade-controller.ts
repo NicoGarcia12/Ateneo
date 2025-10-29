@@ -20,12 +20,11 @@ export const AddStudentGradeController = async (params: AddStudentGradeParams) =
 
     if (!gradeDb) throw new ValidationError('La nota no existe');
 
-    if (gradeDb.type === 'Weighted' || gradeDb.type === 'Arithmetic') {
-        throw new ValidationError('No se puede agregar una nota manual a una nota calculada (Ponderada o Aritmética)');
+    if (gradeDb.type === 'Weighted' || gradeDb.type === 'Promedio') {
+        throw new ValidationError('No se puede agregar una nota manual a una nota calculada (Ponderada o Promedio)');
     }
 
     const subjectId: string = gradeDb.subjectId;
-
     const students = await GetStudentsBySubjectController({ subjectId });
     const found = students.find((s: { id: string }) => s.id === studentId);
 
