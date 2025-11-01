@@ -2,6 +2,7 @@ import { AddStudentGradeHelper } from 'src/helpers/grade/add-student-grade-helpe
 import { GetStudentsBySubjectController } from 'src/controllers/student/get-students-by-subject-controller';
 import { ValidationError } from 'src/utils/custom-errors';
 import { GetGradeHelper } from 'src/helpers/grade/get-grade-helper';
+import { GradeType } from '@prisma/client';
 
 export interface AddStudentGradeParams {
     gradeId: string;
@@ -20,7 +21,7 @@ export const AddStudentGradeController = async (params: AddStudentGradeParams) =
 
     if (!gradeDb) throw new ValidationError('La nota no existe');
 
-    if (gradeDb.type === 'Weighted' || gradeDb.type === 'Promedio') {
+    if (gradeDb.type === GradeType.Weighted || gradeDb.type === GradeType.Average) {
         throw new ValidationError('No se puede agregar una nota manual a una nota calculada (Ponderada o Promedio)');
     }
 

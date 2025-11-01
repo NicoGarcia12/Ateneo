@@ -27,7 +27,7 @@ export const AddGradeController = async (params: AddGradeParams) => {
         throw new ValidationError('Las notas ponderadas requieren al menos una nota base');
     }
 
-    if (type === GradeType.Promedio && (!baseGrades || baseGrades.length === 0)) {
+    if (type === GradeType.Average && (!baseGrades || baseGrades.length === 0)) {
         throw new ValidationError('Las notas de promedio requieren al menos una nota base');
     }
 
