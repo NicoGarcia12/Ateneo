@@ -1,18 +1,11 @@
-import { GradeRelationship } from './grade-relationship';
-import { StudentGrade } from './student-grade';
-import { Subject } from './subject';
+export type GradeType = 'Final' | 'Weighted' | 'Average';
 
 export interface Grade {
     id: string;
     name: string;
     type: GradeType;
     date: string;
-    description: string;
+    description?: string;
     subjectId: string;
-    subject?: Subject;
-    studentGrades: StudentGrade[];
-    derivedGradeRel: GradeRelationship[];
-    baseGradeRel: GradeRelationship[];
+    baseGrades?: Array<{ gradeId: string; weight: number }>;
 }
-
-export type GradeType = 'Final' | 'Weighted' | 'Average';

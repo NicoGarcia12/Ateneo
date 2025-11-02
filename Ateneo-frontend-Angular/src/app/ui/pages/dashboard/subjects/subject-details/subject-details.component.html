@@ -43,6 +43,14 @@
     </div>
     <div class="buttons-container">
         <button class="primary-button full-width-btn" mat-flat-button (click)="openAddStudentModal()">Agregar alumno</button>
+        <app-add-grade-button
+            [grades]="viewModel.grades$ | async"
+            [subjectId]="idSubject"
+            (gradeAdded)="onDataChanged()"
+        ></app-add-grade-button>
+        <button class="primary-button full-width-btn" mat-flat-button>Generar informe</button>
+        <button class="primary-button full-width-btn" mat-flat-button>Editar materia</button>
+        <button class="primary-button full-width-btn" mat-flat-button>Eliminar materia</button>
     </div>
 </div>
 
@@ -53,7 +61,6 @@
         </button>
         <div class="clase-cargada-inasistencias">
             <h4>Inasistencias</h4>
-
             <div *ngIf="isEditingClass" class="edit-students-section">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Agregar estudiante con inasistencia</mat-label>

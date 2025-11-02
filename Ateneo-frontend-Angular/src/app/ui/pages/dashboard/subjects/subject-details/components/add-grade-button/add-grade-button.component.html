@@ -1,0 +1,87 @@
+<button class="primary-button add-grade-button" mat-flat-button (click)="openModal()">Agregar nota</button>
+
+<ng-template #addGradeModal>
+    <div class="modal-add-grade">
+        <p class="grade-data-title">Datos de la nota</p>
+        <div class="form-fields-container">
+            <mat-form-field appearance="outline" class="grade-form-field">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre de la nota" [(ngModel)]="gradeData.name" (ngModelChange)="onFormChange()" required />
+                <mat-error>El nombre es obligatorio</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="grade-form-field">
+                <mat-label>Tipo de nota</mat-label>
+                <mat-select [(ngModel)]="gradeData.type" (ngModelChange)="onTypeChange()" required>
+                    <mat-option value="Final">Final</mat-option>
+                    <mat-option value="Weighted">Ponderada</mat-option>
+                    <mat-option value="Average">Promedio</mat-option>
+                </mat-select>
+                <mat-error>El tipo es obligatorio</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="grade-form-field">
+                <mat-label>Fecha</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker"
+                    placeholder="Fecha"
+                    [(ngModel)]="gradeData.date"
+                    (ngModelChange)="onFormChange()"
+                    required
+                />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error>La fecha es obligatoria</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="grade-form-field">
+                <mat-label>Descripción (opcional)</mat-label>
+                <textarea matInput placeholder="Descripción" [(ngModel)]="gradeData.description"></textarea>
+            </mat-form-field>
+
+            <!-- Sección de notas base para Weighted y Average -->
+            <div *ngIf="gradeData.type === 'Weighted' || gradeData.type === 'Average'" class="base-grades-section">
+                <div class="info-message">
+                    <strong>Notas relacionadas:</strong> Seleccione al menos 2 notas base.
+                    <span *ngIf="gradeData.type === 'Weighted'"> Asigne porcentajes de peso que sumen 100.</span>
+                </div>
+
+                <mat-form-field appearance="outline" class="grade-select-field">
+                    <mat-label>Seleccionar nota</mat-label>
+                    <mat-select [value]="null" (selectionChange)="onBaseGradeSelect($event.value)">
+                        <mat-option *ngFor="let grade of availableGrades" [value]="grade.id">
+                            {{ grade.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="baseGrades.length > 0" class="base-grades-list">
+                    <div *ngFor="let baseGrade of baseGrades; let i = index" class="base-grade-item">
+                        <div class="base-grade-row">
+                            <button mat-icon-button color="warn" (click)="removeBaseGrade(i)" class="remove-btn">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <span class="grade-name-label">{{ baseGrade.gradeName }}</span>
+                        </div>
+                        <ng-container *ngIf="gradeData.type === 'Weighted'">
+                            <mat-form-field appearance="outline" class="weight-field">
+                                <mat-label>Peso</mat-label>
+                                <input
+                                    matInput
+                                    type="number"
+                                    min="1"
+                                    max="99"
+                                    [(ngModel)]="baseGrade.weight"
+                                    (ngModelChange)="onWeightChange()"
+                                />
+                                <mat-error>El peso debe estar entre 1 y 99</mat-error>
+                            </mat-form-field>
+                        </ng-container>
+                    </div>
+                    <div *ngIf="gradeData.type === 'Weighted'" class="weight-total" [class.weight-error]="getTotalWeight() !== 100">
+                        Total: {{ getTotalWeight() }}%
+                        <span *ngIf="getTotalWeight() !== 100" class="error-text"> (debe ser 100)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

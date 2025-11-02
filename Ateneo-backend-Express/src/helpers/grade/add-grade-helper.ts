@@ -6,13 +6,13 @@ export interface AddGradeHelperParams {
     name: string;
     type: GradeType;
     date: Date;
-    description: string;
+    description?: string;
     subjectId: string;
     baseGrades: Array<{ gradeId: string; weight: number }>;
 }
 
 export const AddGradeHelper = async (params: AddGradeHelperParams) => {
-    const { name, type, date, description, subjectId, baseGrades } = params;
+    const { name, type, date, description = '', subjectId, baseGrades } = params;
 
     const grade = await prisma.grade.create({
         data: {

@@ -42,6 +42,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public isSearchingStudent: boolean = false;
     public searchedDni: string = '';
     public foundStudent: Student | null = null;
+    private refreshInterval: any = null;
+    private readonly REFRESH_INTERVAL_MS = 60000; // 60 segundos
 
     @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
     @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
@@ -70,8 +72,9 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             }
             this.idSubject = params.get('idSubject') as string;
 
-            this.viewModel.loadStudents(this.idSubject);
-            this.viewModel.loadClasses(this.idSubject);
+            this.loadAllData();
+            this.startAutoRefresh();
+
             this.studentsSubscription = this.viewModel.students$.subscribe((students) => {
                 this.studentsList = students;
                 this.filterStudents();
@@ -85,6 +88,31 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             });
         });
         this.dashboardTitleService.setTitle('Detalles de la materia');
+    }
+
+    private loadAllData(): void {
+        this.viewModel.loadStudents(this.idSubject);
+        this.viewModel.loadClasses(this.idSubject);
+        this.viewModel.loadGrades(this.idSubject);
+    }
+
+    private startAutoRefresh(): void {
+        this.stopAutoRefresh();
+        this.refreshInterval = setInterval(() => {
+            this.loadAllData();
+        }, this.REFRESH_INTERVAL_MS);
+    }
+
+    private stopAutoRefresh(): void {
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+            this.refreshInterval = null;
+        }
+    }
+
+    public onDataChanged(): void {
+        this.loadAllData();
+        this.startAutoRefresh();
     }
     public isStudentInSubject(student: Student): boolean {
         return this.studentsList.some((s) => s.dni === student.dni);
@@ -127,6 +155,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public ngOnDestroy(): void {
         this.studentsSubscription?.unsubscribe();
         this.classesSubscription?.unsubscribe();
+        this.stopAutoRefresh();
     }
 
     public filterStudents(): void {

@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SubmitModule } from '../../../../components/submit/submit.module';
+import { AddGradeButtonModule } from 'src/app/ui/pages/dashboard/subjects/subject-details/components/add-grade-button/add-grade-button.module';
 import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { MatChipsModule } from '@angular/material/chips';
         MatCheckboxModule,
         SubmitModule,
         MatChipsModule,
+        AddGradeButtonModule,
         MatIconModule
     ],
     exports: [SubjectDetailsComponent],
