@@ -12,19 +12,11 @@
                     <mat-cell *matCellDef="let student">{{ student.firstName }} {{ student.lastName }}</mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="grade1">
-                    <mat-header-cell *matHeaderCellDef>Nota 1</mat-header-cell>
-                    <mat-cell *matCellDef="let student">10</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="grade2">
-                    <mat-header-cell *matHeaderCellDef>Nota 2</mat-header-cell>
-                    <mat-cell *matCellDef="let student">10</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="gradeN">
-                    <mat-header-cell *matHeaderCellDef>Nota n</mat-header-cell>
-                    <mat-cell *matCellDef="let student">10</mat-cell>
+                <ng-container *ngFor="let grade of gradesList" [matColumnDef]="grade.id">
+                    <mat-header-cell *matHeaderCellDef>
+                        <span class="grade-header" [title]="grade.name">{{ grade.name.length > 12 ? (grade.name | slice:0:12) + '...' : grade.name }}</span>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let student">-</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="attendance">

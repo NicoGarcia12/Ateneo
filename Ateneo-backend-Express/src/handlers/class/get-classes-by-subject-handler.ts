@@ -8,7 +8,7 @@ export const GetClassesBySubjectHandler = async (req: Request, res: Response): P
 
         const classes = await GetClassesBySubjectController({ subjectId });
 
-        return res.status(200).json({ classes });
+        return res.status(200).json(classes);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

@@ -8,7 +8,7 @@ export const GetGradesBySubjectHandler = async (req: Request, res: Response): Pr
 
         const grades = await GetGradesBySubjectController({ subjectId });
 
-        return res.status(200).json({ grades });
+        return res.status(200).json(grades);
     } catch (error) {
         return handleControllerError(error, res);
     }

@@ -10,6 +10,8 @@ import { MatCalendar } from '@angular/material/datepicker';
 import { Class } from 'src/app/domain/entities/class';
 import { Absence } from '../../../../../domain/entities/absence';
 import { isValidEmail } from '../../../../../utils/validators/email.validator';
+import { Grade } from 'src/app/domain/entities/grade';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     selector: 'app-subject-details',
@@ -43,16 +45,17 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public searchedDni: string = '';
     public foundStudent: Student | null = null;
     private refreshInterval: any = null;
-    private readonly REFRESH_INTERVAL_MS = 60000; // 60 segundos
+    private readonly REFRESH_INTERVAL_MS = 60000;
+    public specialDates: Date[] = [];
+    public displayedColumns: string[] = ['identification', 'name', 'attendance'];
+    public grades: Array<Grade> = [];
+    public gradesList: Array<{ id: string; name: string }> = [];
+    public gradeColumns: Array<string> = [];
 
     @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
     @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
     @ViewChild('addStudentModal') dniModalTemplate!: TemplateRef<any>;
     @ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
-
-    public specialDates: Date[] = [];
-
-    public displayedColumns: string[] = ['identification', 'name', 'grade1', 'grade2', 'gradeN', 'attendance'];
 
     public constructor(
         public viewModel: SubjectDetailsViewModelService,
@@ -85,6 +88,11 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 if (this.calendar) {
                     this.calendar.updateTodaysDate();
                 }
+            });
+            this.viewModel.grades$.subscribe((grades: Grade[]) => {
+                this.gradesList = grades.map((g) => ({ id: g.id, name: g.name }));
+                this.gradeColumns = grades.map((g) => g.id);
+                this.displayedColumns = ['identification', 'name', ...this.gradeColumns, 'attendance'];
             });
         });
         this.dashboardTitleService.setTitle('Detalles de la materia');

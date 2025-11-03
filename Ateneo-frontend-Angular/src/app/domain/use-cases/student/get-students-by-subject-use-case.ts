@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { useCase } from '../use-case.interface';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Student } from '../../entities/student';
 import { buildApiUrl } from '../../../utils/api';
@@ -18,8 +18,6 @@ export class GetStudentsBySubjectUseCase implements useCase<Array<Student>, IGet
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetStudentsBySubjectParams): Observable<Array<Student>> {
-        return this.httpClient
-            .get<{ students: Array<Student> }>(`${this.BASE_URL}/by-subject/${params.subjectId}`)
-            .pipe(map((response) => response.students));
+        return this.httpClient.get<Array<Student>>(`${this.BASE_URL}/by-subject/${params.subjectId}`);
     }
 }

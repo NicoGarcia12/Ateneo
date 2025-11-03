@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { useCase } from '../use-case.interface';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Class } from '../../entities/class';
 import { buildApiUrl } from '../../../utils/api';
@@ -18,8 +18,6 @@ export class GetClassesBySubjectUseCase implements useCase<Array<Class>, IGetCla
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetClassesBySubjectParams): Observable<Class[]> {
-        return this.httpClient
-            .get<{ classes: Class[] }>(`${this.BASE_URL}/by-subject/${params.subjectId}`)
-            .pipe(map((resp) => resp.classes));
+        return this.httpClient.get<Class[]>(`${this.BASE_URL}/by-subject/${params.subjectId}`);
     }
 }
