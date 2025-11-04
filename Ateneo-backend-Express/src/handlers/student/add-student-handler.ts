@@ -15,9 +15,8 @@ export const AddStudentHandler = async (req: Request, res: Response): Promise<Re
             ...student,
             dni: student.dni.toString()
         };
-        return res.status(201).json({ student: studentForResponse });
+        return res.status(201).json(studentForResponse);
     } catch (error: any) {
-        console.log('Error en AddStudentHandler:', error);
         return handleControllerError(error, res);
     }
 };

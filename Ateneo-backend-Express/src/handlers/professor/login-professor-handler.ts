@@ -22,10 +22,10 @@ export const LoginProfessorHandler = async (req: Request, res: Response): Promis
         const token = jwt.sign(
             { id: professor?.id, firstName: professor?.firstName, lastName: professor?.lastName, email: professor?.email },
             secretKey,
-            { expiresIn: '3m' }
+            { expiresIn: '90d' }
         );
 
-        return res.status(200).json({ token });
+        return res.status(200).json(token);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

@@ -1,3 +1,5 @@
+import { Student } from './student';
+
 export type GradeType = 'Final' | 'Weighted' | 'Average';
 
 export interface Grade {
@@ -8,4 +10,6 @@ export interface Grade {
     description?: string;
     subjectId: string;
     baseGrades?: Array<{ gradeId: string; weight: number }>;
+    derivedGradeRel?: Array<{ baseGrade: { id: string; name: string }; weight: number }>;
+    studentsGrades?: Array<{ student: Student; value: number }>;
 }

@@ -4,14 +4,15 @@ import { Student } from '../../../../../domain/entities/student';
 import { OpenDialogService } from '../../../../shared/services/open-dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardTitleService } from '../../dashboard-title.service';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { NotifyService } from '../../../../shared/services/notify.service';
 import { MatCalendar } from '@angular/material/datepicker';
 import { Class } from 'src/app/domain/entities/class';
 import { Absence } from '../../../../../domain/entities/absence';
 import { isValidEmail } from '../../../../../utils/validators/email.validator';
 import { Grade } from 'src/app/domain/entities/grade';
-import { ChangeDetectorRef } from '@angular/core';
+import { UpdateGradeUseCase } from 'src/app/domain/use-cases/grade/update-grade-use-case';
+import { AddStudentGradeUseCase } from 'src/app/domain/use-cases/grade/add-student-grade-use-case';
 
 @Component({
     selector: 'app-subject-details',
@@ -19,6 +20,18 @@ import { ChangeDetectorRef } from '@angular/core';
     styleUrls: ['./subject-details.component.scss']
 })
 export class SubjectDetailsComponent implements OnInit, OnDestroy {
+    trackByGradeId(_index: number, grade: { id: string }) {
+        return grade.id;
+    }
+
+    public getStudentGradeValue(student: Student, gradeId: string): string | number {
+        const grade = this.grades.find((g) => g.id === gradeId);
+        if (!grade) return '-';
+        const studentsGrades = grade.studentsGrades || [];
+        const studentGrade = studentsGrades.find((sg: any) => String(sg.student.id) === String(student.id));
+        if (!studentGrade || studentGrade.value === null || studentGrade.value === undefined) return '-';
+        return studentGrade.value;
+    }
     public selectedClassId: string | null = null;
     public loadedClass: {
         absentStudents: Array<Student & { justificado: boolean }>;
@@ -52,9 +65,31 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public gradesList: Array<{ id: string; name: string }> = [];
     public gradeColumns: Array<string> = [];
 
+    public editGradeData: {
+        id: string;
+        name: string;
+        description: string;
+        type: string;
+        date: Date | null;
+    } = {
+        id: '',
+        name: '',
+        description: '',
+        type: '',
+        date: null
+    };
+    public editBaseGrades: Array<{ gradeId: string; weight: number; gradeName: string }> = [];
+    private editGradeDialogRef: any = null;
+
+    public loadStudentGradesData: Array<{ studentId: string; studentName: string; value: number | null }> = [];
+    private loadStudentGradesDialogRef: any = null;
+    private currentGradeIdForStudentGrades: string = '';
+
     @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
     @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
     @ViewChild('addStudentModal') dniModalTemplate!: TemplateRef<any>;
+    @ViewChild('editGradeModal') editGradeModalTemplate!: TemplateRef<any>;
+    @ViewChild('loadStudentGradesModal') loadStudentGradesModalTemplate!: TemplateRef<any>;
     @ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
 
     public constructor(
@@ -63,7 +98,9 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private dashboardTitleService: DashboardTitleService,
         private openDialogService: OpenDialogService,
-        private notifyService: NotifyService
+        private notifyService: NotifyService,
+        private updateGradeUseCase: UpdateGradeUseCase,
+        private addStudentGradeUseCase: AddStudentGradeUseCase
     ) {}
 
     public ngOnInit(): void {
@@ -89,9 +126,11 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                     this.calendar.updateTodaysDate();
                 }
             });
-            this.viewModel.grades$.subscribe((grades: Grade[]) => {
-                this.gradesList = grades.map((g) => ({ id: g.id, name: g.name }));
-                this.gradeColumns = grades.map((g) => g.id);
+            this.gradesSubscription = this.viewModel.grades$.subscribe((grades: Grade[]) => {
+                const sortedGrades = [...grades].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                this.grades = sortedGrades;
+                this.gradesList = sortedGrades.map((g) => ({ id: g.id, name: g.name }));
+                this.gradeColumns = sortedGrades.map((g) => g.id);
                 this.displayedColumns = ['identification', 'name', ...this.gradeColumns, 'attendance'];
             });
         });
@@ -159,10 +198,12 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     private studentsSubscription?: Subscription;
     private classesSubscription?: Subscription;
+    private gradesSubscription?: Subscription;
 
     public ngOnDestroy(): void {
         this.studentsSubscription?.unsubscribe();
         this.classesSubscription?.unsubscribe();
+        this.gradesSubscription?.unsubscribe();
         this.stopAutoRefresh();
     }
 
@@ -252,8 +293,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                             subjectId: this.idSubject
                         };
                         this.viewModel.createClass(payload, this.idSubject).subscribe({
-                            next: (res) => {
-                                this.notifyService.notify(res?.message || 'Clase creada correctamente', 'success-notify');
+                            next: () => {
+                                this.notifyService.notify('Clase creada correctamente', 'success-notify');
                                 if (this.idSubject) {
                                     this.viewModel.loadClasses(this.idSubject);
                                 }
@@ -263,9 +304,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                                     try {
                                         (this.calendar as any).selected = null;
                                         this.calendar.updateTodaysDate();
-                                    } catch (e) {
-                                        console.warn('No se pudo actualizar la fecha del calendario:', e);
-                                    }
+                                    } catch (e) {}
                                 }
                             },
                             error: (err) => {
@@ -548,5 +587,251 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         if (this.addStudentDialogRef && this.addStudentDialogRef.componentInstance && !this.foundStudent) {
             this.addStudentDialogRef.componentInstance.data.primaryButton.disabled = !this.isNewStudentFormValid;
         }
+    }
+
+    public isGradeFinal(gradeId: string): boolean {
+        const grade = this.grades.find((g) => g.id === gradeId);
+        return grade?.type === 'Final';
+    }
+
+    public openEditGradeModal(gradeId: string): void {
+        const grade = this.grades.find((g) => g.id === gradeId);
+        if (!grade) {
+            this.notifyService.notify('No se pudo encontrar la nota', 'error-notify');
+            return;
+        }
+
+        let dateObj: Date | null = null;
+        if (grade.date) {
+            try {
+                dateObj = new Date(grade.date);
+                if (isNaN(dateObj.getTime())) {
+                    dateObj = null;
+                }
+            } catch (error) {
+                dateObj = null;
+            }
+        }
+        this.editGradeData = {
+            id: grade.id,
+            name: grade.name,
+            description: grade.description || '',
+            type: grade.type,
+            date: dateObj
+        };
+
+        // Cargar notas base si existen
+        const derivedGradeRel = grade.derivedGradeRel || [];
+        this.editBaseGrades = derivedGradeRel.map((bg: any) => ({
+            gradeId: bg.baseGrade.id,
+            weight: bg.weight || 0,
+            gradeName: bg.baseGrade.name
+        }));
+
+        this.editGradeDialogRef = this.openDialogService.openDialog({
+            title: 'Editar nota',
+            contentTemplate: this.editGradeModalTemplate,
+            secondaryButtonText: 'Cancelar',
+            primaryButton: {
+                show: true,
+                text: 'Guardar cambios',
+                disabled: !this.validateEditGradeForm(),
+                loading: false
+            }
+        });
+
+        this.editGradeDialogRef.afterClosed().subscribe((result: string | undefined) => {
+            if (result === 'PRIMARY') {
+                this.saveEditGrade();
+            }
+        });
+    }
+
+    public onEditGradeFormChange(): void {
+        if (this.editGradeDialogRef?.componentInstance?.data?.primaryButton) {
+            this.editGradeDialogRef.componentInstance.data.primaryButton.disabled = !this.validateEditGradeForm();
+        }
+    }
+
+    public onEditGradeTypeChange(): void {
+        this.editBaseGrades = [];
+        this.onEditGradeFormChange();
+    }
+
+    public onEditBaseGradeSelect(gradeId: string): void {
+        if (!gradeId) return;
+
+        const grade = this.grades.find((g) => g.id === gradeId);
+        if (!grade) return;
+
+        if (this.editBaseGrades.some((bg) => bg.gradeId === grade.id)) {
+            return;
+        }
+
+        this.editBaseGrades.push({
+            gradeId: grade.id,
+            weight: 0,
+            gradeName: grade.name
+        });
+        this.onEditGradeFormChange();
+    }
+
+    public removeEditBaseGrade(index: number): void {
+        this.editBaseGrades.splice(index, 1);
+        this.onEditGradeFormChange();
+    }
+
+    public onEditWeightChange(): void {
+        this.onEditGradeFormChange();
+    }
+
+    public getEditTotalWeight(): number {
+        return this.editBaseGrades.reduce((sum, bg) => sum + (bg.weight || 0), 0);
+    }
+
+    public get availableGradesForEdit(): Grade[] {
+        return this.grades.filter((g) => g.id !== this.editGradeData.id && !this.editBaseGrades.some((bg) => bg.gradeId === g.id));
+    }
+
+    private validateEditGradeForm(): boolean {
+        const basicFieldsValid = !!(this.editGradeData.name && this.editGradeData.type && this.editGradeData.date);
+
+        let isValid = basicFieldsValid;
+
+        if (this.editGradeData.type === 'Weighted' || this.editGradeData.type === 'Average') {
+            const hasEnoughBaseGrades = this.editBaseGrades.length >= 2;
+            isValid = isValid && hasEnoughBaseGrades;
+
+            if (this.editGradeData.type === 'Weighted') {
+                const totalWeight = this.getEditTotalWeight();
+                isValid = isValid && totalWeight === 100;
+            }
+        }
+
+        return isValid;
+    }
+
+    private saveEditGrade(): void {
+        if (this.editGradeDialogRef?.componentInstance?.data?.primaryButton) {
+            this.editGradeDialogRef.componentInstance.data.primaryButton.loading = true;
+            this.editGradeDialogRef.componentInstance.data.primaryButton.disabled = true;
+        }
+
+        const updateParams = {
+            gradeId: this.editGradeData.id,
+            name: this.editGradeData.name,
+            date: this.editGradeData.date ? this.editGradeData.date.toISOString() : '',
+            description: this.editGradeData.description || undefined,
+            baseGrades:
+                this.editBaseGrades.length > 0 ? this.editBaseGrades.map((bg) => ({ gradeId: bg.gradeId, weight: bg.weight })) : undefined
+        };
+
+        this.updateGradeUseCase.execute(updateParams).subscribe({
+            next: () => {
+                this.notifyService.notify('Nota actualizada correctamente', 'success-notify');
+                if (this.editGradeDialogRef) {
+                    this.editGradeDialogRef.close();
+                }
+                this.onDataChanged();
+            },
+            error: (error) => {
+                this.notifyService.notify(error?.error?.message || 'Error al actualizar la nota', 'error-notify');
+                if (this.editGradeDialogRef?.componentInstance?.data?.primaryButton) {
+                    this.editGradeDialogRef.componentInstance.data.primaryButton.loading = false;
+                    this.editGradeDialogRef.componentInstance.data.primaryButton.disabled = false;
+                }
+            }
+        });
+    }
+
+    /**
+     * Abre el modal para cargar notas de alumnos para una nota Final
+     */
+    public openLoadStudentGradesModal(gradeId: string): void {
+        const grade = this.grades.find((g) => g.id === gradeId);
+        if (!grade) {
+            this.notifyService.notify('No se pudo encontrar la nota', 'error-notify');
+            return;
+        }
+        if (grade.type !== 'Final') {
+            this.notifyService.notify('Solo se pueden cargar notas para notas de tipo Final', 'error-notify');
+            return;
+        }
+
+        this.currentGradeIdForStudentGrades = gradeId;
+
+        // Inicializar datos de estudiantes con sus notas actuales
+        const studentsGrades = grade.studentsGrades || [];
+        this.loadStudentGradesData = this.studentsList.map((student) => {
+            const studentGrade = studentsGrades.find((sg: any) => String(sg.student.id) === String(student.id));
+            return {
+                studentId: student.id,
+                studentName: `${student.firstName} ${student.lastName}`,
+                value: studentGrade ? studentGrade.value : null
+            };
+        });
+
+        this.loadStudentGradesDialogRef = this.openDialogService.openDialog({
+            title: grade.name,
+            contentTemplate: this.loadStudentGradesModalTemplate,
+            secondaryButtonText: 'Cancelar',
+            primaryButton: {
+                show: true,
+                text: 'Guardar notas',
+                disabled: false,
+                loading: false
+            }
+        });
+
+        this.loadStudentGradesDialogRef.afterClosed().subscribe((result: string | undefined) => {
+            if (result === 'PRIMARY') {
+                this.saveLoadStudentGrades();
+            }
+        });
+    }
+
+    public onLoadStudentGradeChange(): void {
+        if (this.loadStudentGradesDialogRef?.componentInstance?.data?.primaryButton) {
+            this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = false;
+        }
+    }
+
+    private validateLoadStudentGrades(): boolean {
+        // Permitir guardar si al menos un alumno tiene nota válida
+        return this.loadStudentGradesData.some((sg) => sg.value !== null && sg.value >= 1 && sg.value <= 10);
+    }
+
+    private saveLoadStudentGrades(): void {
+        if (this.loadStudentGradesDialogRef?.componentInstance?.data?.primaryButton) {
+            this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.loading = true;
+            this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = true;
+        }
+
+        // Enviar todos los alumnos, si value es null, se debe actualizar/quitar la nota
+        const saveRequests = this.loadStudentGradesData.map((sg) =>
+            this.addStudentGradeUseCase.execute({
+                gradeId: this.currentGradeIdForStudentGrades,
+                studentId: sg.studentId,
+                value: sg.value === null ? null : sg.value
+            })
+        );
+
+        // Ejecutar todas las peticiones en paralelo (aunque sean null)
+        forkJoin(saveRequests).subscribe({
+            next: () => {
+                this.notifyService.notify('Notas de alumnos actualizadas correctamente', 'success-notify');
+                if (this.loadStudentGradesDialogRef) {
+                    this.loadStudentGradesDialogRef.close();
+                }
+                this.onDataChanged();
+            },
+            error: (error) => {
+                this.notifyService.notify(error?.error?.message || 'Error al actualizar las notas de los alumnos', 'error-notify');
+                if (this.loadStudentGradesDialogRef?.componentInstance?.data?.primaryButton) {
+                    this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.loading = false;
+                    this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = false;
+                }
+            }
+        });
     }
 }

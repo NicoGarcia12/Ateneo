@@ -9,7 +9,15 @@ export interface AddSubjectControllerParams {
     professorId?: string;
 }
 
-export const AddSubjectController = async (params: AddSubjectControllerParams): Promise<string> => {
+export interface SubjectResponse {
+    id: string;
+    name: string;
+    academicYear: number;
+    institution: string;
+    degree: string;
+    professorId: string | null;
+}
+export const AddSubjectController = async (params: AddSubjectControllerParams): Promise<SubjectResponse> => {
     const { academicYear, name, institution, degree, professorId } = params;
     if (professorId) {
         await GetProfessorController({ professorId });

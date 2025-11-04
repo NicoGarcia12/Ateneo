@@ -25,7 +25,7 @@ export const AddGradeHandler = async (req: Request, res: Response): Promise<Resp
             baseGrades
         });
 
-        return res.status(201).json({ grade });
+        return res.status(201).json(grade);
     } catch (error) {
         return handleControllerError(error, res);
     }

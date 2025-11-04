@@ -28,14 +28,25 @@ export class TokenService {
 
     public getUserFromToken(): Professor | null {
         const token = this.getToken();
-        if (token) {
-            const professor = jwtDecode<Professor>(token);
-            this.professorSubject.next(professor);
+        if (token && this.isValidJWT(token)) {
+            try {
+                const professor = jwtDecode<Professor>(token);
+                this.professorSubject.next(professor);
+            } catch (error) {
+                this.removeToken();
+                this.professorSubject.next(null);
+            }
         } else {
             this.professorSubject.next(null);
         }
 
         return this.professorSubject.value;
+    }
+
+    private isValidJWT(token: string): boolean {
+        // Un JWT válido tiene 3 partes separadas por puntos
+        const parts = token.split('.');
+        return parts.length === 3;
     }
 
     public removeToken(): void {

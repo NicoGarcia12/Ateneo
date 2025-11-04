@@ -8,7 +8,7 @@ export interface AddStudentToSubjectControllerParams {
     subjectId: string;
 }
 
-export const AddStudentToSubjectController = async (params: AddStudentToSubjectControllerParams): Promise<string> => {
+export const AddStudentToSubjectController = async (params: AddStudentToSubjectControllerParams) => {
     const { studentId, subjectId } = params;
     const subject = await GetSubjectController({ subjectId });
 

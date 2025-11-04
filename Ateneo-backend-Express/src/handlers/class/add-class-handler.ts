@@ -9,8 +9,8 @@ export const AddClassHandler = async (req: Request, res: Response): Promise<Resp
         if (!date || !subjectId) {
             throw new ValidationError('Faltan campos obligatorios');
         }
-        const response = await AddClassController({ date, description, subjectId, absentStudents });
-        return res.status(201).json({ message: response });
+        const classCreated = await AddClassController({ date, description, subjectId, absentStudents });
+        return res.status(201).json(classCreated);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

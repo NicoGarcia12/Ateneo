@@ -7,14 +7,14 @@ import { GradeType } from '@prisma/client';
 export interface AddStudentGradeParams {
     gradeId: string;
     studentId: string;
-    value: number;
+    value: number | null;
 }
 
 export const AddStudentGradeController = async (params: AddStudentGradeParams) => {
     const { gradeId, studentId, value } = params;
 
-    if (!Number.isInteger(value) || value < 1 || value > 10) {
-        throw new ValidationError('La nota debe ser un entero entre 1 y 10');
+    if (value !== null && (typeof value !== 'number' || value < 1 || value > 10)) {
+        throw new ValidationError('La nota debe ser un número entre 1 y 10');
     }
 
     const gradeDb = await GetGradeHelper(gradeId);

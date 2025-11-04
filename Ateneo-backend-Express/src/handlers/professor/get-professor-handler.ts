@@ -8,7 +8,7 @@ export const GetProfessorHandler = async (req: Request, res: Response): Promise<
 
         const professor = await GetProfessorController({ professorId });
 
-        return res.status(200).json({ professor });
+        return res.status(200).json(professor);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

@@ -9,9 +9,9 @@ export const SignUpProfessorHandler = async (req: Request, res: Response): Promi
         if (!email || !firstName || !lastName || !password) {
             throw new ValidationError('Faltan campos obligatorios');
         }
-        const response = await SignUpProfessorController({ email, password, firstName, lastName });
+        const professor = await SignUpProfessorController({ email, password, firstName, lastName });
 
-        return res.status(200).json({ message: response });
+        return res.status(200).json(professor);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

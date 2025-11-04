@@ -14,7 +14,7 @@ export const UpdateStudentHandler = async (req: Request, res: Response): Promise
             dni: updatedStudent.dni.toString()
         };
 
-        return res.status(200).json({ student: studentForResponse });
+        return res.status(200).json(studentForResponse);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

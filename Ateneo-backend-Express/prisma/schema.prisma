@@ -85,7 +85,7 @@ model Grade {
 
 model StudentGrade {
   id        String  @id
-  value     Float
+  value     Float?
   grade     Grade   @relation(fields: [gradeId], references: [id])
   gradeId   String
   student   Student @relation(fields: [studentId], references: [id])

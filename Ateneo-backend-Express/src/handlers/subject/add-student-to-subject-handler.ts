@@ -6,9 +6,14 @@ export const AddStudentToSubjectHandler = async (req: Request, res: Response): P
     try {
         const { subjectId, studentId } = req.params;
 
-        const response = await AddStudentToSubjectController({ studentId, subjectId });
+        const student = await AddStudentToSubjectController({ studentId, subjectId });
 
-        return res.status(200).json({ message: response });
+        const studentForResponse = {
+            ...student,
+            dni: student.dni.toString()
+        };
+
+        return res.status(200).json(studentForResponse);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

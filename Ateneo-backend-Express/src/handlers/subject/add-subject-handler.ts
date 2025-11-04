@@ -10,8 +10,8 @@ export const AddSubjectHandler = async (req: Request, res: Response): Promise<Re
             throw new ValidationError('Faltan campos obligatorios');
         }
         const professorId = req.query['professorId'] as string | undefined;
-        const response = await AddSubjectController({ academicYear, name, institution, degree, professorId });
-        return res.status(200).json({ message: response });
+        const subject = await AddSubjectController({ academicYear, name, institution, degree, professorId });
+        return res.status(200).json(subject);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

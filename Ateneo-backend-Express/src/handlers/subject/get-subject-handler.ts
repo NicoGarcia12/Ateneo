@@ -8,7 +8,7 @@ export const GetSubjectHandler = async (req: Request, res: Response): Promise<Re
 
         const subject = await GetSubjectController({ subjectId });
 
-        return res.status(200).json({ subject });
+        return res.status(200).json(subject);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

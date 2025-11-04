@@ -85,3 +85,30 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #loadGradesModal>
+    <div class="modal-load-grades">
+        <p class="load-grades-title">Cargar notas de los alumnos</p>
+        <div class="students-grades-list">
+            <div *ngFor="let studentGrade of studentGrades" class="student-grade-row vertical">
+                <span class="student-name">{{ studentGrade.studentName }}</span>
+                <mat-form-field appearance="outline" class="grade-input-field">
+                    <mat-label>Nota</mat-label>
+                    <input
+                        matInput
+                        type="number"
+                        min="1"
+                        max="10"
+                        step="1"
+                        [(ngModel)]="studentGrade.value"
+                        (ngModelChange)="onStudentGradeChange()"
+                        placeholder="1-10"
+                    />
+                    <mat-error *ngIf="studentGrade.value !== null && (studentGrade.value < 1 || studentGrade.value > 10)">
+                        La nota debe estar entre 1 y 10
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</ng-template>

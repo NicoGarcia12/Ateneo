@@ -13,10 +13,10 @@ export const GetStudentHandler = async (req: Request, res: Response): Promise<Re
                 ...student,
                 dni: student.dni.toString()
             };
-            return res.status(200).json({ student: studentForResponse });
+            return res.status(200).json(studentForResponse);
         }
 
-        return res.status(200).json({ student });
+        return res.status(200).json(student);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

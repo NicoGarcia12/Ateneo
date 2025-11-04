@@ -8,7 +8,7 @@ export const GetProfessorByEmailHandler = async (req: Request, res: Response): P
 
         const professor = await GetProfessorByEmailController({ email });
 
-        return res.status(200).json({ professor });
+        return res.status(200).json(professor);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

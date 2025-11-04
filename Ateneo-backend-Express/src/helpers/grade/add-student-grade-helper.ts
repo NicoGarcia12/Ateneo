@@ -6,7 +6,7 @@ import { RecalculateDependentGradesHelper } from './recalculate-dependent-grades
 export interface AddStudentGradeHelperParams {
     gradeId: string;
     studentId: string;
-    value: number;
+    value: number | null;
 }
 
 export const AddStudentGradeHelper = async (params: AddStudentGradeHelperParams) => {

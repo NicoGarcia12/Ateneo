@@ -13,18 +13,18 @@ export interface IAddSubjectParams {
 @Injectable({
     providedIn: 'root'
 })
-export class AddSubjectUseCase implements useCase<any, IAddSubjectParams> {
+export class AddSubjectUseCase implements useCase<Subject, IAddSubjectParams> {
     private BASE_URL = buildApiUrl('subjects');
 
     constructor(private httpClient: HttpClient) {}
 
-    execute(params: IAddSubjectParams): Observable<any> {
+    execute(params: IAddSubjectParams): Observable<Subject> {
         const { subject, idProfessor } = params;
         let url = `${this.BASE_URL}/add/`;
         if (idProfessor) {
             url += `?professorId=${encodeURIComponent(idProfessor)}`;
         }
-        return this.httpClient.post<any>(url, {
+        return this.httpClient.post<Subject>(url, {
             ...subject
         });
     }

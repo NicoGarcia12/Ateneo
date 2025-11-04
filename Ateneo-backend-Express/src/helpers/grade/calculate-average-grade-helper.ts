@@ -24,7 +24,7 @@ export const CalculateAverageGradeHelper = async (gradeId: string, studentId: st
     for (const rel of relationships) {
         const studentGrade = rel.baseGrade.studentGrades[0];
 
-        if (!studentGrade) {
+        if (!studentGrade || studentGrade.value === null) {
             return null;
         }
 

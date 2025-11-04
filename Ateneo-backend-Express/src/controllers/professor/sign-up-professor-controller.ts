@@ -10,7 +10,7 @@ export interface SignUpProfessorControllerParams {
     lastName: string;
 }
 
-export const SignUpProfessorController = async (params: SignUpProfessorControllerParams): Promise<string> => {
+export const SignUpProfessorController = async (params: SignUpProfessorControllerParams) => {
     const { email } = params;
     const password = await bcrypt.hash(params.password, 10);
 
