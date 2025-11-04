@@ -37,8 +37,6 @@ export class AddStudentUseCase implements useCase<Student, IAddStudentParams> {
             phone: params.phone
         };
 
-        return this.httpClient
-            .post<{ student: Student }>(`${this.BASE_URL}/add`, body, { params: httpParams })
-            .pipe(map((response) => response.student));
+        return this.httpClient.post<Student>(`${this.BASE_URL}/add`, body, { params: httpParams });
     }
 }

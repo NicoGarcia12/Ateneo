@@ -2,9 +2,22 @@ import { Professor } from '@prisma/client';
 import { prisma } from 'src/config/prisma';
 import { generateId } from 'src/utils/generate-id';
 
-export const SignUpProfessorHelper = async (email: string, password: string, firstName: string, lastName: string): Promise<string> => {
+export interface ProfessorResponse {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    emailActivated: boolean;
+}
+
+export const SignUpProfessorHelper = async (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+): Promise<ProfessorResponse> => {
     try {
-        await prisma.professor.create({
+        const professor = await prisma.professor.create({
             data: {
                 id: generateId('professor'),
                 email: email,
@@ -12,10 +25,17 @@ export const SignUpProfessorHelper = async (email: string, password: string, fir
                 lastName: lastName,
                 password: password,
                 emailActivated: true
+            },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                emailActivated: true
             }
         });
 
-        return 'Profesor registrado exitosamente';
+        return professor;
     } catch (error: any) {
         throw error;
     }

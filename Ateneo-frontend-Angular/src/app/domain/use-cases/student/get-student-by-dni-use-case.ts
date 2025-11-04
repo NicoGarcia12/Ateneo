@@ -18,6 +18,6 @@ export class GetStudentByDniUseCase implements useCase<Student, IGetStudentByDni
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetStudentByDniParams): Observable<Student> {
-        return this.httpClient.get<{ student: Student }>(`${this.BASE_URL}/by-dni/${params.dni}`).pipe(map((response) => response.student));
+        return this.httpClient.get<Student>(`${this.BASE_URL}/by-dni/${params.dni}`);
     }
 }

@@ -9,7 +9,16 @@ interface AddSubjectParams {
     professorId?: string;
 }
 
-export const AddSubjectHelper = async (params: AddSubjectParams) => {
+export interface SubjectResponse {
+    id: string;
+    name: string;
+    academicYear: number;
+    institution: string;
+    degree: string;
+    professorId: string | null;
+}
+
+export const AddSubjectHelper = async (params: AddSubjectParams): Promise<SubjectResponse> => {
     const { academicYear, name, institution, degree, professorId } = params;
     try {
         const data: any = {
@@ -24,9 +33,19 @@ export const AddSubjectHelper = async (params: AddSubjectParams) => {
             data.professor = { connect: { id: professorId } };
         }
 
-        await prisma.subject.create({ data });
+        const subject: SubjectResponse = await prisma.subject.create({
+            data,
+            select: {
+                id: true,
+                name: true,
+                academicYear: true,
+                institution: true,
+                degree: true,
+                professorId: true
+            }
+        });
 
-        return 'Materia creada exitosamente';
+        return subject;
     } catch (error: any) {
         throw error;
     }

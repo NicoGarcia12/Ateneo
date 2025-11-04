@@ -9,11 +9,18 @@ interface AddClassParams {
     absentStudents?: Array<{ id: string; justificado: boolean }>;
 }
 
-export const AddClassHelper = async (params: AddClassParams): Promise<string> => {
+export interface ClassResponse {
+    id: string;
+    date: Date;
+    description?: string | null;
+    subjectId: string;
+}
+
+export const AddClassHelper = async (params: AddClassParams): Promise<ClassResponse> => {
     const { date, description, subjectId, absentStudents } = params;
     try {
         const classId = generateId('class');
-        await prisma.class.create({
+        const newClass: ClassResponse = await prisma.class.create({
             data: {
                 id: classId,
                 date,
@@ -27,10 +34,15 @@ export const AddClassHelper = async (params: AddClassParams): Promise<string> =>
                             justified: s.justificado ?? false
                         })) || []
                 }
+            },
+            select: {
+                id: true,
+                date: true,
+                description: true,
+                subjectId: true
             }
         });
-
-        return 'Clase creada exitosamente';
+        return newClass;
     } catch (error: any) {
         throw error;
     }

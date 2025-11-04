@@ -11,15 +11,22 @@ export interface IAddClassParams {
     subjectId: string;
 }
 
+export interface ClassResponse {
+    id: string;
+    date: string;
+    description?: string | null;
+    subjectId: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
-export class AddClassUseCase implements useCase<{ message: string }, IAddClassParams> {
+export class AddClassUseCase implements useCase<ClassResponse, IAddClassParams> {
     private BASE_URL = buildApiUrl('classes');
 
     constructor(private httpClient: HttpClient) {}
 
-    execute(params: IAddClassParams): Observable<{ message: string }> {
-        return this.httpClient.post<{ message: string }>(`${this.BASE_URL}/add`, params);
+    execute(params: IAddClassParams): Observable<ClassResponse> {
+        return this.httpClient.post<ClassResponse>(`${this.BASE_URL}/add`, params);
     }
 }

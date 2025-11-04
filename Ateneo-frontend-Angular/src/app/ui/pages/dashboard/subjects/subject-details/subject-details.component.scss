@@ -4,7 +4,7 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto 1fr;
     padding: 12px;
     gap: 12px;
@@ -18,10 +18,12 @@
     border-radius: 8px;
     border: 2px solid #ddd;
     width: 100%;
+    max-width: 100%;
 }
 
 .students-table-container .table-wrapper {
     max-height: 15rem;
+    max-width: 100%;
     overflow-y: auto;
     overflow-x: auto;
     border-radius: 8px;
@@ -51,12 +53,14 @@
 }
 
 .students-table-container .students-table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     border-radius: 8px;
     overflow: hidden;
 
     ::ng-deep .mat-mdc-table {
-        width: 100% !important;
+        width: max-content !important;
+        min-width: 100% !important;
         border-radius: 8px;
         overflow: hidden;
         table-layout: auto;
@@ -75,6 +79,50 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        min-width: 80px;
+        max-width: 200px;
+        flex-direction: column !important;
+
+        .grade-header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .grade-header {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .grade-actions {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-grade-btn,
+        .load-grades-btn {
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            padding: 0;
+
+            ::ng-deep .mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+            }
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
     }
 
     ::ng-deep .mat-mdc-cell {
@@ -87,6 +135,8 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        min-width: 80px;
+        max-width: 200px;
     }
 
     ::ng-deep .mat-mdc-row {
@@ -125,7 +175,7 @@
 }
 
 .calendar-container {
-    grid-column: 1 / 2;
+    grid-column: 1 / 4;
     grid-row: 2 / 3;
     border-radius: 4px;
     padding: 12px;
@@ -133,7 +183,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background-color: #f9f9f9;
 
     h3 {
         margin: 0 0 12px 0;
@@ -220,15 +269,12 @@
 }
 
 .buttons-container {
-    grid-column: 2 / 3;
+    grid-column: 4 / 6;
     grid-row: 2 / 3;
-    border: 1px solid black;
-    border-radius: 4px;
-    padding: 12px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $white-color;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 40px;
 }
 
 .button-toggle-modal-libre {
@@ -333,10 +379,6 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-}
-
-.full-width-btn {
-    width: 100%;
 }
 
 .full-width {
@@ -515,6 +557,169 @@
         app-submit {
             width: 100%;
         }
+    }
+}
+
+// Estilos para modal de edición de nota
+.modal-edit-grade {
+    padding: 16px;
+
+    .grade-data-title {
+        font-weight: bold;
+        margin-bottom: 12px;
+        text-align: center;
+    }
+
+    .form-fields-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .grade-form-field {
+        width: 100%;
+    }
+
+    .info-message {
+        padding: 12px;
+        background-color: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #1565c0;
+        margin-bottom: 8px;
+    }
+
+    .base-grades-section {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .grade-select-field {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    .base-grades-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .base-grade-item {
+        display: flex;
+        flex-direction: column;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        padding: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .base-grade-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+    }
+
+    .grade-name-label {
+        font-weight: 500;
+        font-size: 1rem;
+        min-width: 120px;
+        color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .weight-field {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .weight-total {
+        padding: 8px;
+        text-align: right;
+        font-weight: 600;
+        color: #4caf50;
+
+        &.weight-error {
+            color: #f44336;
+        }
+
+        .error-text {
+            font-size: 12px;
+        }
+    }
+}
+
+// Estilos para modal de carga de notas de alumnos
+.modal-load-grades {
+    padding: 16px;
+
+    .load-grades-title {
+        font-weight: bold;
+        margin-bottom: 16px;
+        text-align: center;
+        font-size: 1.1rem;
+    }
+
+    .students-grades-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 8px;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    }
+
+    .student-grade-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 8px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+
+        &.vertical {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+    }
+
+    .student-name {
+        font-weight: 500;
+        flex: 1;
+        min-width: 150px;
+        margin-bottom: 2px;
+    }
+
+    .grade-input-field {
+        width: 100%;
+        margin: 0;
+        margin-top: 0;
     }
 }
 

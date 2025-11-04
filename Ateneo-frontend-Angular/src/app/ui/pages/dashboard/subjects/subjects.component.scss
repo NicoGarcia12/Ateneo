@@ -25,10 +25,6 @@
             width: fit-content;
         }
 
-        mat-error {
-            text-align: center;
-        }
-
         .mat-form-field-container {
             display: flex;
             gap: 20px;
@@ -115,9 +111,5 @@ mat-card {
         flex-direction: column;
         gap: 20px;
         width: 100%;
-
-        mat-error {
-            margin-bottom: 10px;
-        }
     }
 }

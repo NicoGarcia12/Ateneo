@@ -1,0 +1,171 @@
+// Fila superior con botón y nombre
+.base-grade-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.base-grade-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+// Fila nombre y peso de nota base
+.grade-weight-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.grade-name-label {
+    font-weight: 500;
+    font-size: 1rem;
+    min-width: 120px;
+    color: #333;
+}
+.add-grade-button {
+    width: 100%;
+}
+
+.grade-data-title {
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.modal-add-grade .form-fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.grade-form-field {
+    width: 100%;
+}
+
+.info-message {
+    padding: 12px;
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #1565c0;
+    margin-bottom: 8px;
+}
+
+.base-grades-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.grade-select-field {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.base-grades-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.base-grade-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.base-grade-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.grade-name-label {
+    font-weight: 500;
+    font-size: 1rem;
+    min-width: 120px;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.weight-field {
+    width: 100%;
+    margin-top: 0;
+}
+
+.weight-total {
+    padding: 8px;
+    text-align: right;
+    font-weight: 600;
+    color: #4caf50;
+
+    &.weight-error {
+        color: #f44336;
+    }
+
+    .error-text {
+        font-size: 12px;
+    }
+}
+
+.modal-load-grades {
+    padding: 16px;
+}
+
+.load-grades-title {
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.students-grades-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.student-grade-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.student-grade-row.vertical {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.student-name {
+    font-weight: 500;
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 2px;
+}
+
+.grade-input-field {
+    width: 100%;
+    margin: 0;
+    margin-top: 0;
+}

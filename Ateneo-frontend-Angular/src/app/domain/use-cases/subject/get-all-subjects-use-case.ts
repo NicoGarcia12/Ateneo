@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { useCase } from '../use-case.interface';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Subject } from '../../entities/subject';
 import { buildApiUrl } from '../../../utils/api';
@@ -18,10 +18,6 @@ export class GetAllSubjectsUseCase implements useCase<Array<Subject>, IGetAllSub
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetAllSubjectsParams): Observable<Array<Subject>> {
-        return this.httpClient
-            .get<{
-                subjects: Array<Subject>;
-            }>(`${this.BASE_URL}/${params.idProfessor}/subjects`)
-            .pipe(map((response) => response.subjects));
+        return this.httpClient.get<Array<Subject>>(`${this.BASE_URL}/${params.idProfessor}/subjects`);
     }
 }

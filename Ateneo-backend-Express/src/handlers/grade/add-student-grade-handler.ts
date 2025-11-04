@@ -8,7 +8,7 @@ export const AddStudentGradeHandler = async (req: Request, res: Response): Promi
         const { gradeId, studentId } = req.params;
         const { value } = req.body;
 
-        if (value === undefined || value === null) {
+        if (value === undefined) {
             throw new ValidationError('El valor de la nota es obligatorio');
         }
 
@@ -18,7 +18,7 @@ export const AddStudentGradeHandler = async (req: Request, res: Response): Promi
             value: parseFloat(value)
         });
 
-        return res.status(201).json({ studentGrade });
+        return res.status(201).json(studentGrade);
     } catch (error) {
         return handleControllerError(error, res);
     }

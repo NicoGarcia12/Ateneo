@@ -13,6 +13,8 @@ import {
     AddStudentToSubjectUseCase,
     IAddStudentToSubjectParams
 } from '../../../../../domain/use-cases/subject/add-student-to-subject-use-case';
+import { GetGradesBySubjectUseCase } from '../../../../../domain/use-cases/grade/get-grades-by-subject-use-case';
+import { Grade } from '../../../../../domain/entities/grade';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectDetailsViewModelService {
@@ -20,6 +22,8 @@ export class SubjectDetailsViewModelService {
     public students$: Observable<Student[]> = this.studentsSubject.asObservable();
     private classesSubject = new BehaviorSubject<ClassEntity[]>([]);
     public classes$: Observable<ClassEntity[]> = this.classesSubject.asObservable();
+    private gradesSubject = new BehaviorSubject<Grade[]>([]);
+    public grades$: Observable<Grade[]> = this.gradesSubject.asObservable();
 
     constructor(
         private getStudentsBySubjectUseCase: GetStudentsBySubjectUseCase,
@@ -29,7 +33,8 @@ export class SubjectDetailsViewModelService {
         private addClassUseCase: AddClassUseCase,
         private deleteClassUseCase: DeleteClassUseCase,
         private getStudentByDniUseCase: GetStudentByDniUseCase,
-        private updateClassUseCase: UpdateClassUseCase
+        private updateClassUseCase: UpdateClassUseCase,
+        private getGradesBySubjectUseCase: GetGradesBySubjectUseCase
     ) {}
 
     public loadStudents(subjectId: string): void {
@@ -50,6 +55,17 @@ export class SubjectDetailsViewModelService {
             },
             error: () => {
                 this.classesSubject.next([]);
+            }
+        });
+    }
+
+    public loadGrades(subjectId: string): void {
+        this.getGradesBySubjectUseCase.execute({ subjectId }).subscribe({
+            next: (grades: Grade[]) => {
+                this.gradesSubject.next(grades || []);
+            },
+            error: () => {
+                this.gradesSubject.next([]);
             }
         });
     }

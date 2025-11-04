@@ -8,7 +8,7 @@ export const AddGradeHandler = async (req: Request, res: Response): Promise<Resp
     try {
         const { name, type, date, description, subjectId, baseGrades } = req.body;
 
-        if (!name || !type || !date || !description || !subjectId) {
+        if (!name || !type || !date || !subjectId) {
             throw new ValidationError('Faltan campos obligatorios');
         }
 
@@ -25,7 +25,7 @@ export const AddGradeHandler = async (req: Request, res: Response): Promise<Resp
             baseGrades
         });
 
-        return res.status(201).json({ grade });
+        return res.status(201).json(grade);
     } catch (error) {
         return handleControllerError(error, res);
     }

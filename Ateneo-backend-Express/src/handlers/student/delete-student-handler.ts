@@ -8,7 +8,7 @@ export const DeleteStudentHandler = async (req: Request, res: Response): Promise
 
         const message = await DeleteStudentController(studentId);
 
-        return res.status(200).json({ message });
+        return res.status(200).json(message);
     } catch (error: any) {
         return handleControllerError(error, res);
     }

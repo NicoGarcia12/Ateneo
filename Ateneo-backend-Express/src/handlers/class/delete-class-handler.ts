@@ -8,7 +8,7 @@ export const DeleteClassHandler = async (req: Request, res: Response): Promise<R
 
         const message = await DeleteClassController(classId);
 
-        return res.status(200).json({ message });
+        return res.status(200).json(message);
     } catch (error: any) {
         return handleControllerError(error, res);
     }
