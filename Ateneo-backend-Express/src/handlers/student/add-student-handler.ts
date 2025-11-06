@@ -15,7 +15,10 @@ export const AddStudentHandler = async (req: Request, res: Response): Promise<Re
             ...student,
             dni: student.dni.toString()
         };
-        return res.status(201).json(studentForResponse);
+            return res.status(201).json({
+                message: 'Alumno creado correctamente',
+                data: studentForResponse
+            });
     } catch (error: any) {
         return handleControllerError(error, res);
     }

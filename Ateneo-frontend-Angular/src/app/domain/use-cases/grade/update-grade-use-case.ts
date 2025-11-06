@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { useCase } from '../use-case.interface';
+import { useCase, IResponse } from '../use-case.interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Grade } from '../../entities/grade';
@@ -16,13 +16,13 @@ export interface IUpdateGradeParams {
 @Injectable({
     providedIn: 'root'
 })
-export class UpdateGradeUseCase implements useCase<Grade, IUpdateGradeParams> {
+export class UpdateGradeUseCase implements useCase<IResponse, IUpdateGradeParams> {
     private BASE_URL = buildApiUrl('grades');
 
     constructor(private httpClient: HttpClient) {}
 
-    execute(params: IUpdateGradeParams): Observable<Grade> {
+    execute(params: IUpdateGradeParams): Observable<IResponse> {
         const { gradeId, ...updateData } = params;
-        return this.httpClient.put<Grade>(`${this.BASE_URL}/${gradeId}`, updateData);
+        return this.httpClient.put<IResponse>(`${this.BASE_URL}/${gradeId}`, updateData);
     }
 }

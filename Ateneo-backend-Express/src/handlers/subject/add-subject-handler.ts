@@ -11,7 +11,10 @@ export const AddSubjectHandler = async (req: Request, res: Response): Promise<Re
         }
         const professorId = req.query['professorId'] as string | undefined;
         const subject = await AddSubjectController({ academicYear, name, institution, degree, professorId });
-        return res.status(200).json(subject);
+            return res.status(200).json({
+                message: 'Materia creada correctamente',
+                data: subject
+            });
     } catch (error: any) {
         return handleControllerError(error, res);
     }

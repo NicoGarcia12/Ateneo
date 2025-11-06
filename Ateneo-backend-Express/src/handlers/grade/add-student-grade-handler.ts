@@ -17,8 +17,10 @@ export const AddStudentGradeHandler = async (req: Request, res: Response): Promi
             studentId,
             value: parseFloat(value)
         });
-
-        return res.status(201).json(studentGrade);
+        return res.status(201).json({
+            message: 'Nota de alumno agregada correctamente',
+            data: studentGrade
+        });
     } catch (error) {
         return handleControllerError(error, res);
     }

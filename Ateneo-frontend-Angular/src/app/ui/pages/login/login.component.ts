@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
 
         this.loginViewModelService.login(user.email, user.password).subscribe(
             (response) => {
-                this.tokenService.setToken(response);
+                this.tokenService.setToken(response.data);
                 this.router.navigate(['/dashboard/subjects']);
                 this.loadingLogin = false;
             },

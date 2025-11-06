@@ -64,17 +64,18 @@ cd Ateneo
    - Reemplaza los valores entre <> por los datos reales de tu entorno.
    - **Todas las variables son necesarias para que el sistema funcione correctamente.**
 
-   #### 🔗 ¿Qué motor de base de datos puedo usar?
-   Puedes usar **PostgreSQL** o **MySQL**. Debes tener el motor instalado y corriendo en tu máquina o usar un servicio en la nube.
 
-   - Para **PostgreSQL** (recomendado):
-     ```env
-     DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/ateneo"
-     ```
-   - Para **MySQL**:
-     ```env
-     DATABASE_URL="mysql://usuario:contraseña@localhost:3306/ateneo"
-     ```
+    #### 🔗 ¿Qué motor de base de datos puedo usar?
+    Puedes usar **PostgreSQL** o **MySQL**. Debes tener el motor instalado y corriendo en tu máquina o usar un servicio en la nube.
+
+    - Para **PostgreSQL**:
+       ```env
+       DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/ateneo"
+       ```
+    - Para **MySQL**:
+       ```env
+       DATABASE_URL="mysql://usuario:contraseña@localhost:3306/ateneo"
+       ```
 
    #### ⚙️ ¿Dónde se configura el motor?
    - En el archivo `Ateneo-backend-Express/prisma/schema.prisma`, la primera línea debe indicar el proveedor:
@@ -86,10 +87,50 @@ cd Ateneo
      ```
    - Asegúrate de que el valor de `provider` coincida con el tipo de base de datos que usas en `DATABASE_URL`.
 
-4. Ejecuta las migraciones de la base de datos:
-   ```cmd
-   npx prisma migrate dev
+
+4. Crea la migración inicial de la base de datos:
+    - Una vez configurado el archivo `schema.prisma` y las variables de entorno, ejecuta:
+       ```bash
+       npx prisma migrate dev --name init
+       ```
+    - Esto generará la migración inicial y aplicará los cambios en tu base de datos.
+    - Si cambias de motor (por ejemplo, de MySQL a PostgreSQL), elimina la base de datos y la carpeta `prisma/migrations/` antes de crear la migración inicial nuevamente:
+       ```bash
+       rm -rf Ateneo-backend-Express/prisma/migrations
+       # Borra la base de datos manualmente desde tu gestor (MySQL/Postgres)
+       ```
+---
+
+## 🧩 Comandos útiles de Prisma
+
+- **Crear la primera migración:**
+   ```bash
+   npx prisma migrate dev --name init
    ```
+- **Borrar todas las migraciones existentes:**
+   ```bash
+   rm -rf Ateneo-backend-Express/prisma/migrations
+   # Borra la base de datos manualmente desde tu gestor
+   ```
+- **Crear una nueva migración (actualizar el esquema):**
+   ```bash
+   npx prisma migrate dev --name <nombre>
+   ```
+- **Levantar Prisma Studio (UI para la base de datos):**
+   ```bash
+   npx prisma studio
+   ```
+- **Resetear la base de datos y aplicar todas las migraciones:**
+   ```bash
+   npx prisma migrate reset
+   ```
+- **Generar el cliente de Prisma manualmente:**
+   ```bash
+   npx prisma generate
+   ```
+
+Estos comandos te permiten gestionar el ciclo de vida de la base de datos y el esquema de manera sencilla.
+
 5. (Opcional) Ejecuta el seed para datos iniciales:
    ```cmd
    npm run seed

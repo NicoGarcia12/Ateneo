@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { SubjectsViewModelService } from './subjects-view-model.service';
+import { IResponse } from '../../../../domain/use-cases/use-case.interface';
 import { Subject } from '../../../../domain/entities/subject';
 import { TokenService } from '../../../shared/services/token.service';
 import { NotifyService } from '../../../shared/services/notify.service';
@@ -82,19 +83,19 @@ export class SubjectsComponent implements OnInit {
         const newSubject = this.subjectForm.value as Subject;
 
         this.subjectsViewModel.addSubject(newSubject).subscribe(
-            (success) => {
-                this.notifyService.notify(success.message, 'success-notify');
+            (response: IResponse) => {
+                this.notifyService.notify(response?.message || 'Materia creada correctamente', 'success-notify');
                 this.addSubjectLoading = false;
                 this.subjectForm.reset();
                 this.showForm = false;
                 this.getAllSubjects();
             },
             (error) => {
-                this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
+                this.notifyService.notify(error?.error?.message || 'Error al crear la materia', 'error-notify', 'Cerrar');
                 this.addSubjectLoading = false;
                 this.subjectForm.reset();
                 this.showForm = false;
-                throw error.error.message;
+                throw error?.error?.message;
             }
         );
     }

@@ -6,6 +6,7 @@ import { Class as ClassEntity } from '../../../../../domain/entities/class';
 import { Student } from '../../../../../domain/entities/student';
 import { AddStudentUseCase, IAddStudentParams } from '../../../../../domain/use-cases/student/add-student-use-case';
 import { AddClassUseCase, IAddClassParams } from '../../../../../domain/use-cases/class/add-class-use-case';
+import { IResponse } from '../../../../../domain/use-cases/use-case.interface';
 import { DeleteClassUseCase } from '../../../../../domain/use-cases/class/delete-class-use-case';
 import { UpdateClassUseCase, IUpdateClassParams } from '../../../../../domain/use-cases/class/update-class-use-case';
 import { GetStudentByDniUseCase } from '../../../../../domain/use-cases/student/get-student-by-dni-use-case';
@@ -70,11 +71,11 @@ export class SubjectDetailsViewModelService {
         });
     }
 
-    public addStudent(params: IAddStudentParams): Observable<Student> {
+    public addStudent(params: IAddStudentParams): Observable<IResponse> {
         return this.addStudentUseCase.execute(params);
     }
 
-    public addStudentToSubject(params: IAddStudentToSubjectParams): Observable<Student> {
+    public addStudentToSubject(params: IAddStudentToSubjectParams): Observable<IResponse> {
         return this.addStudentToSubjectUseCase.execute(params);
     }
 
@@ -117,13 +118,13 @@ export class SubjectDetailsViewModelService {
         return selectedStudents.filter((s) => s.id !== student.id);
     }
 
-    public updateClass(params: IUpdateClassParams) {
+    public updateClass(params: IUpdateClassParams): Observable<IResponse> {
         return this.updateClassUseCase.execute(params);
     }
     public deleteClass(id: string) {
         return this.deleteClassUseCase.execute({ id });
     }
-    public createClass(params: IAddClassParams, subjectId?: string) {
+    public createClass(params: IAddClassParams, subjectId?: string): Observable<IResponse> {
         const payload = { ...params, subjectId: subjectId ?? params.subjectId };
         return this.addClassUseCase.execute(payload);
     }

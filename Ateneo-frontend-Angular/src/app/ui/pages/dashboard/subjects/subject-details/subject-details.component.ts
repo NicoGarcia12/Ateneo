@@ -13,6 +13,7 @@ import { isValidEmail } from '../../../../../utils/validators/email.validator';
 import { Grade } from 'src/app/domain/entities/grade';
 import { UpdateGradeUseCase } from 'src/app/domain/use-cases/grade/update-grade-use-case';
 import { AddStudentGradeUseCase } from 'src/app/domain/use-cases/grade/add-student-grade-use-case';
+import { IResponse } from 'src/app/domain/use-cases/use-case.interface';
 
 @Component({
     selector: 'app-subject-details',
@@ -293,8 +294,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                             subjectId: this.idSubject
                         };
                         this.viewModel.createClass(payload, this.idSubject).subscribe({
-                            next: () => {
-                                this.notifyService.notify('Clase creada correctamente', 'success-notify');
+                            next: (response) => {
+                                this.notifyService.notify(response?.message || 'Clase creada correctamente', 'success-notify');
                                 if (this.idSubject) {
                                     this.viewModel.loadClasses(this.idSubject);
                                 }
@@ -418,28 +419,20 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                   subjectId: this.idSubject
               });
 
-        addStudentObservable.subscribe({
-            next: () => {
-                this.handleAddStudentSuccess();
-            },
-            error: (err) => {
-                this.handleAddStudentError(err);
-            }
-        });
-    }
-
-    private handleAddStudentSuccess(): void {
-        this.viewModel.loadStudents(this.idSubject);
-        this.notifyService.notify('Alumno agregado correctamente', 'success-notify');
-        this.resetAddStudentModalState();
-        if (this.addStudentDialogRef) {
-            this.addStudentDialogRef.close();
-        }
-    }
-
-    private handleAddStudentError(err: any): void {
-        const message = err?.error?.message || 'Error al agregar el alumno';
-        this.notifyService.notify(message, 'error-notify');
+            addStudentObservable.subscribe({
+                next: (response: IResponse) => {
+                    this.viewModel.loadStudents(this.idSubject);
+                    this.notifyService.notify(response?.message || 'Alumno agregado correctamente', 'success-notify');
+                    this.resetAddStudentModalState();
+                    if (this.addStudentDialogRef) {
+                        this.addStudentDialogRef.close();
+                    }
+                },
+                error: (err) => {
+                    const message = err?.error?.message || 'Error al agregar el alumno';
+                    this.notifyService.notify(message, 'error-notify');
+                }
+            });
     }
 
     public saveClassChanges(): void {
@@ -456,7 +449,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             }))
         };
         this.viewModel.updateClass(payload).subscribe({
-            next: (res) => {
+            next: (res: IResponse) => {
                 this.notifyService.notify(res?.message || 'Clase actualizada correctamente', 'success-notify');
                 if (this.idSubject) {
                     this.viewModel.loadClasses(this.idSubject);
@@ -486,7 +479,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 loading: false
             }
         });
-
         confirmDialogRef.afterClosed().subscribe((result: string | undefined) => {
             if (result === 'PRIMARY') {
                 this.deleteClass();
@@ -727,8 +719,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         };
 
         this.updateGradeUseCase.execute(updateParams).subscribe({
-            next: () => {
-                this.notifyService.notify('Nota actualizada correctamente', 'success-notify');
+            next: (res: IResponse) => {
+                this.notifyService.notify(res?.message || 'Nota actualizada correctamente', 'success-notify');
                 if (this.editGradeDialogRef) {
                     this.editGradeDialogRef.close();
                 }

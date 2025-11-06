@@ -24,8 +24,10 @@ export const AddGradeHandler = async (req: Request, res: Response): Promise<Resp
             subjectId,
             baseGrades
         });
-
-        return res.status(201).json(grade);
+        return res.status(201).json({
+            message: 'Nota creada correctamente',
+            data: grade
+        });
     } catch (error) {
         return handleControllerError(error, res);
     }
