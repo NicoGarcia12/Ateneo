@@ -12,10 +12,10 @@ export const AddStudentToSubjectHandler = async (req: Request, res: Response): P
             ...student,
             dni: student.dni.toString()
         };
-            return res.status(200).json({
-                message: 'Alumno agregado a la materia correctamente',
-                data: studentForResponse
-            });
+        return res.status(200).json({
+            message: 'Alumno agregado a la materia correctamente',
+            data: studentForResponse
+        });
     } catch (error: any) {
         return handleControllerError(error, res);
     }

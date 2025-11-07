@@ -18,8 +18,6 @@ export interface ClassResponse {
     subjectId: string;
 }
 
-
-
 @Injectable({
     providedIn: 'root'
 })

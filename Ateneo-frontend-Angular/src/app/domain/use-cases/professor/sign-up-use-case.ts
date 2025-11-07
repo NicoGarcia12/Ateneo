@@ -12,8 +12,6 @@ export interface ISignUpUseCase {
     lastName: string;
 }
 
-
-
 @Injectable({
     providedIn: 'root'
 })

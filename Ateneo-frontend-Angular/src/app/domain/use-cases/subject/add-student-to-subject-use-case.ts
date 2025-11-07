@@ -10,8 +10,6 @@ export interface IAddStudentToSubjectParams {
     subjectId: string;
 }
 
-
-
 @Injectable({
     providedIn: 'root'
 })

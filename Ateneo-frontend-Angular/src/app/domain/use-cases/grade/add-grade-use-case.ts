@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 import { Grade, GradeType } from '../../entities/grade';
 import { buildApiUrl } from '../../../utils/api';
 
-
-
 export interface IAddGradeParams {
     name: string;
     type: GradeType;

@@ -419,20 +419,20 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                   subjectId: this.idSubject
               });
 
-            addStudentObservable.subscribe({
-                next: (response: IResponse) => {
-                    this.viewModel.loadStudents(this.idSubject);
-                    this.notifyService.notify(response?.message || 'Alumno agregado correctamente', 'success-notify');
-                    this.resetAddStudentModalState();
-                    if (this.addStudentDialogRef) {
-                        this.addStudentDialogRef.close();
-                    }
-                },
-                error: (err) => {
-                    const message = err?.error?.message || 'Error al agregar el alumno';
-                    this.notifyService.notify(message, 'error-notify');
+        addStudentObservable.subscribe({
+            next: (response: IResponse) => {
+                this.viewModel.loadStudents(this.idSubject);
+                this.notifyService.notify(response?.message || 'Alumno agregado correctamente', 'success-notify');
+                this.resetAddStudentModalState();
+                if (this.addStudentDialogRef) {
+                    this.addStudentDialogRef.close();
                 }
-            });
+            },
+            error: (err) => {
+                const message = err?.error?.message || 'Error al agregar el alumno';
+                this.notifyService.notify(message, 'error-notify');
+            }
+        });
     }
 
     public saveClassChanges(): void {

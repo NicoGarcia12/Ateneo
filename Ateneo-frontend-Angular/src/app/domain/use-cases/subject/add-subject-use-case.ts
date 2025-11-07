@@ -5,10 +5,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from '../../entities/subject';
 import { buildApiUrl } from '../../../utils/api';
 
-export interface IAddSubjectParams {
-}
-
-
+export interface IAddSubjectParams {}
 
 @Injectable({
     providedIn: 'root'
