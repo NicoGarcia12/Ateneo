@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UpdateGradeController } from 'src/controllers/grade/update-grade-controller';
 import { handleControllerError } from 'src/utils/error-handler';
 import { GetGradeController } from '../../controllers/grade/get-grade-controller';
+import { convertBigIntToString } from '../../utils/convert-bigint-to-string';
 
 export const UpdateGradeHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -15,7 +16,7 @@ export const UpdateGradeHandler = async (req: Request, res: Response): Promise<R
             baseGrades
         });
         const updatedGrade = await GetGradeController(id);
-        return res.status(200).json({ message: 'Nota actualizada correctamente', data: updatedGrade });
+        return res.status(200).json({ message: 'Nota actualizada correctamente', data: convertBigIntToString(updatedGrade) });
     } catch (error) {
         return handleControllerError(error, res);
     }

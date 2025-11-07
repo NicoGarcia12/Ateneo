@@ -80,6 +80,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         date: null
     };
     public editBaseGrades: Array<{ gradeId: string; weight: number; gradeName: string }> = [];
+    public selectedEditBaseGradeId: string | null = null;
     private editGradeDialogRef: any = null;
 
     public loadStudentGradesData: Array<{ studentId: string; studentName: string; value: number | null }> = [];
@@ -612,13 +613,16 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             date: dateObj
         };
 
-        // Cargar notas base si existen
-        const derivedGradeRel = grade.derivedGradeRel || [];
-        this.editBaseGrades = derivedGradeRel.map((bg: any) => ({
-            gradeId: bg.baseGrade.id,
+        // Cargar notas base si existen (ahora viene en baseGrades del backend)
+        const baseGrades = grade.baseGrades || [];
+        this.editBaseGrades = baseGrades.map((bg: any) => ({
+            gradeId: bg.id,
             weight: bg.weight || 0,
-            gradeName: bg.baseGrade.name
+            gradeName: bg.name
         }));
+        
+        // Resetear el select
+        this.selectedEditBaseGradeId = null;
 
         this.editGradeDialogRef = this.openDialogService.openDialog({
             title: 'Editar nota',
@@ -665,11 +669,16 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             weight: 0,
             gradeName: grade.name
         });
+        
+        // Resetear el select
+        this.selectedEditBaseGradeId = null;
         this.onEditGradeFormChange();
     }
 
     public removeEditBaseGrade(index: number): void {
         this.editBaseGrades.splice(index, 1);
+        // Resetear el select para que pueda volver a seleccionar la nota eliminada
+        this.selectedEditBaseGradeId = null;
         this.onEditGradeFormChange();
     }
 

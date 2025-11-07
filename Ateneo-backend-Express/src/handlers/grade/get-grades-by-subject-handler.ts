@@ -7,8 +7,7 @@ export const GetGradesBySubjectHandler = async (req: Request, res: Response): Pr
     try {
         const { subjectId } = req.params;
         const grades = await GetGradesBySubjectController({ subjectId });
-        const gradesSafe = convertBigIntToString(grades);
-        return res.status(200).json(gradesSafe);
+        return res.status(200).json(convertBigIntToString(grades));
     } catch (error) {
         return handleControllerError(error, res);
     }

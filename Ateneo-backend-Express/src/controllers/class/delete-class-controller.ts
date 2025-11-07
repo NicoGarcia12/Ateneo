@@ -1,17 +1,10 @@
 import { DeleteClassHelper } from 'src/helpers/class/delete-class-helper';
-import { NotFoundError } from 'src/utils/custom-errors';
-import { GetClassHelper } from 'src/helpers/class/get-class-helper';
+import { GetClassController } from 'src/controllers/class/get-class-controller';
 
 export const DeleteClassController = async (classId: string): Promise<string> => {
-    try {
-        const existing = await GetClassHelper({ classId });
+    await GetClassController({ classId });
 
-        if (!existing) throw new NotFoundError('No existe una clase con ese id');
+    const message = await DeleteClassHelper(classId);
 
-        const message = await DeleteClassHelper(classId);
-
-        return message;
-    } catch (error: any) {
-        throw error;
-    }
+    return message;
 };

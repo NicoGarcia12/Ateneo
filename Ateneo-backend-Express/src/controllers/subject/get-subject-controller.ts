@@ -1,5 +1,6 @@
 import { GetSubjectHelper } from 'src/helpers/subject/get-subject-helper';
 import { NotFoundError } from 'src/utils/custom-errors';
+import { convertBigIntToString } from '../../utils/convert-bigint-to-string';
 
 export interface GetSubjectControllerParams {
     subjectId: string;
@@ -13,5 +14,5 @@ export const GetSubjectController = async (params: GetSubjectControllerParams) =
         throw new NotFoundError('No existe una materia con ese id');
     }
 
-    return subject;
+    return convertBigIntToString(subject);
 };

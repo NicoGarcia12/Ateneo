@@ -1,17 +1,10 @@
 import { DeleteStudentHelper } from 'src/helpers/student/delete-student-helper';
-import { NotFoundError } from 'src/utils/custom-errors';
-import { GetStudentHelper } from 'src/helpers/student/get-student-helper';
+import { GetStudentController } from 'src/controllers/student/get-student-controller';
 
 export const DeleteStudentController = async (studentId: string): Promise<string> => {
-    try {
-        const existing = await GetStudentHelper(studentId);
+    await GetStudentController({ studentId });
 
-        if (!existing) throw new NotFoundError('No existe un estudiante con ese id');
+    const message = await DeleteStudentHelper(studentId);
 
-        const message = await DeleteStudentHelper(studentId);
-
-        return message;
-    } catch (error: any) {
-        throw error;
-    }
+    return message;
 };

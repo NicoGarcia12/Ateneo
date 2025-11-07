@@ -1,15 +1,17 @@
 import { UpdateGradeHelper } from 'src/helpers/grade/update-grade-helper';
-import { prisma } from 'src/config/prisma';
 import { GradeType } from '@prisma/client';
-import { ValidationError, NotFoundError, ConflictError } from 'src/utils/custom-errors';
+import { ValidationError, ConflictError } from 'src/utils/custom-errors';
 import { detectGradeCycle } from 'src/utils/detect-grade-cycle';
-import { GetGradeHelper } from 'src/helpers/grade/get-grade-helper';
+import { GetGradeController } from 'src/controllers/grade/get-grade-controller';
 import { CalculateWeightedGradeHelper } from '../../helpers/grade/calculate-weighted-grade-helper';
 import { CalculateAverageGradeHelper } from '../../helpers/grade/calculate-average-grade-helper';
+import { GetStudentGradesByGradeIdsHelper } from 'src/helpers/grade/get-student-grades-by-grade-ids-helper';
+import { UpsertStudentGradeHelper } from 'src/helpers/grade/upsert-student-grade-helper';
 
 export interface UpdateGradeParams {
     id: string;
     name?: string;
+    type?: string;
     date?: Date;
     description?: string;
     baseGrades?: Array<{ gradeId: string; weight: number }>;
@@ -18,7 +20,11 @@ export interface UpdateGradeParams {
 export const UpdateGradeController = async (params: UpdateGradeParams) => {
     const { id, name, date, description, baseGrades } = params;
 
+    let gradeType: string | undefined;
     if (baseGrades && baseGrades.length > 0) {
+        const grade = await GetGradeController(id);
+        gradeType = grade.type;
+
         let totalWeight = 0;
         for (const bg of baseGrades) {
             if (!Number.isInteger(bg.weight) || bg.weight < 0 || bg.weight > 99) {
@@ -26,14 +32,11 @@ export const UpdateGradeController = async (params: UpdateGradeParams) => {
             }
             totalWeight += bg.weight;
         }
-        if (totalWeight !== 100) {
+        if (gradeType === 'Weighted' && totalWeight !== 100) {
             throw new ValidationError('Los porcentajes de las notas base deben sumar 100');
         }
         for (const bg of baseGrades) {
-            const baseGrade = await GetGradeHelper(bg.gradeId);
-            if (!baseGrade) {
-                throw new NotFoundError(`La nota base con id ${bg.gradeId} no existe`);
-            }
+            await GetGradeController(bg.gradeId);
         }
         const willCycle = await detectGradeCycle(id, baseGrades);
         if (willCycle) {
@@ -46,9 +49,7 @@ export const UpdateGradeController = async (params: UpdateGradeParams) => {
     if (baseGrades && baseGrades.length > 0) {
         const baseGradeIds = baseGrades.map((bg) => bg.gradeId);
         if (baseGradeIds.length > 0) {
-            const studentGrades = await prisma.studentGrade.findMany({
-                where: { gradeId: { in: baseGradeIds } }
-            });
+            const studentGrades = await GetStudentGradesByGradeIdsHelper(baseGradeIds);
             const countByStudent: Record<string, number> = {};
             for (const sg of studentGrades) {
                 countByStudent[sg.studentId] = (countByStudent[sg.studentId] || 0) + 1;
@@ -63,14 +64,7 @@ export const UpdateGradeController = async (params: UpdateGradeParams) => {
                         ? await CalculateWeightedGradeHelper(id, studentId)
                         : await CalculateAverageGradeHelper(id, studentId);
                 if (value !== null) {
-                    const existing = await prisma.studentGrade.findFirst({ where: { gradeId: id, studentId } });
-                    if (existing) {
-                        await prisma.studentGrade.update({ where: { id: existing.id }, data: { value } });
-                    } else {
-                        await prisma.studentGrade.create({
-                            data: { id: `${id}-${studentId}-${Date.now()}`, gradeId: id, studentId, value }
-                        });
-                    }
+                    await UpsertStudentGradeHelper({ gradeId: id, studentId, value });
                 }
             }
         }

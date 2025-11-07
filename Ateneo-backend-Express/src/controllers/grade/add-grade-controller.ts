@@ -1,13 +1,13 @@
 import { AddGradeHelper } from 'src/helpers/grade/add-grade-helper';
-import { prisma } from 'src/config/prisma';
-import { RecalculateDependentGradesHelper } from 'src/helpers/grade/recalculate-dependent-grades-helper';
 import { GradeType } from '@prisma/client';
 import { detectGradeCycle } from 'src/utils/detect-grade-cycle';
-import { GetSubjectHelper } from 'src/helpers/subject/get-subject-helper';
-import { GetGradeHelper } from 'src/helpers/grade/get-grade-helper';
-import { ValidationError, NotFoundError, ConflictError } from 'src/utils/custom-errors';
+import { GetSubjectController } from 'src/controllers/subject/get-subject-controller';
+import { GetGradeController } from 'src/controllers/grade/get-grade-controller';
+import { ValidationError, ConflictError } from 'src/utils/custom-errors';
 import { CalculateWeightedGradeHelper } from '../../helpers/grade/calculate-weighted-grade-helper';
 import { CalculateAverageGradeHelper } from '../../helpers/grade/calculate-average-grade-helper';
+import { GetStudentGradesByGradeIdHelper } from 'src/helpers/grade/get-student-grades-by-grade-id-helper';
+import { UpsertStudentGradeHelper } from 'src/helpers/grade/upsert-student-grade-helper';
 
 export interface AddGradeParams {
     name: string;
@@ -21,11 +21,7 @@ export interface AddGradeParams {
 export const AddGradeController = async (params: AddGradeParams) => {
     const { name, type, date, description, subjectId, baseGrades } = params;
 
-    const subject = await GetSubjectHelper(subjectId);
-
-    if (!subject) {
-        throw new ValidationError('La materia no existe');
-    }
+    await GetSubjectController({ subjectId });
 
     if (type === GradeType.Weighted && (!baseGrades || baseGrades.length === 0)) {
         throw new ValidationError('Las notas ponderadas requieren al menos una nota base');
@@ -49,10 +45,7 @@ export const AddGradeController = async (params: AddGradeParams) => {
             }
         }
         for (const bg of baseGrades) {
-            const baseGrade = await GetGradeHelper(bg.gradeId);
-            if (!baseGrade) {
-                throw new NotFoundError(`La nota base con id ${bg.gradeId} no existe`);
-            }
+            const baseGrade = await GetGradeController(bg.gradeId);
             if (baseGrade.subjectId !== subjectId) {
                 throw new ValidationError('Todas las notas base deben pertenecer a la misma materia');
             }
@@ -78,7 +71,7 @@ export const AddGradeController = async (params: AddGradeParams) => {
             const studentsWithAllBaseGrades: Set<string> = new Set();
             const studentGradesByBase: Array<{ gradeId: string; studentId: string }> = [];
             for (const baseGradeId of baseGradeIds) {
-                const grades = await prisma.studentGrade.findMany({ where: { gradeId: baseGradeId } });
+                const grades = await GetStudentGradesByGradeIdHelper(baseGradeId);
                 grades.forEach((g: { studentId: string }) => studentGradesByBase.push({ gradeId: baseGradeId, studentId: g.studentId }));
             }
             const studentCount: Record<string, number> = {};
@@ -98,27 +91,11 @@ export const AddGradeController = async (params: AddGradeParams) => {
                     calculatedValue = await CalculateAverageGradeHelper(grade.id, studentId);
                 }
                 if (calculatedValue !== null) {
-                    const existingGrade = await prisma.studentGrade.findFirst({
-                        where: {
-                            gradeId: grade.id,
-                            studentId
-                        }
+                    await UpsertStudentGradeHelper({
+                        gradeId: grade.id,
+                        studentId,
+                        value: calculatedValue
                     });
-                    if (existingGrade) {
-                        await prisma.studentGrade.update({
-                            where: { id: existingGrade.id },
-                            data: { value: calculatedValue }
-                        });
-                    } else {
-                        await prisma.studentGrade.create({
-                            data: {
-                                id: `${grade.id}-${studentId}-${Date.now()}`,
-                                gradeId: grade.id,
-                                studentId,
-                                value: calculatedValue
-                            }
-                        });
-                    }
                 }
             }
         }

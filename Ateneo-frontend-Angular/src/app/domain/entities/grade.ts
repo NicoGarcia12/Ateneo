@@ -9,7 +9,6 @@ export interface Grade {
     date: string;
     description?: string;
     subjectId: string;
-    baseGrades?: Array<{ gradeId: string; weight: number }>;
-    derivedGradeRel?: Array<{ baseGrade: { id: string; name: string }; weight: number }>;
+    baseGrades?: Array<{ id: string; name: string; weight: number; type: string }>;
     studentsGrades?: Array<{ student: Student; value: number }>;
 }
