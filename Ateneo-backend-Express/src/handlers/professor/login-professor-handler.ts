@@ -25,7 +25,7 @@ export const LoginProfessorHandler = async (req: Request, res: Response): Promis
             { expiresIn: '90d' }
         );
 
-    return res.status(200).json({ data: token });
+        return res.status(200).json({ data: token });
     } catch (error: any) {
         return handleControllerError(error, res);
     }

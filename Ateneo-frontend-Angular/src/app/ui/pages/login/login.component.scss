@@ -28,6 +28,12 @@
             button {
                 width: fit-content;
             }
+
+            mat-form-field {
+                width: 100%;
+                min-width: 260px;
+                max-width: 340px;
+            }
         }
     }
 }

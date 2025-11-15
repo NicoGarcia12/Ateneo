@@ -4,7 +4,6 @@ import { LoginViewModelService } from './login-view-model.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotifyService } from '../../shared/services/notify.service';
-import { sha256 } from 'js-sha256';
 import { TokenService } from '../../shared/services/token.service';
 import { DashboardTitleService } from '../dashboard/dashboard-title.service';
 import { emailValidator } from '../../../utils/validators/email.validator';
@@ -17,6 +16,7 @@ import { emailValidator } from '../../../utils/validators/email.validator';
 export class LoginComponent implements OnInit {
     public loginForm!: FormGroup;
     public loadingLogin: boolean = false;
+    public hidePassword: boolean = true;
 
     public constructor(
         private fb: FormBuilder,
@@ -52,10 +52,9 @@ export class LoginComponent implements OnInit {
         this.loadingLogin = true;
 
         let user = this.loginForm.value;
-        user.password = sha256(user.password);
-
         this.loginViewModelService.login(user.email, user.password).subscribe(
             (response) => {
+                console.log(response);
                 this.tokenService.setToken(response.data);
                 this.router.navigate(['/dashboard/subjects']);
                 this.loadingLogin = false;

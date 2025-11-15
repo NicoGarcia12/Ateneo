@@ -620,7 +620,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             weight: bg.weight || 0,
             gradeName: bg.name
         }));
-        
+
         // Resetear el select
         this.selectedEditBaseGradeId = null;
 
@@ -669,7 +669,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             weight: 0,
             gradeName: grade.name
         });
-        
+
         // Resetear el select
         this.selectedEditBaseGradeId = null;
         this.onEditGradeFormChange();
@@ -793,13 +793,14 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     public onLoadStudentGradeChange(): void {
         if (this.loadStudentGradesDialogRef?.componentInstance?.data?.primaryButton) {
-            this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = false;
+            this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = !this.validateLoadStudentGrades();
         }
     }
 
     private validateLoadStudentGrades(): boolean {
-        // Permitir guardar si al menos un alumno tiene nota válida
-        return this.loadStudentGradesData.some((sg) => sg.value !== null && sg.value >= 1 && sg.value <= 10);
+        // Solo permitir guardar si todas las notas son válidas (no nulas, entre 1 y 10)
+        if (this.loadStudentGradesData.length === 0) return false;
+        return this.loadStudentGradesData.every((sg) => sg.value !== null && sg.value >= 1 && sg.value <= 10);
     }
 
     private saveLoadStudentGrades(): void {

@@ -32,5 +32,5 @@ export const CalculateAverageGradeHelper = async (gradeId: string, studentId: st
         count++;
     }
 
-    return count > 0 ? sum / count : null;
+    return count > 0 ? Math.round(sum / count) : null;
 };

@@ -32,5 +32,5 @@ export const CalculateWeightedGradeHelper = async (gradeId: string, studentId: s
         totalWeight += rel.weight;
     }
 
-    return totalWeight > 0 ? totalValue / totalWeight : null;
+    return totalWeight > 0 ? Math.round(totalValue / totalWeight) : null;
 };

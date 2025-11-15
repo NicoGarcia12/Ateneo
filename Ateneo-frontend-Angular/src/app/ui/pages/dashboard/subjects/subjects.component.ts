@@ -35,7 +35,7 @@ export class SubjectsComponent implements OnInit {
             degree: ['', Validators.required],
             academicYear: ['', [Validators.required, this.academicYearValidator]]
         });
-        this.dashboardTitleService.setTitle(`Bienvenido ${this.tokenService.getUserFromToken()?.firstName}`);
+        this.dashboardTitleService.setTitle(`Bienvenid@ ${this.tokenService.getUserFromToken()?.firstName}`);
         this.getAllSubjects();
     }
 
