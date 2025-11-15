@@ -1,7 +1,7 @@
 <div class="subject-details-container">
     <div class="students-table-container">
         <div class="table-wrapper">
-            <mat-table [dataSource]="studentsList" class="students-table">
+            <mat-table [dataSource]="studentsList" class="students-table" *ngIf="studentsList.length > 0">
                 <ng-container matColumnDef="identification">
                     <mat-header-cell *matHeaderCellDef>DNI</mat-header-cell>
                     <mat-cell *matCellDef="let student" [title]="student.dni">{{ student.dni }}</mat-cell>
@@ -52,6 +52,7 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </mat-table>
+            <div class="no-students-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia</div>
         </div>
     </div>
     <div class="calendar-container">
@@ -213,7 +214,7 @@
         <p class="student-data-title">Ingreso del DNI del alumno</p>
         <div class="search-student-container">
             <mat-form-field appearance="outline" class="dni-input">
-                <mat-label>DNI</mat-label>
+                <mat-label>Verificar si existe un alumno</mat-label>
                 <input matInput placeholder="Ingrese el DNI" [(ngModel)]="dniInput" type="text" />
             </mat-form-field>
             <app-submit
@@ -301,10 +302,10 @@
         <p class="grade-data-title">Datos de la nota</p>
         <div class="form-fields-container">
             <mat-form-field appearance="outline" class="grade-form-field">
-                <mat-label>Nombre</mat-label>
+                <mat-label>Título de la nota</mat-label>
                 <input
                     matInput
-                    placeholder="Nombre de la nota"
+                    placeholder="Título de la nota"
                     [(ngModel)]="editGradeData.name"
                     (ngModelChange)="onEditGradeFormChange()"
                     required
@@ -348,7 +349,7 @@
 
                 <mat-form-field appearance="outline" class="grade-select-field">
                     <mat-label>Seleccionar nota</mat-label>
-                    <mat-select [value]="null" (selectionChange)="onEditBaseGradeSelect($event.value)">
+                    <mat-select [(ngModel)]="selectedEditBaseGradeId" (selectionChange)="onEditBaseGradeSelect($event.value)">
                         <mat-option *ngFor="let grade of availableGradesForEdit" [value]="grade.id">
                             {{ grade.name }}
                         </mat-option>

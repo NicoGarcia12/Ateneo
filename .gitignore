@@ -5,6 +5,9 @@ Ateneo-backend-Express/.env
 Ateneo-backend-Express/.env.local
 Ateneo-backend-Express/.DS_Store
 Ateneo-backend-Express/prisma/dev.db
+# Ignorar migraciones de Prisma y migration_lock.toml, pero NO schema.prisma
+Ateneo-backend-Express/prisma/migrations/
+Ateneo-backend-Express/prisma/migration_lock.toml
 
 # Dependencias y archivos generados por Angular (frontend)
 Ateneo-frontend-Angular/node_modules/
@@ -19,3 +22,8 @@ Ateneo-frontend-Angular/.angular/
 *.log
 Thumbs.db
 .DS_Store
+NicoGarcia12
+NicoGarcia12.pub
+*.pem
+*.key
+*.pub

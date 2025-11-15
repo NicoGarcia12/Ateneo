@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { useCase } from '../use-case.interface';
+import { useCase, IResponse } from '../use-case.interface';
 import { Observable, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Student } from '../../entities/student';
@@ -17,12 +17,12 @@ export interface IAddStudentParams {
 @Injectable({
     providedIn: 'root'
 })
-export class AddStudentUseCase implements useCase<Student, IAddStudentParams> {
+export class AddStudentUseCase implements useCase<IResponse, IAddStudentParams> {
     private BASE_URL = buildApiUrl('students');
 
     constructor(private httpClient: HttpClient) {}
 
-    execute(params: IAddStudentParams): Observable<Student> {
+    execute(params: IAddStudentParams): Observable<IResponse> {
         let httpParams = new HttpParams();
 
         if (params.subjectId) {
@@ -37,6 +37,6 @@ export class AddStudentUseCase implements useCase<Student, IAddStudentParams> {
             phone: params.phone
         };
 
-        return this.httpClient.post<Student>(`${this.BASE_URL}/add`, body, { params: httpParams });
+        return this.httpClient.post<IResponse>(`${this.BASE_URL}/add`, body, { params: httpParams });
     }
 }

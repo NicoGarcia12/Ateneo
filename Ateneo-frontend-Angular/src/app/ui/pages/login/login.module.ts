@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { SubmitModule } from '../../components/submit/submit.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
     declarations: [LoginComponent],
@@ -20,6 +21,7 @@ import { SubmitModule } from '../../components/submit/submit.module';
         MatInputModule,
         CommonModule,
         MatButtonModule,
+        MatIconModule,
         HttpClientModule
     ],
     exports: [LoginComponent]

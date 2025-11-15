@@ -33,7 +33,7 @@ export const AddClassController = async (params: AddClassParams): Promise<ClassR
 async function assertNoClassOnSameDate(subjectId: string, date: string | Date) {
     const classes = await GetClassesBySubjectController({ subjectId });
     const newDateNorm = normalizeToDayMonthYear(date);
-    if (classes.some((c) => normalizeToDayMonthYear(c.date) === newDateNorm)) {
+    if (classes.some((c: { date: string | Date }) => normalizeToDayMonthYear(c.date) === newDateNorm)) {
         throw new ConflictError('Ya existe una clase para ese día y materia');
     }
 }

@@ -1,5 +1,6 @@
 import { GetClassHelper } from 'src/helpers/class/get-class-helper';
 import { NotFoundError } from 'src/utils/custom-errors';
+import { convertBigIntToString } from '../../utils/convert-bigint-to-string';
 
 export interface GetClassControllerParams {
     classId: string;
@@ -12,5 +13,5 @@ export const GetClassController = async (params: GetClassControllerParams) => {
         throw new NotFoundError('Clase no encontrada');
     }
 
-    return classData;
+    return convertBigIntToString(classData);
 };

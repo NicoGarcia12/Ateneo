@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoginUseCase } from '../../../domain/use-cases/professor/login-use-case';
 import { Observable } from 'rxjs';
-import { Professor } from '../../../domain/entities/professor';
+import { IResponse } from '../../../domain/use-cases/use-case.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +9,7 @@ import { Professor } from '../../../domain/entities/professor';
 export class LoginViewModelService {
     public constructor(private loginUseCase: LoginUseCase) {}
 
-    public login(email: string, password: string): Observable<any> {
+    public login(email: string, password: string): Observable<IResponse> {
         return this.loginUseCase.execute({ email, password });
     }
 }

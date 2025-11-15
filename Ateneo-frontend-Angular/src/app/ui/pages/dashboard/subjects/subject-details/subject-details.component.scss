@@ -17,7 +17,8 @@
     overflow: hidden;
     border-radius: 8px;
     border: 2px solid #ddd;
-    width: 100%;
+    width: fit-content;
+    justify-self: center;
     max-width: 100%;
 }
 
@@ -57,6 +58,8 @@
     min-width: 100%;
     border-radius: 8px;
     overflow: hidden;
+    min-width: 800px;
+    width: 100%;
 
     ::ng-deep .mat-mdc-table {
         width: max-content !important;
@@ -80,7 +83,6 @@
         align-items: center !important;
         justify-content: center !important;
         min-width: 80px;
-        max-width: 200px;
         flex-direction: column !important;
 
         .grade-header-container {
@@ -510,6 +512,19 @@
     font-weight: bold;
     margin-bottom: 16px;
     text-align: center;
+}
+
+.no-students-fake-cell {
+    background-color: $secondary-color;
+    color: $white-color;
+    border: 1px solid #333;
+    border-radius: 8px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 16px;
 }
 
 @media (max-width: 768px) {

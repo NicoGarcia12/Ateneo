@@ -4,6 +4,7 @@ import { TokenService } from '../../../shared/services/token.service';
 import { Observable } from 'rxjs';
 import { Subject } from '../../../../domain/entities/subject';
 import { AddSubjectUseCase } from '../../../../domain/use-cases/subject/add-subject-use-case';
+import { IResponse } from '../../../../domain/use-cases/use-case.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,7 @@ export class SubjectsViewModelService {
         });
     }
 
-    public addSubject(subject: Subject): Observable<any> {
+    public addSubject(subject: Subject): Observable<IResponse> {
         return this.addSubjectUseCase.execute({
             subject,
             idProfessor: this.professorId!

@@ -12,7 +12,10 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Contraseña</mat-label>
-                <input matInput formControlName="password" type="password" placeholder="Contraseña" />
+                <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Contraseña" />
+                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" tabindex="-1" type="button">
+                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
                 <mat-error *ngIf="hasError('password', 'required')"> La contraseña es requerida </mat-error>
             </mat-form-field>
 

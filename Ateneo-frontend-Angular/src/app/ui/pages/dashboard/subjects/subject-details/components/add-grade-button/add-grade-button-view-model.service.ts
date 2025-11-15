@@ -2,6 +2,7 @@ import { Injectable, TemplateRef } from '@angular/core';
 import { forkJoin, Observable } from 'rxjs';
 import { AddGradeUseCase, IAddGradeParams } from 'src/app/domain/use-cases/grade/add-grade-use-case';
 import { Grade } from 'src/app/domain/entities/grade';
+import { IResponse } from 'src/app/domain/use-cases/use-case.interface';
 import { Student } from 'src/app/domain/entities/student';
 import { AddStudentGradeUseCase } from 'src/app/domain/use-cases/grade/add-student-grade-use-case';
 import { OpenDialogService } from 'src/app/ui/shared/services/open-dialog.service';
@@ -43,7 +44,7 @@ export class AddGradeButtonViewModelService {
         private notifyService: NotifyService
     ) {}
 
-    public addGrade(params: IAddGradeParams): Observable<Grade> {
+    public addGrade(params: IAddGradeParams): Observable<IResponse> {
         return this.addGradeUseCase.execute(params);
     }
 
@@ -227,12 +228,12 @@ export class AddGradeButtonViewModelService {
         const params = this.buildGradeParams(gradeData, baseGrades, subjectId);
 
         this.addGradeUseCase.execute(params).subscribe({
-            next: (response) => {
+            next: (response: IResponse) => {
                 this.notifyService.notify('Nota agregada correctamente', 'success-notify');
                 this.closeAddGradeModal();
 
                 // Guardar el ID y nombre de la nota creada
-                this.setCreatedGradeInfo(response.id, gradeData.name);
+                this.setCreatedGradeInfo(response.data.id, gradeData.name);
 
                 // Si es una nota Final, preguntar si quiere cargar las notas de los alumnos
                 if (this.shouldShowStudentGradesModal(gradeData.type, students.length > 0)) {

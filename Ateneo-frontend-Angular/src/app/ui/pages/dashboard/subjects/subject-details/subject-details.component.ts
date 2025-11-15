@@ -13,6 +13,7 @@ import { isValidEmail } from '../../../../../utils/validators/email.validator';
 import { Grade } from 'src/app/domain/entities/grade';
 import { UpdateGradeUseCase } from 'src/app/domain/use-cases/grade/update-grade-use-case';
 import { AddStudentGradeUseCase } from 'src/app/domain/use-cases/grade/add-student-grade-use-case';
+import { IResponse } from 'src/app/domain/use-cases/use-case.interface';
 
 @Component({
     selector: 'app-subject-details',
@@ -79,6 +80,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         date: null
     };
     public editBaseGrades: Array<{ gradeId: string; weight: number; gradeName: string }> = [];
+    public selectedEditBaseGradeId: string | null = null;
     private editGradeDialogRef: any = null;
 
     public loadStudentGradesData: Array<{ studentId: string; studentName: string; value: number | null }> = [];
@@ -293,8 +295,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                             subjectId: this.idSubject
                         };
                         this.viewModel.createClass(payload, this.idSubject).subscribe({
-                            next: () => {
-                                this.notifyService.notify('Clase creada correctamente', 'success-notify');
+                            next: (response) => {
+                                this.notifyService.notify(response?.message || 'Clase creada correctamente', 'success-notify');
                                 if (this.idSubject) {
                                     this.viewModel.loadClasses(this.idSubject);
                                 }
@@ -419,27 +421,19 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
               });
 
         addStudentObservable.subscribe({
-            next: () => {
-                this.handleAddStudentSuccess();
+            next: (response: IResponse) => {
+                this.viewModel.loadStudents(this.idSubject);
+                this.notifyService.notify(response?.message || 'Alumno agregado correctamente', 'success-notify');
+                this.resetAddStudentModalState();
+                if (this.addStudentDialogRef) {
+                    this.addStudentDialogRef.close();
+                }
             },
             error: (err) => {
-                this.handleAddStudentError(err);
+                const message = err?.error?.message || 'Error al agregar el alumno';
+                this.notifyService.notify(message, 'error-notify');
             }
         });
-    }
-
-    private handleAddStudentSuccess(): void {
-        this.viewModel.loadStudents(this.idSubject);
-        this.notifyService.notify('Alumno agregado correctamente', 'success-notify');
-        this.resetAddStudentModalState();
-        if (this.addStudentDialogRef) {
-            this.addStudentDialogRef.close();
-        }
-    }
-
-    private handleAddStudentError(err: any): void {
-        const message = err?.error?.message || 'Error al agregar el alumno';
-        this.notifyService.notify(message, 'error-notify');
     }
 
     public saveClassChanges(): void {
@@ -456,7 +450,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             }))
         };
         this.viewModel.updateClass(payload).subscribe({
-            next: (res) => {
+            next: (res: IResponse) => {
                 this.notifyService.notify(res?.message || 'Clase actualizada correctamente', 'success-notify');
                 if (this.idSubject) {
                     this.viewModel.loadClasses(this.idSubject);
@@ -486,7 +480,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 loading: false
             }
         });
-
         confirmDialogRef.afterClosed().subscribe((result: string | undefined) => {
             if (result === 'PRIMARY') {
                 this.deleteClass();
@@ -620,13 +613,16 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             date: dateObj
         };
 
-        // Cargar notas base si existen
-        const derivedGradeRel = grade.derivedGradeRel || [];
-        this.editBaseGrades = derivedGradeRel.map((bg: any) => ({
-            gradeId: bg.baseGrade.id,
+        // Cargar notas base si existen (ahora viene en baseGrades del backend)
+        const baseGrades = grade.baseGrades || [];
+        this.editBaseGrades = baseGrades.map((bg: any) => ({
+            gradeId: bg.id,
             weight: bg.weight || 0,
-            gradeName: bg.baseGrade.name
+            gradeName: bg.name
         }));
+
+        // Resetear el select
+        this.selectedEditBaseGradeId = null;
 
         this.editGradeDialogRef = this.openDialogService.openDialog({
             title: 'Editar nota',
@@ -673,11 +669,16 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             weight: 0,
             gradeName: grade.name
         });
+
+        // Resetear el select
+        this.selectedEditBaseGradeId = null;
         this.onEditGradeFormChange();
     }
 
     public removeEditBaseGrade(index: number): void {
         this.editBaseGrades.splice(index, 1);
+        // Resetear el select para que pueda volver a seleccionar la nota eliminada
+        this.selectedEditBaseGradeId = null;
         this.onEditGradeFormChange();
     }
 
@@ -727,8 +728,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         };
 
         this.updateGradeUseCase.execute(updateParams).subscribe({
-            next: () => {
-                this.notifyService.notify('Nota actualizada correctamente', 'success-notify');
+            next: (res: IResponse) => {
+                this.notifyService.notify(res?.message || 'Nota actualizada correctamente', 'success-notify');
                 if (this.editGradeDialogRef) {
                     this.editGradeDialogRef.close();
                 }
@@ -792,13 +793,14 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     public onLoadStudentGradeChange(): void {
         if (this.loadStudentGradesDialogRef?.componentInstance?.data?.primaryButton) {
-            this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = false;
+            this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = !this.validateLoadStudentGrades();
         }
     }
 
     private validateLoadStudentGrades(): boolean {
-        // Permitir guardar si al menos un alumno tiene nota válida
-        return this.loadStudentGradesData.some((sg) => sg.value !== null && sg.value >= 1 && sg.value <= 10);
+        // Solo permitir guardar si todas las notas son válidas (no nulas, entre 1 y 10)
+        if (this.loadStudentGradesData.length === 0) return false;
+        return this.loadStudentGradesData.every((sg) => sg.value !== null && sg.value >= 1 && sg.value <= 10);
     }
 
     private saveLoadStudentGrades(): void {

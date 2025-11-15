@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { ResolutionService } from '../../shared/services/resolution.service';
 import { SignUpViewModelService } from './sign-up-view-model.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { IResponse } from '../../../domain/use-cases/use-case.interface';
 import { NotifyService } from '../../shared/services/notify.service';
-import { sha256 } from 'js-sha256';
 import { TokenService } from '../../shared/services/token.service';
 import { DashboardTitleService } from '../dashboard/dashboard-title.service';
 import { emailValidator } from '../../../utils/validators/email.validator';
@@ -19,6 +19,7 @@ export class SignUpComponent implements OnInit {
     public signUpForm!: FormGroup;
     public isMobile: boolean = false;
     public signUpLoading: boolean = false;
+    public hidePassword: boolean = true;
 
     public constructor(
         private fb: FormBuilder,
@@ -73,17 +74,16 @@ export class SignUpComponent implements OnInit {
         this.signUpLoading = true;
 
         let { firstName, lastName, email, password } = this.signUpForm.value;
-        password = sha256(password);
         this.signUpViewModelService.signUp(email, password, firstName, lastName).subscribe({
-            next: (success) => {
+            next: (response: IResponse) => {
                 this.signUpLoading = false;
-                this.notifyService.notify(success.message, 'success-notify');
+                this.notifyService.notify(response?.message || 'Registro exitoso', 'success-notify');
                 this.router.navigate(['/login']);
             },
             error: (error: HttpErrorResponse) => {
                 this.signUpLoading = false;
-                this.notifyService.notify(error.error.message, 'error-notify', 'Cerrar');
-                throw error.error.message;
+                this.notifyService.notify(error?.error?.message || 'Error al registrarse', 'error-notify', 'Cerrar');
+                throw error?.error?.message;
             }
         });
     }
