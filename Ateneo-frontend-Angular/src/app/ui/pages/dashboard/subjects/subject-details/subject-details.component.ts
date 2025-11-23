@@ -122,7 +122,13 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 this.filterStudents();
             });
             this.classesSubscription = this.viewModel.classes$.subscribe((classes) => {
-                this.specialDates = classes.map((c) => (c.date ? new Date(c.date) : null)).filter((d): d is Date => d !== null);
+                this.specialDates = classes
+                    .map((c) => {
+                        if (!c.date) return null;
+                        const d = new Date(c.date);
+                        return isNaN(d.getTime()) ? null : d;
+                    })
+                    .filter((d): d is Date => d !== null);
 
                 if (this.calendar) {
                     this.calendar.updateTodaysDate();
@@ -228,8 +234,11 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     public dateClass = (d: Date) => {
+        if (!(d instanceof Date) || isNaN(d.getTime())) return '';
         const fecha = d.toISOString().split('T')[0];
-        return this.specialDates.some((s) => s.toISOString().split('T')[0] === fecha) ? 'special-date' : '';
+        return this.specialDates.some((s) => s instanceof Date && !isNaN(s.getTime()) && s.toISOString().split('T')[0] === fecha)
+            ? 'special-date'
+            : '';
     };
 
     private formatDateToDDMMYYYY(date: Date): string {
