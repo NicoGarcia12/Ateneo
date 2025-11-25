@@ -1,0 +1,89 @@
+<div class="class-details-panel">
+    <div class="panel-header">
+        <h2>{{ isNewClass ? 'Nueva Clase' : isEditMode ? 'Editar Clase' : 'Detalles de Clase' }}</h2>
+        <p class="date">{{ selectedDate | date: 'dd/MM/yyyy' }}</p>
+    </div>
+
+    <div class="panel-content">
+        <div class="students-section">
+            <h3>Asistencia de Alumnos</h3>
+            <div class="students-list">
+                <div class="student-row header-row">
+                    <span class="student-name">Alumno</span>
+                    <span class="present-column">Presente</span>
+                    <span class="justified-column">Ausente Justificado</span>
+                </div>
+                <div class="student-row" *ngFor="let attendance of studentAttendance">
+                    <span class="student-name">{{ attendance.student.firstName }} {{ attendance.student.lastName }}</span>
+                    <mat-checkbox
+                        class="custom-checkbox present-checkbox"
+                        [(ngModel)]="attendance.isPresent"
+                        (change)="onPresentChange(attendance)"
+                        [disabled]="!isEditMode"
+                    >
+                    </mat-checkbox>
+                    <mat-checkbox
+                        class="custom-checkbox justified-checkbox"
+                        [(ngModel)]="attendance.isJustifiedAbsence"
+                        [disabled]="attendance.isPresent || !isEditMode"
+                    >
+                    </mat-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="description-section">
+            <h3>Descripción de la Clase</h3>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descripción</mat-label>
+                <textarea
+                    matInput
+                    [(ngModel)]="description"
+                    rows="4"
+                    placeholder="Ej: Evaluación del tema 3, Actividad grupal, etc."
+                    [disabled]="!isEditMode"
+                >
+                </textarea>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="panel-actions">
+        <!-- Botón Volver: solo cuando NO está en modo edición y es una clase existente -->
+        <button *ngIf="!isEditMode && !isNewClass" class="secondary-button" mat-stroked-button (click)="goBack()">Volver</button>
+
+        <!-- Botón Cancelar: solo cuando está en modo edición -->
+        <button *ngIf="isEditMode" class="secondary-button" mat-stroked-button (click)="cancel()" [disabled]="isSaving">Cancelar</button>
+
+        <!-- Botón Editar: solo cuando NO está en modo edición y es una clase existente -->
+        <app-submit *ngIf="!isEditMode && !isNewClass" type="button" [withText]="true" [class]="'primary'" (click)="enableEditMode()">
+            Editar
+        </app-submit>
+
+        <!-- Botón Guardar: solo cuando es nueva clase -->
+        <app-submit
+            *ngIf="isNewClass"
+            type="submit"
+            [disabled]="isSaving"
+            [loading]="isSaving"
+            [withText]="true"
+            [class]="'primary'"
+            (click)="createClass()"
+        >
+            Guardar Clase
+        </app-submit>
+
+        <!-- Botón Actualizar: solo cuando está editando una clase existente -->
+        <app-submit
+            *ngIf="!isNewClass && isEditMode"
+            type="submit"
+            [disabled]="isSaving"
+            [loading]="isSaving"
+            [withText]="true"
+            [class]="'primary'"
+            (click)="updateClass()"
+        >
+            Actualizar Clase
+        </app-submit>
+    </div>
+</div>

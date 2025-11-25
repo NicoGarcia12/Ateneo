@@ -391,6 +391,12 @@
     resize: none;
 }
 
+.class-panel-expanded {
+    grid-column: 1 / 6;
+    grid-row: 2 / 3;
+    width: 100%;
+}
+
 .char-counter {
     text-align: right;
     font-size: 12px;
@@ -529,7 +535,6 @@
 
 @media (max-width: 768px) {
     .subject-details-container {
-        grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
     }
 

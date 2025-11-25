@@ -9,8 +9,12 @@
     }"
     class="button-content"
 >
-    <ng-container *ngIf="loading; else content">
+    <span class="button-inner-content">
+        <span class="button-text">
+            <ng-content></ng-content>
+        </span>
         <mat-spinner
+            *ngIf="loading"
             class="spinner"
             [ngClass]="{
                 'primary-spinner': class === 'primary',
@@ -18,8 +22,5 @@
             }"
             diameter="20"
         ></mat-spinner>
-    </ng-container>
-    <ng-template #content>
-        <ng-content></ng-content>
-    </ng-template>
+    </span>
 </button>

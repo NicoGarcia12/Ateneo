@@ -55,11 +55,22 @@
             <div class="no-students-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia</div>
         </div>
     </div>
-    <div class="calendar-container">
+    <div class="calendar-container" *ngIf="!showClassPanel">
         <h3>Calendario de Clases</h3>
-        <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"></mat-calendar>
+        <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"> </mat-calendar>
     </div>
-    <div class="buttons-container">
+    <app-class-details-panel
+        *ngIf="showClassPanel"
+        class="class-panel-expanded"
+        [classData]="selectedClassForPanel"
+        [selectedDate]="selectedDate"
+        [students]="studentsList"
+        [subjectId]="idSubject"
+        (onComplete)="onClassPanelComplete()"
+        (onClassSaved)="onClassSaved($event)"
+    >
+    </app-class-details-panel>
+    <div class="buttons-container" *ngIf="!showClassPanel">
         <button class="primary-button full-width-btn" mat-flat-button (click)="openAddStudentModal()">Agregar alumno</button>
         <app-add-grade-button
             [grades]="viewModel.grades$ | async"
@@ -72,142 +83,6 @@
         <button class="primary-button full-width-btn" mat-flat-button>Eliminar materia</button>
     </div>
 </div>
-
-<ng-template #modalOcupada>
-    <div class="modal-clase-cargada">
-        <button class="primary-button full-width-btn" mat-flat-button (click)="toggleEditMode()">
-            {{ isEditingClass ? 'Cancelar edición' : 'Editar clase' }}
-        </button>
-        <div class="clase-cargada-inasistencias">
-            <h4>Inasistencias</h4>
-            <div *ngIf="isEditingClass" class="edit-students-section">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Agregar estudiante con inasistencia</mat-label>
-                    <input
-                        matInput
-                        placeholder="Buscar estudiante por nombre"
-                        [(ngModel)]="studentSearch"
-                        (ngModelChange)="filterStudents()"
-                        autocomplete="off"
-                    />
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Seleccionar estudiante</mat-label>
-                    <mat-select
-                        [(ngModel)]="selectedStudent"
-                        [disabled]="filteredStudentsForEdit.length === 0"
-                        (selectionChange)="addStudentToLoadedClass($event.value)"
-                    >
-                        <mat-option *ngIf="filteredStudentsForEdit.length === 0" disabled>Ningún estudiante encontrado</mat-option>
-                        <mat-option *ngFor="let student of filteredStudentsForEdit" [value]="student">
-                            {{ student.firstName }} {{ student.lastName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="inasistencias-table">
-                <div *ngIf="loadedClass.absentStudents.length > 0" class="inasistencias-row inasistencias-header">
-                    <div class="inasistencias-nombre">Estudiante</div>
-                    <div class="inasistencias-justificado">Justificado</div>
-                    <div *ngIf="isEditingClass" class="inasistencias-actions"></div>
-                </div>
-                <div class="inasistencias-row" *ngFor="let student of loadedClass.absentStudents">
-                    <div class="inasistencias-nombre" title="{{ student.firstName }} {{ student.lastName }}">
-                        {{ student.firstName }} {{ student.lastName }}
-                    </div>
-                    <div class="inasistencias-justificado">
-                        <mat-checkbox
-                            [checked]="student.justificado"
-                            [disabled]="!isEditingClass"
-                            [(ngModel)]="student.justificado"
-                            class="custom-checkbox"
-                        >
-                        </mat-checkbox>
-                    </div>
-                    <div *ngIf="isEditingClass" class="inasistencias-actions">
-                        <mat-icon (click)="removeStudentFromLoadedClass(student)">close</mat-icon>
-                    </div>
-                </div>
-                <div *ngIf="loadedClass.absentStudents.length === 0" class="no-inasistencias">
-                    No hay inasistencias cargadas en esta clase
-                </div>
-            </div>
-        </div>
-        <mat-form-field appearance="outline" class="full-width class-description">
-            <mat-label>Descripción de la clase</mat-label>
-            <textarea
-                matInput
-                [(ngModel)]="loadedClass.description"
-                placeholder="Agrega una descripción para la clase"
-                rows="3"
-                class="class-description-textarea"
-                maxlength="140"
-                [disabled]="!isEditingClass"
-            ></textarea>
-            <div *ngIf="isEditingClass" class="char-counter">{{ loadedClass.description.length || 0 }}/140</div>
-        </mat-form-field>
-    </div>
-</ng-template>
-
-<ng-template #modalLibre>
-    <div class="modal-libre-container">
-        <button class="primary-button button-toggle-modal-libre full-width-btn" mat-flat-button (click)="toggleModalView()">
-            {{ showAltModal ? 'Cargar inasistencias' : 'Ver inasistencias cargadas' }}
-        </button>
-        <ng-container *ngIf="!showAltModal; else altModalContent">
-            <div class="inputs-column">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Estudiante con inasistencia</mat-label>
-                    <input
-                        matInput
-                        placeholder="Nombre del Estudiante"
-                        [(ngModel)]="studentSearch"
-                        (ngModelChange)="filterStudents()"
-                        autocomplete="off"
-                    />
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Seleccionar estudiante</mat-label>
-                    <mat-select
-                        [(ngModel)]="selectedStudent"
-                        [disabled]="filteredStudents.length === 0"
-                        (selectionChange)="addSelectedStudent($event.value)"
-                    >
-                        <mat-option *ngIf="filteredStudents.length === 0" disabled>Ningún estudiante encontrado</mat-option>
-                        <mat-option *ngFor="let student of filteredStudents" [value]="student">
-                            {{ student.firstName }} {{ student.lastName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width class-description">
-                    <mat-label>Descripción de la clase (opcional)</mat-label>
-                    <textarea
-                        matInput
-                        [(ngModel)]="classDescription"
-                        placeholder="Agrega una descripción para la clase"
-                        rows="3"
-                        class="class-description-textarea"
-                        maxlength="140"
-                    ></textarea>
-                    <div class="char-counter">{{ classDescription.length || 0 }}/140</div>
-                </mat-form-field>
-            </div>
-        </ng-container>
-        <ng-template #altModalContent>
-            <div class="alt-modal-content">
-                <h3>Inasistencias seleccionadas</h3>
-                <div *ngIf="selectedStudents.length === 0">No hay estudiantes seleccionados.</div>
-                <div *ngFor="let student of selectedStudents" class="selected-student-item">
-                    <mat-icon (click)="removeSelectedStudent(student)">close</mat-icon>
-                    <span>{{ student.firstName }} {{ student.lastName }}</span>
-                    <span class="justificado-label">Justificado</span>
-                    <mat-checkbox [(ngModel)]="student.justificado" class="custom-checkbox"></mat-checkbox>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-</ng-template>
 
 <ng-template #addStudentModal>
     <div class="modal-add-student">
