@@ -1,3 +1,11 @@
+// Quitar sombra de foco en custom-checkbox (focus ring)
+.custom-checkbox.mat-mdc-checkbox .mdc-checkbox__ripple {
+    background-color: transparent !important;
+}
+.custom-checkbox.mat-mdc-checkbox .mat-mdc-focus-indicator {
+    box-shadow: none !important;
+    background: transparent !important;
+}
 // Botones
 .primary-button {
     background-color: $primary-color !important;
@@ -52,39 +60,54 @@
     background-color: #ff9800 !important;
 }
 
-// Checkbox
-::ng-deep .custom-checkbox.mat-mdc-checkbox .mdc-checkbox__background {
+// Checkbox MDC (Angular Material v16+)
+.custom-checkbox.mat-mdc-checkbox .mdc-checkbox__background {
     border-color: $primary-color !important;
 }
-::ng-deep .custom-checkbox.mat-mdc-checkbox .mdc-checkbox__checkmark-path {
+
+.custom-checkbox.mat-mdc-checkbox .mdc-checkbox__checkmark-path {
     stroke: $white-color !important;
 }
-::ng-deep .custom-checkbox.mat-mdc-checkbox .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+
+.custom-checkbox.mat-mdc-checkbox .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
     background-color: $primary-color !important;
     border-color: $primary-color !important;
 }
-::ng-deep .custom-checkbox.mat-mdc-checkbox .mat-mdc-checkbox-ripple .mat-ripple-element {
-    background: rgba(25, 118, 210, 0.2) !important;
+
+.custom-checkbox.mat-mdc-checkbox.mat-mdc-checkbox-disabled .mdc-checkbox__background {
+    background-color: $grey-white-color !important;
+    border-color: $grey-white-color !important;
+    opacity: 0.6;
 }
-::ng-deep .custom-checkbox .mat-checkbox-label,
-::ng-deep .custom-checkbox .mdc-label {
-    color: #222 !important;
+
+.custom-checkbox .mat-mdc-checkbox-ripple .mat-ripple-element {
+    background: rgba(53, 84, 86, 0.2) !important;
 }
-::ng-deep .custom-checkbox.mat-checkbox .mat-checkbox-frame {
+
+.custom-checkbox .mdc-label {
+    color: $grey-color !important;
+}
+
+// Checkbox Legacy (por compatibilidad)
+.custom-checkbox.mat-checkbox .mat-checkbox-frame {
     border-color: $primary-color !important;
 }
-::ng-deep .custom-checkbox.mat-checkbox-checked .mat-checkbox-background,
-::ng-deep .custom-checkbox.mat-checkbox-checked .mat-checkbox-frame {
+
+.custom-checkbox.mat-checkbox-checked .mat-checkbox-background,
+.custom-checkbox.mat-checkbox-checked .mat-checkbox-frame {
     background-color: $primary-color !important;
     border-color: $primary-color !important;
 }
-::ng-deep .custom-checkbox .mat-checkbox-ripple .mat-ripple-element {
-    background: rgba(25, 118, 210, 0.2) !important;
+
+.custom-checkbox .mat-checkbox-ripple .mat-ripple-element {
+    background: rgba(53, 84, 86, 0.2) !important;
 }
-::ng-deep .custom-checkbox .mat-checkbox-label {
-    color: #222 !important;
+
+.custom-checkbox .mat-checkbox-label {
+    color: $grey-color !important;
 }
-::ng-deep .custom-checkbox .mat-checkbox-inner-container .mat-checkbox-checkmark-path {
+
+.custom-checkbox .mat-checkbox-inner-container .mat-checkbox-checkmark-path {
     stroke: $white-color !important;
 }
 

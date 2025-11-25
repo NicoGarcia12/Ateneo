@@ -1,0 +1,122 @@
+@import '../../../../../../../assets/styles/colors.scss';
+
+.class-details-panel {
+    padding: 24px;
+    border-radius: 8px;
+}
+
+.panel-header {
+    margin-bottom: 24px;
+    border-bottom: 1px solid $grey-white-color;
+    padding-bottom: 16px;
+
+    h2 {
+        margin: 0 0 8px 0;
+        color: $grey-color;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .date {
+        margin: 0;
+        color: $grey-color;
+        font-size: 16px;
+    }
+}
+
+.panel-content {
+    margin-bottom: 24px;
+}
+
+.students-section {
+    margin-bottom: 32px;
+
+    h3 {
+        margin: 0 0 16px 0;
+        color: #333;
+        font-size: 18px;
+        font-weight: 500;
+    }
+}
+
+.students-list {
+    .student-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 4px;
+        align-items: center;
+        padding: 8px;
+        border-bottom: 1px solid $grey-white-color;
+
+        &.header-row {
+            background: $white-color;
+            font-weight: 600;
+            color: $grey-color;
+            border-bottom: 2px solid $grey-white-color;
+        }
+
+        .student-name {
+            font-size: 14px;
+            color: $grey-color;
+        }
+
+        .present-column,
+        .justified-column {
+            text-align: center;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .present-checkbox,
+        .justified-checkbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+
+.description-section {
+    h3 {
+        margin: 0 0 16px 0;
+        color: #333;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+}
+
+.panel-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid $grey-white-color;
+    align-items: stretch;
+
+    button.secondary-button {
+        min-height: 40px;
+        height: 40px;
+        padding: 0 24px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 768px) {
+    .students-list .student-row {
+        font-size: 12px;
+    }
+
+    .panel-header h2 {
+        font-size: 20px;
+    }
+}

@@ -47,6 +47,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public idSubject: string = '';
     public selectedDate: Date | null = null;
     public isEditingClass = false;
+    public showClassPanel = false;
+    public selectedClassForPanel: Class | null = null;
     private currentDialogRef: any = null;
     public studentsList: Student[] = [];
     public filteredStudents: Student[] = [...this.studentsList];
@@ -87,8 +89,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     private loadStudentGradesDialogRef: any = null;
     private currentGradeIdForStudentGrades: string = '';
 
-    @ViewChild('modalOcupada') modalOcupadaTemplate!: TemplateRef<any>;
-    @ViewChild('modalLibre') modalLibreTemplate!: TemplateRef<any>;
     @ViewChild('addStudentModal') dniModalTemplate!: TemplateRef<any>;
     @ViewChild('editGradeModal') editGradeModalTemplate!: TemplateRef<any>;
     @ViewChild('loadStudentGradesModal') loadStudentGradesModalTemplate!: TemplateRef<any>;
@@ -250,96 +250,44 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     public onDateSelected(date: Date | null): void {
         if (!date) return;
+        
+        this.selectedDate = date;
         const fecha = date.toISOString();
-        const fechaFormateada = this.formatDateToDDMMYYYY(date);
         const ocupada = this.specialDates.some((s) => s.toISOString() === fecha);
+        
         if (ocupada) {
             let classes: Array<Class> = [];
             this.viewModel.classes$.subscribe((val) => (classes = val)).unsubscribe();
             const clase = classes.find((c) => c.date && c.date === fecha);
-            this.selectedClassId = clase?.id || null;
-            this.loadedClass.description = clase?.description || '';
-            this.loadedClass.absentStudents = (clase?.absences || []).map((abs: Absence) => {
-                const student = abs.student;
-                return {
-                    id: student?.id || abs.studentId,
-                    firstName: student?.firstName || '',
-                    lastName: student?.lastName || '',
-                    dni: student?.dni || '',
-                    absences: student?.absences || [],
-                    studentGrades: student?.studentGrades || [],
-                    subjects: student?.subjects || [],
-                    justificado: abs.justified
-                };
-            });
+            this.selectedClassForPanel = clase || null;
+        } else {
+            this.selectedClassForPanel = null;
         }
-        this.currentDialogRef = this.openDialogService.openDialog({
-            title: ocupada ? 'Clase del día ' + fechaFormateada : 'Puedes cargar la clase y las inasistencias de ella:',
-            contentTemplate: ocupada ? this.modalOcupadaTemplate : this.modalLibreTemplate,
-            secondaryButtonText: 'Cerrar',
-            primaryButton: {
-                show: true,
-                text: ocupada ? (this.isEditingClass ? 'Guardar cambios' : 'Borrar clase') : 'Guardar clase',
-                disabled: false,
-                loading: false
-            }
-        });
-        if (this.currentDialogRef && this.currentDialogRef.afterClosed) {
-            this.currentDialogRef.afterClosed().subscribe((result: string | undefined) => {
-                if (result === 'PRIMARY') {
-                    if (ocupada) {
-                        if (this.isEditingClass) {
-                            this.saveClassChanges();
-                        } else {
-                            this.confirmDeleteClass();
-                        }
-                    } else {
-                        const payload = {
-                            date: fecha,
-                            description: this.classDescription,
-                            absentStudents: this.selectedStudents.map((s) => ({
-                                id: s.id,
-                                justificado: s.justificado
-                            })),
-                            subjectId: this.idSubject
-                        };
-                        this.viewModel.createClass(payload, this.idSubject).subscribe({
-                            next: (response) => {
-                                this.notifyService.notify(response?.message || 'Clase creada correctamente', 'success-notify');
-                                if (this.idSubject) {
-                                    this.viewModel.loadClasses(this.idSubject);
-                                }
-                                this.resetModalState();
-                                this.selectedDate = null;
-                                if (this.calendar) {
-                                    try {
-                                        (this.calendar as any).selected = null;
-                                        this.calendar.updateTodaysDate();
-                                    } catch (e) {}
-                                }
-                            },
-                            error: (err) => {
-                                const message = err?.error?.message || 'Error al crear la clase';
-                                this.notifyService.notify(message, 'error-notify');
-                            }
-                        });
-                    }
-                }
-                this.resetModalState();
-                // Limpiar la selección para permitir re-seleccionar la misma fecha posteriormente
-                this.selectedDate = null;
-                // Si el calendario existe, limpiar su selección interna y forzar actualización visual
-                if (this.calendar) {
-                    // limpiar la selección interna del MatCalendar
-                    (this.calendar as any).selected = null;
-                    try {
-                        this.calendar.updateTodaysDate();
-                    } catch (e) {
-                        // no crítico si updateTodaysDate no está disponible
-                    }
-                }
-            });
+        
+        // Mostrar el panel en lugar del modal
+        this.showClassPanel = true;
+    }
+
+    public onClassPanelComplete(): void {
+        this.showClassPanel = false;
+        this.selectedClassForPanel = null;
+        this.selectedDate = null;
+        if (this.calendar) {
+            (this.calendar as any).selected = null;
+            try {
+                this.calendar.updateTodaysDate();
+            } catch (e) {}
         }
+    }
+
+    public onClassSaved(event: { date: string }): void {
+        // Esperar un momento para que se recarguen las clases
+        setTimeout(() => {
+            let classes: Array<Class> = [];
+            this.viewModel.classes$.subscribe((val) => (classes = val)).unsubscribe();
+            const clase = classes.find((c) => c.date && c.date === event.date);
+            this.selectedClassForPanel = clase || null;
+        }, 500);
     }
 
     public resetModalState(): void {

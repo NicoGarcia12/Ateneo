@@ -9,9 +9,8 @@
 
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef>Estudiante</mat-header-cell>
-                    <mat-cell *matCellDef="let student" [title]="student.firstName + ' ' + student.lastName"
-                        >{{ student.firstName }} {{ student.lastName }}</mat-cell
-                    >
+                    <mat-cell *matCellDef="let student" [title]="student.firstName + ' ' + student.lastName">{{
+                        student.firstName }} {{ student.lastName }}</mat-cell>
                 </ng-container>
 
                 <ng-container *ngFor="let grade of gradesList; trackBy: trackByGradeId" [matColumnDef]="grade.id">
@@ -19,21 +18,13 @@
                         <div class="grade-header-container">
                             <span class="grade-header" [title]="grade.name">{{ grade.name }}</span>
                             <div class="grade-actions">
-                                <button
-                                    mat-icon-button
-                                    (click)="openEditGradeModal(grade.id); $event.stopPropagation()"
-                                    class="edit-grade-btn"
-                                    title="Editar nota"
-                                >
+                                <button mat-icon-button (click)="openEditGradeModal(grade.id); $event.stopPropagation()"
+                                    class="edit-grade-btn" title="Editar nota">
                                     <mat-icon>edit</mat-icon>
                                 </button>
-                                <button
-                                    *ngIf="isGradeFinal(grade.id)"
-                                    mat-icon-button
+                                <button *ngIf="isGradeFinal(grade.id)" mat-icon-button
                                     (click)="openLoadStudentGradesModal(grade.id); $event.stopPropagation()"
-                                    class="load-grades-btn"
-                                    title="Cargar notas de alumnos"
-                                >
+                                    class="load-grades-btn" title="Cargar notas de alumnos">
                                     <mat-icon>assignment</mat-icon>
                                 </button>
                             </div>
@@ -52,162 +43,34 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </mat-table>
-            <div class="no-students-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia</div>
+            <div class="no-students-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia
+            </div>
         </div>
     </div>
-    <div class="calendar-container">
+    <div class="calendar-container" *ngIf="!showClassPanel">
         <h3>Calendario de Clases</h3>
-        <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"></mat-calendar>
+        <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)">
+        </mat-calendar>
     </div>
-    <div class="buttons-container">
+    <app-class-details-panel
+        *ngIf="showClassPanel"
+        class="class-panel-expanded"
+        [classData]="selectedClassForPanel"
+        [selectedDate]="selectedDate"
+        [students]="studentsList"
+        [subjectId]="idSubject"
+        (onComplete)="onClassPanelComplete()"
+        (onClassSaved)="onClassSaved($event)">
+    </app-class-details-panel>
+    <div class="buttons-container" *ngIf="!showClassPanel">
         <button class="primary-button full-width-btn" mat-flat-button (click)="openAddStudentModal()">Agregar alumno</button>
-        <app-add-grade-button
-            [grades]="viewModel.grades$ | async"
-            [subjectId]="idSubject"
-            [students]="studentsList"
-            (gradeAdded)="onDataChanged()"
-        ></app-add-grade-button>
+        <app-add-grade-button [grades]="viewModel.grades$ | async" [subjectId]="idSubject" [students]="studentsList"
+            (gradeAdded)="onDataChanged()"></app-add-grade-button>
         <button class="primary-button full-width-btn" mat-flat-button>Generar informe</button>
         <button class="primary-button full-width-btn" mat-flat-button>Editar materia</button>
         <button class="primary-button full-width-btn" mat-flat-button>Eliminar materia</button>
     </div>
 </div>
-
-<ng-template #modalOcupada>
-    <div class="modal-clase-cargada">
-        <button class="primary-button full-width-btn" mat-flat-button (click)="toggleEditMode()">
-            {{ isEditingClass ? 'Cancelar edición' : 'Editar clase' }}
-        </button>
-        <div class="clase-cargada-inasistencias">
-            <h4>Inasistencias</h4>
-            <div *ngIf="isEditingClass" class="edit-students-section">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Agregar estudiante con inasistencia</mat-label>
-                    <input
-                        matInput
-                        placeholder="Buscar estudiante por nombre"
-                        [(ngModel)]="studentSearch"
-                        (ngModelChange)="filterStudents()"
-                        autocomplete="off"
-                    />
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Seleccionar estudiante</mat-label>
-                    <mat-select
-                        [(ngModel)]="selectedStudent"
-                        [disabled]="filteredStudentsForEdit.length === 0"
-                        (selectionChange)="addStudentToLoadedClass($event.value)"
-                    >
-                        <mat-option *ngIf="filteredStudentsForEdit.length === 0" disabled>Ningún estudiante encontrado</mat-option>
-                        <mat-option *ngFor="let student of filteredStudentsForEdit" [value]="student">
-                            {{ student.firstName }} {{ student.lastName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="inasistencias-table">
-                <div *ngIf="loadedClass.absentStudents.length > 0" class="inasistencias-row inasistencias-header">
-                    <div class="inasistencias-nombre">Estudiante</div>
-                    <div class="inasistencias-justificado">Justificado</div>
-                    <div *ngIf="isEditingClass" class="inasistencias-actions"></div>
-                </div>
-                <div class="inasistencias-row" *ngFor="let student of loadedClass.absentStudents">
-                    <div class="inasistencias-nombre" title="{{ student.firstName }} {{ student.lastName }}">
-                        {{ student.firstName }} {{ student.lastName }}
-                    </div>
-                    <div class="inasistencias-justificado">
-                        <mat-checkbox
-                            [checked]="student.justificado"
-                            [disabled]="!isEditingClass"
-                            [(ngModel)]="student.justificado"
-                            class="custom-checkbox"
-                        >
-                        </mat-checkbox>
-                    </div>
-                    <div *ngIf="isEditingClass" class="inasistencias-actions">
-                        <mat-icon (click)="removeStudentFromLoadedClass(student)">close</mat-icon>
-                    </div>
-                </div>
-                <div *ngIf="loadedClass.absentStudents.length === 0" class="no-inasistencias">
-                    No hay inasistencias cargadas en esta clase
-                </div>
-            </div>
-        </div>
-        <mat-form-field appearance="outline" class="full-width class-description">
-            <mat-label>Descripción de la clase</mat-label>
-            <textarea
-                matInput
-                [(ngModel)]="loadedClass.description"
-                placeholder="Agrega una descripción para la clase"
-                rows="3"
-                class="class-description-textarea"
-                maxlength="140"
-                [disabled]="!isEditingClass"
-            ></textarea>
-            <div *ngIf="isEditingClass" class="char-counter">{{ loadedClass.description.length || 0 }}/140</div>
-        </mat-form-field>
-    </div>
-</ng-template>
-
-<ng-template #modalLibre>
-    <div class="modal-libre-container">
-        <button class="primary-button button-toggle-modal-libre full-width-btn" mat-flat-button (click)="toggleModalView()">
-            {{ showAltModal ? 'Cargar inasistencias' : 'Ver inasistencias cargadas' }}
-        </button>
-        <ng-container *ngIf="!showAltModal; else altModalContent">
-            <div class="inputs-column">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Estudiante con inasistencia</mat-label>
-                    <input
-                        matInput
-                        placeholder="Nombre del Estudiante"
-                        [(ngModel)]="studentSearch"
-                        (ngModelChange)="filterStudents()"
-                        autocomplete="off"
-                    />
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Seleccionar estudiante</mat-label>
-                    <mat-select
-                        [(ngModel)]="selectedStudent"
-                        [disabled]="filteredStudents.length === 0"
-                        (selectionChange)="addSelectedStudent($event.value)"
-                    >
-                        <mat-option *ngIf="filteredStudents.length === 0" disabled>Ningún estudiante encontrado</mat-option>
-                        <mat-option *ngFor="let student of filteredStudents" [value]="student">
-                            {{ student.firstName }} {{ student.lastName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width class-description">
-                    <mat-label>Descripción de la clase (opcional)</mat-label>
-                    <textarea
-                        matInput
-                        [(ngModel)]="classDescription"
-                        placeholder="Agrega una descripción para la clase"
-                        rows="3"
-                        class="class-description-textarea"
-                        maxlength="140"
-                    ></textarea>
-                    <div class="char-counter">{{ classDescription.length || 0 }}/140</div>
-                </mat-form-field>
-            </div>
-        </ng-container>
-        <ng-template #altModalContent>
-            <div class="alt-modal-content">
-                <h3>Inasistencias seleccionadas</h3>
-                <div *ngIf="selectedStudents.length === 0">No hay estudiantes seleccionados.</div>
-                <div *ngFor="let student of selectedStudents" class="selected-student-item">
-                    <mat-icon (click)="removeSelectedStudent(student)">close</mat-icon>
-                    <span>{{ student.firstName }} {{ student.lastName }}</span>
-                    <span class="justificado-label">Justificado</span>
-                    <mat-checkbox [(ngModel)]="student.justificado" class="custom-checkbox"></mat-checkbox>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-</ng-template>
 
 <ng-template #addStudentModal>
     <div class="modal-add-student">
@@ -217,14 +80,8 @@
                 <mat-label>Verificar si existe un alumno</mat-label>
                 <input matInput placeholder="Ingrese el DNI" [(ngModel)]="dniInput" type="text" />
             </mat-form-field>
-            <app-submit
-                type="button"
-                [disabled]="isSearchingStudent || !dniInput"
-                [loading]="isSearchingStudent"
-                [withText]="true"
-                [class]="'primary'"
-                (click)="searchStudentByDni()"
-            >
+            <app-submit type="button" [disabled]="isSearchingStudent || !dniInput" [loading]="isSearchingStudent"
+                [withText]="true" [class]="'primary'" (click)="searchStudentByDni()">
                 Buscar
             </app-submit>
         </div>
@@ -247,45 +104,27 @@
                     <div class="form-fields-container">
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Nombre</mat-label>
-                            <input
-                                matInput
-                                placeholder="Nombre"
-                                [(ngModel)]="newStudent.firstName"
-                                (ngModelChange)="onNewStudentFormChange()"
-                                [class.input-error]="isFirstNameInvalid"
-                            />
+                            <input matInput placeholder="Nombre" [(ngModel)]="newStudent.firstName"
+                                (ngModelChange)="onNewStudentFormChange()" [class.input-error]="isFirstNameInvalid" />
                         </mat-form-field>
                         <div class="error-message" *ngIf="isFirstNameInvalid">El nombre es obligatorio</div>
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Apellido</mat-label>
-                            <input
-                                matInput
-                                placeholder="Apellido"
-                                [(ngModel)]="newStudent.lastName"
-                                (ngModelChange)="onNewStudentFormChange()"
-                                [class.input-error]="isLastNameInvalid"
-                            />
+                            <input matInput placeholder="Apellido" [(ngModel)]="newStudent.lastName"
+                                (ngModelChange)="onNewStudentFormChange()" [class.input-error]="isLastNameInvalid" />
                         </mat-form-field>
                         <div class="error-message" *ngIf="isLastNameInvalid">El apellido es obligatorio</div>
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Email</mat-label>
-                            <input
-                                matInput
-                                placeholder="Email"
-                                [(ngModel)]="newStudent.email"
-                                (ngModelChange)="onNewStudentFormChange()"
-                                [class.input-error]="isEmailInvalid"
-                            />
+                            <input matInput placeholder="Email" [(ngModel)]="newStudent.email"
+                                (ngModelChange)="onNewStudentFormChange()" [class.input-error]="isEmailInvalid" />
                         </mat-form-field>
-                        <div class="error-message" *ngIf="isEmailInvalid">El email debe tener el formato: ejemplo&#64;dominio.com</div>
+                        <div class="error-message" *ngIf="isEmailInvalid">El email debe tener el formato:
+                            ejemplo&#64;dominio.com</div>
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Teléfono</mat-label>
-                            <input
-                                matInput
-                                placeholder="Teléfono"
-                                [(ngModel)]="newStudent.phone"
-                                (ngModelChange)="onNewStudentFormChange()"
-                            />
+                            <input matInput placeholder="Teléfono" [(ngModel)]="newStudent.phone"
+                                (ngModelChange)="onNewStudentFormChange()" />
                         </mat-form-field>
                     </div>
                     <div *ngIf="foundStudent && isStudentInSubject(foundStudent)" class="already-in-subject-message">
@@ -303,13 +142,8 @@
         <div class="form-fields-container">
             <mat-form-field appearance="outline" class="grade-form-field">
                 <mat-label>Título de la nota</mat-label>
-                <input
-                    matInput
-                    placeholder="Título de la nota"
-                    [(ngModel)]="editGradeData.name"
-                    (ngModelChange)="onEditGradeFormChange()"
-                    required
-                />
+                <input matInput placeholder="Título de la nota" [(ngModel)]="editGradeData.name"
+                    (ngModelChange)="onEditGradeFormChange()" required />
                 <mat-error>El nombre es obligatorio</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="grade-form-field">
@@ -323,14 +157,8 @@
             </mat-form-field>
             <mat-form-field appearance="outline" class="grade-form-field">
                 <mat-label>Fecha</mat-label>
-                <input
-                    matInput
-                    [matDatepicker]="editPicker"
-                    placeholder="Fecha"
-                    [(ngModel)]="editGradeData.date"
-                    (ngModelChange)="onEditGradeFormChange()"
-                    required
-                />
+                <input matInput [matDatepicker]="editPicker" placeholder="Fecha" [(ngModel)]="editGradeData.date"
+                    (ngModelChange)="onEditGradeFormChange()" required />
                 <mat-datepicker-toggle matSuffix [for]="editPicker"></mat-datepicker-toggle>
                 <mat-datepicker #editPicker></mat-datepicker>
                 <mat-error>La fecha es obligatoria</mat-error>
@@ -341,7 +169,8 @@
             </mat-form-field>
 
             <!-- Sección de notas base para Weighted y Average -->
-            <div *ngIf="editGradeData.type === 'Weighted' || editGradeData.type === 'Average'" class="base-grades-section">
+            <div *ngIf="editGradeData.type === 'Weighted' || editGradeData.type === 'Average'"
+                class="base-grades-section">
                 <div class="info-message">
                     <strong>Notas relacionadas:</strong> Seleccione al menos 2 notas base.
                     <span *ngIf="editGradeData.type === 'Weighted'"> Asigne porcentajes de peso que sumen 100.</span>
@@ -349,7 +178,8 @@
 
                 <mat-form-field appearance="outline" class="grade-select-field">
                     <mat-label>Seleccionar nota</mat-label>
-                    <mat-select [(ngModel)]="selectedEditBaseGradeId" (selectionChange)="onEditBaseGradeSelect($event.value)">
+                    <mat-select [(ngModel)]="selectedEditBaseGradeId"
+                        (selectionChange)="onEditBaseGradeSelect($event.value)">
                         <mat-option *ngFor="let grade of availableGradesForEdit" [value]="grade.id">
                             {{ grade.name }}
                         </mat-option>
@@ -367,19 +197,14 @@
                         <ng-container *ngIf="editGradeData.type === 'Weighted'">
                             <mat-form-field appearance="outline" class="weight-field">
                                 <mat-label>Peso</mat-label>
-                                <input
-                                    matInput
-                                    type="number"
-                                    min="1"
-                                    max="99"
-                                    [(ngModel)]="baseGrade.weight"
-                                    (ngModelChange)="onEditWeightChange()"
-                                />
+                                <input matInput type="number" min="1" max="99" [(ngModel)]="baseGrade.weight"
+                                    (ngModelChange)="onEditWeightChange()" />
                                 <mat-error>El peso debe estar entre 1 y 99</mat-error>
                             </mat-form-field>
                         </ng-container>
                     </div>
-                    <div *ngIf="editGradeData.type === 'Weighted'" class="weight-total" [class.weight-error]="getEditTotalWeight() !== 100">
+                    <div *ngIf="editGradeData.type === 'Weighted'" class="weight-total"
+                        [class.weight-error]="getEditTotalWeight() !== 100">
                         Total: {{ getEditTotalWeight() }}%
                         <span *ngIf="getEditTotalWeight() !== 100" class="error-text"> (debe ser 100)</span>
                     </div>
@@ -397,17 +222,10 @@
                 <span class="student-name">{{ studentGrade.studentName }}</span>
                 <mat-form-field appearance="outline" class="grade-input-field">
                     <mat-label>Nota</mat-label>
-                    <input
-                        matInput
-                        type="number"
-                        min="1"
-                        max="10"
-                        step="1"
-                        [(ngModel)]="studentGrade.value"
-                        (ngModelChange)="onLoadStudentGradeChange()"
-                        placeholder="1-10"
-                    />
-                    <mat-error *ngIf="studentGrade.value !== null && (studentGrade.value < 1 || studentGrade.value > 10)">
+                    <input matInput type="number" min="1" max="10" step="1" [(ngModel)]="studentGrade.value"
+                        (ngModelChange)="onLoadStudentGradeChange()" placeholder="1-10" />
+                    <mat-error
+                        *ngIf="studentGrade.value !== null && (studentGrade.value < 1 || studentGrade.value > 10)">
                         La nota debe estar entre 1 y 10
                     </mat-error>
                 </mat-form-field>

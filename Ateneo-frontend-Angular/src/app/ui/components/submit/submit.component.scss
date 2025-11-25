@@ -1,10 +1,29 @@
 @import '../../../../assets/styles/colors.scss';
 
 .button-content {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
+    min-height: 40px;
+    min-width: 0;
+    width: auto;
+    padding: 0 16px;
     width: 100%;
+}
+
+.button-inner-content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    position: relative;
+    gap: 8px;
+}
+
+.button-text {
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
 }
 
 :host ::ng-deep .spinner.primary-spinner.mat-mdc-progress-spinner {
