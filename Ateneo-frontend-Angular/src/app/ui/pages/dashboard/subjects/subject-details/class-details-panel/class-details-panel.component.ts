@@ -73,12 +73,7 @@ export class ClassDetailsPanelComponent implements OnInit, OnChanges {
 
         this.isSaving = true;
 
-        this.viewModel.createClass(
-            this.selectedDate,
-            this.description,
-            this.studentAttendance,
-            this.subjectId
-        ).subscribe({
+        this.viewModel.createClass(this.selectedDate, this.description, this.studentAttendance, this.subjectId).subscribe({
             next: (response) => {
                 this.notifyService.notify(response?.message || 'Clase creada correctamente', 'success-notify');
                 this.viewModel.reloadClasses(this.subjectId);
@@ -100,11 +95,7 @@ export class ClassDetailsPanelComponent implements OnInit, OnChanges {
 
         this.isSaving = true;
 
-        this.viewModel.updateClass(
-            this.classData.id,
-            this.description,
-            this.studentAttendance
-        ).subscribe({
+        this.viewModel.updateClass(this.classData.id, this.description, this.studentAttendance).subscribe({
             next: (response) => {
                 this.notifyService.notify(response?.message || 'Clase actualizada correctamente', 'success-notify');
                 this.viewModel.reloadClasses(this.subjectId);

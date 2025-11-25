@@ -250,11 +250,11 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     public onDateSelected(date: Date | null): void {
         if (!date) return;
-        
+
         this.selectedDate = date;
         const fecha = date.toISOString();
         const ocupada = this.specialDates.some((s) => s.toISOString() === fecha);
-        
+
         if (ocupada) {
             let classes: Array<Class> = [];
             this.viewModel.classes$.subscribe((val) => (classes = val)).unsubscribe();
@@ -263,7 +263,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         } else {
             this.selectedClassForPanel = null;
         }
-        
+
         // Mostrar el panel en lugar del modal
         this.showClassPanel = true;
     }

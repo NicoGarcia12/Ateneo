@@ -1,6 +1,6 @@
 <div class="class-details-panel">
     <div class="panel-header">
-        <h2>{{ isNewClass ? 'Nueva Clase' : (isEditMode ? 'Editar Clase' : 'Detalles de Clase') }}</h2>
+        <h2>{{ isNewClass ? 'Nueva Clase' : isEditMode ? 'Editar Clase' : 'Detalles de Clase' }}</h2>
         <p class="date">{{ selectedDate | date: 'dd/MM/yyyy' }}</p>
     </div>
 
@@ -36,12 +36,13 @@
             <h3>Descripción de la Clase</h3>
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Descripción</mat-label>
-                <textarea 
-                    matInput 
-                    [(ngModel)]="description" 
-                    rows="4" 
+                <textarea
+                    matInput
+                    [(ngModel)]="description"
+                    rows="4"
                     placeholder="Ej: Evaluación del tema 3, Actividad grupal, etc."
-                    [disabled]="!isEditMode">
+                    [disabled]="!isEditMode"
+                >
                 </textarea>
             </mat-form-field>
         </div>
@@ -49,55 +50,39 @@
 
     <div class="panel-actions">
         <!-- Botón Volver: solo cuando NO está en modo edición y es una clase existente -->
-        <button 
-            *ngIf="!isEditMode && !isNewClass" 
-            class="secondary-button" 
-            mat-stroked-button 
-            (click)="goBack()">
-            Volver
-        </button>
-        
+        <button *ngIf="!isEditMode && !isNewClass" class="secondary-button" mat-stroked-button (click)="goBack()">Volver</button>
+
         <!-- Botón Cancelar: solo cuando está en modo edición -->
-        <button 
-            *ngIf="isEditMode" 
-            class="secondary-button" 
-            mat-stroked-button 
-            (click)="cancel()" 
-            [disabled]="isSaving">
-            Cancelar
-        </button>
-        
+        <button *ngIf="isEditMode" class="secondary-button" mat-stroked-button (click)="cancel()" [disabled]="isSaving">Cancelar</button>
+
         <!-- Botón Editar: solo cuando NO está en modo edición y es una clase existente -->
-        <app-submit 
-            *ngIf="!isEditMode && !isNewClass"
-            type="button"
-            [withText]="true"
-            [class]="'primary'"
-            (click)="enableEditMode()">
+        <app-submit *ngIf="!isEditMode && !isNewClass" type="button" [withText]="true" [class]="'primary'" (click)="enableEditMode()">
             Editar
         </app-submit>
-        
+
         <!-- Botón Guardar: solo cuando es nueva clase -->
-        <app-submit 
+        <app-submit
             *ngIf="isNewClass"
-            type="submit" 
-            [disabled]="isSaving" 
-            [loading]="isSaving" 
-            [withText]="true" 
-            [class]="'primary'" 
-            (click)="createClass()">
+            type="submit"
+            [disabled]="isSaving"
+            [loading]="isSaving"
+            [withText]="true"
+            [class]="'primary'"
+            (click)="createClass()"
+        >
             Guardar Clase
         </app-submit>
-        
+
         <!-- Botón Actualizar: solo cuando está editando una clase existente -->
-        <app-submit 
+        <app-submit
             *ngIf="!isNewClass && isEditMode"
-            type="submit" 
-            [disabled]="isSaving" 
-            [loading]="isSaving" 
-            [withText]="true" 
-            [class]="'primary'" 
-            (click)="updateClass()">
+            type="submit"
+            [disabled]="isSaving"
+            [loading]="isSaving"
+            [withText]="true"
+            [class]="'primary'"
+            (click)="updateClass()"
+        >
             Actualizar Clase
         </app-submit>
     </div>

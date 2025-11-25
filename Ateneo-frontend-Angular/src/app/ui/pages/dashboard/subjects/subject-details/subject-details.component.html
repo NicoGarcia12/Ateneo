@@ -9,8 +9,9 @@
 
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef>Estudiante</mat-header-cell>
-                    <mat-cell *matCellDef="let student" [title]="student.firstName + ' ' + student.lastName">{{
-                        student.firstName }} {{ student.lastName }}</mat-cell>
+                    <mat-cell *matCellDef="let student" [title]="student.firstName + ' ' + student.lastName"
+                        >{{ student.firstName }} {{ student.lastName }}</mat-cell
+                    >
                 </ng-container>
 
                 <ng-container *ngFor="let grade of gradesList; trackBy: trackByGradeId" [matColumnDef]="grade.id">
@@ -18,13 +19,21 @@
                         <div class="grade-header-container">
                             <span class="grade-header" [title]="grade.name">{{ grade.name }}</span>
                             <div class="grade-actions">
-                                <button mat-icon-button (click)="openEditGradeModal(grade.id); $event.stopPropagation()"
-                                    class="edit-grade-btn" title="Editar nota">
+                                <button
+                                    mat-icon-button
+                                    (click)="openEditGradeModal(grade.id); $event.stopPropagation()"
+                                    class="edit-grade-btn"
+                                    title="Editar nota"
+                                >
                                     <mat-icon>edit</mat-icon>
                                 </button>
-                                <button *ngIf="isGradeFinal(grade.id)" mat-icon-button
+                                <button
+                                    *ngIf="isGradeFinal(grade.id)"
+                                    mat-icon-button
                                     (click)="openLoadStudentGradesModal(grade.id); $event.stopPropagation()"
-                                    class="load-grades-btn" title="Cargar notas de alumnos">
+                                    class="load-grades-btn"
+                                    title="Cargar notas de alumnos"
+                                >
                                     <mat-icon>assignment</mat-icon>
                                 </button>
                             </div>
@@ -43,14 +52,12 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </mat-table>
-            <div class="no-students-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia
-            </div>
+            <div class="no-students-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia</div>
         </div>
     </div>
     <div class="calendar-container" *ngIf="!showClassPanel">
         <h3>Calendario de Clases</h3>
-        <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)">
-        </mat-calendar>
+        <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"> </mat-calendar>
     </div>
     <app-class-details-panel
         *ngIf="showClassPanel"
@@ -60,12 +67,17 @@
         [students]="studentsList"
         [subjectId]="idSubject"
         (onComplete)="onClassPanelComplete()"
-        (onClassSaved)="onClassSaved($event)">
+        (onClassSaved)="onClassSaved($event)"
+    >
     </app-class-details-panel>
     <div class="buttons-container" *ngIf="!showClassPanel">
         <button class="primary-button full-width-btn" mat-flat-button (click)="openAddStudentModal()">Agregar alumno</button>
-        <app-add-grade-button [grades]="viewModel.grades$ | async" [subjectId]="idSubject" [students]="studentsList"
-            (gradeAdded)="onDataChanged()"></app-add-grade-button>
+        <app-add-grade-button
+            [grades]="viewModel.grades$ | async"
+            [subjectId]="idSubject"
+            [students]="studentsList"
+            (gradeAdded)="onDataChanged()"
+        ></app-add-grade-button>
         <button class="primary-button full-width-btn" mat-flat-button>Generar informe</button>
         <button class="primary-button full-width-btn" mat-flat-button>Editar materia</button>
         <button class="primary-button full-width-btn" mat-flat-button>Eliminar materia</button>
@@ -80,8 +92,14 @@
                 <mat-label>Verificar si existe un alumno</mat-label>
                 <input matInput placeholder="Ingrese el DNI" [(ngModel)]="dniInput" type="text" />
             </mat-form-field>
-            <app-submit type="button" [disabled]="isSearchingStudent || !dniInput" [loading]="isSearchingStudent"
-                [withText]="true" [class]="'primary'" (click)="searchStudentByDni()">
+            <app-submit
+                type="button"
+                [disabled]="isSearchingStudent || !dniInput"
+                [loading]="isSearchingStudent"
+                [withText]="true"
+                [class]="'primary'"
+                (click)="searchStudentByDni()"
+            >
                 Buscar
             </app-submit>
         </div>
@@ -104,27 +122,45 @@
                     <div class="form-fields-container">
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Nombre</mat-label>
-                            <input matInput placeholder="Nombre" [(ngModel)]="newStudent.firstName"
-                                (ngModelChange)="onNewStudentFormChange()" [class.input-error]="isFirstNameInvalid" />
+                            <input
+                                matInput
+                                placeholder="Nombre"
+                                [(ngModel)]="newStudent.firstName"
+                                (ngModelChange)="onNewStudentFormChange()"
+                                [class.input-error]="isFirstNameInvalid"
+                            />
                         </mat-form-field>
                         <div class="error-message" *ngIf="isFirstNameInvalid">El nombre es obligatorio</div>
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Apellido</mat-label>
-                            <input matInput placeholder="Apellido" [(ngModel)]="newStudent.lastName"
-                                (ngModelChange)="onNewStudentFormChange()" [class.input-error]="isLastNameInvalid" />
+                            <input
+                                matInput
+                                placeholder="Apellido"
+                                [(ngModel)]="newStudent.lastName"
+                                (ngModelChange)="onNewStudentFormChange()"
+                                [class.input-error]="isLastNameInvalid"
+                            />
                         </mat-form-field>
                         <div class="error-message" *ngIf="isLastNameInvalid">El apellido es obligatorio</div>
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Email</mat-label>
-                            <input matInput placeholder="Email" [(ngModel)]="newStudent.email"
-                                (ngModelChange)="onNewStudentFormChange()" [class.input-error]="isEmailInvalid" />
+                            <input
+                                matInput
+                                placeholder="Email"
+                                [(ngModel)]="newStudent.email"
+                                (ngModelChange)="onNewStudentFormChange()"
+                                [class.input-error]="isEmailInvalid"
+                            />
                         </mat-form-field>
-                        <div class="error-message" *ngIf="isEmailInvalid">El email debe tener el formato:
-                            ejemplo&#64;dominio.com</div>
+                        <div class="error-message" *ngIf="isEmailInvalid">El email debe tener el formato: ejemplo&#64;dominio.com</div>
                         <mat-form-field appearance="outline" class="student-form-field">
                             <mat-label>Teléfono</mat-label>
-                            <input matInput placeholder="Teléfono" [(ngModel)]="newStudent.phone"
-                                (ngModelChange)="onNewStudentFormChange()" />
+                            <input
+                                matInput
+                                placeholder="Teléfono"
+                                [(ngModel)]="newStudent.phone"
+                                (ngModelChange)="onNewStudentFormChange()"
+                            />
                         </mat-form-field>
                     </div>
                     <div *ngIf="foundStudent && isStudentInSubject(foundStudent)" class="already-in-subject-message">
@@ -142,8 +178,13 @@
         <div class="form-fields-container">
             <mat-form-field appearance="outline" class="grade-form-field">
                 <mat-label>Título de la nota</mat-label>
-                <input matInput placeholder="Título de la nota" [(ngModel)]="editGradeData.name"
-                    (ngModelChange)="onEditGradeFormChange()" required />
+                <input
+                    matInput
+                    placeholder="Título de la nota"
+                    [(ngModel)]="editGradeData.name"
+                    (ngModelChange)="onEditGradeFormChange()"
+                    required
+                />
                 <mat-error>El nombre es obligatorio</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="grade-form-field">
@@ -157,8 +198,14 @@
             </mat-form-field>
             <mat-form-field appearance="outline" class="grade-form-field">
                 <mat-label>Fecha</mat-label>
-                <input matInput [matDatepicker]="editPicker" placeholder="Fecha" [(ngModel)]="editGradeData.date"
-                    (ngModelChange)="onEditGradeFormChange()" required />
+                <input
+                    matInput
+                    [matDatepicker]="editPicker"
+                    placeholder="Fecha"
+                    [(ngModel)]="editGradeData.date"
+                    (ngModelChange)="onEditGradeFormChange()"
+                    required
+                />
                 <mat-datepicker-toggle matSuffix [for]="editPicker"></mat-datepicker-toggle>
                 <mat-datepicker #editPicker></mat-datepicker>
                 <mat-error>La fecha es obligatoria</mat-error>
@@ -169,8 +216,7 @@
             </mat-form-field>
 
             <!-- Sección de notas base para Weighted y Average -->
-            <div *ngIf="editGradeData.type === 'Weighted' || editGradeData.type === 'Average'"
-                class="base-grades-section">
+            <div *ngIf="editGradeData.type === 'Weighted' || editGradeData.type === 'Average'" class="base-grades-section">
                 <div class="info-message">
                     <strong>Notas relacionadas:</strong> Seleccione al menos 2 notas base.
                     <span *ngIf="editGradeData.type === 'Weighted'"> Asigne porcentajes de peso que sumen 100.</span>
@@ -178,8 +224,7 @@
 
                 <mat-form-field appearance="outline" class="grade-select-field">
                     <mat-label>Seleccionar nota</mat-label>
-                    <mat-select [(ngModel)]="selectedEditBaseGradeId"
-                        (selectionChange)="onEditBaseGradeSelect($event.value)">
+                    <mat-select [(ngModel)]="selectedEditBaseGradeId" (selectionChange)="onEditBaseGradeSelect($event.value)">
                         <mat-option *ngFor="let grade of availableGradesForEdit" [value]="grade.id">
                             {{ grade.name }}
                         </mat-option>
@@ -197,14 +242,19 @@
                         <ng-container *ngIf="editGradeData.type === 'Weighted'">
                             <mat-form-field appearance="outline" class="weight-field">
                                 <mat-label>Peso</mat-label>
-                                <input matInput type="number" min="1" max="99" [(ngModel)]="baseGrade.weight"
-                                    (ngModelChange)="onEditWeightChange()" />
+                                <input
+                                    matInput
+                                    type="number"
+                                    min="1"
+                                    max="99"
+                                    [(ngModel)]="baseGrade.weight"
+                                    (ngModelChange)="onEditWeightChange()"
+                                />
                                 <mat-error>El peso debe estar entre 1 y 99</mat-error>
                             </mat-form-field>
                         </ng-container>
                     </div>
-                    <div *ngIf="editGradeData.type === 'Weighted'" class="weight-total"
-                        [class.weight-error]="getEditTotalWeight() !== 100">
+                    <div *ngIf="editGradeData.type === 'Weighted'" class="weight-total" [class.weight-error]="getEditTotalWeight() !== 100">
                         Total: {{ getEditTotalWeight() }}%
                         <span *ngIf="getEditTotalWeight() !== 100" class="error-text"> (debe ser 100)</span>
                     </div>
@@ -222,10 +272,17 @@
                 <span class="student-name">{{ studentGrade.studentName }}</span>
                 <mat-form-field appearance="outline" class="grade-input-field">
                     <mat-label>Nota</mat-label>
-                    <input matInput type="number" min="1" max="10" step="1" [(ngModel)]="studentGrade.value"
-                        (ngModelChange)="onLoadStudentGradeChange()" placeholder="1-10" />
-                    <mat-error
-                        *ngIf="studentGrade.value !== null && (studentGrade.value < 1 || studentGrade.value > 10)">
+                    <input
+                        matInput
+                        type="number"
+                        min="1"
+                        max="10"
+                        step="1"
+                        [(ngModel)]="studentGrade.value"
+                        (ngModelChange)="onLoadStudentGradeChange()"
+                        placeholder="1-10"
+                    />
+                    <mat-error *ngIf="studentGrade.value !== null && (studentGrade.value < 1 || studentGrade.value > 10)">
                         La nota debe estar entre 1 y 10
                     </mat-error>
                 </mat-form-field>

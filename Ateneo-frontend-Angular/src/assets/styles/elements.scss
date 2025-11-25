@@ -1,11 +1,3 @@
-// Quitar sombra de foco en custom-checkbox (focus ring)
-.custom-checkbox.mat-mdc-checkbox .mdc-checkbox__ripple {
-    background-color: transparent !important;
-}
-.custom-checkbox.mat-mdc-checkbox .mat-mdc-focus-indicator {
-    box-shadow: none !important;
-    background: transparent !important;
-}
 // Botones
 .primary-button {
     background-color: $primary-color !important;
@@ -86,6 +78,14 @@
 
 .custom-checkbox .mdc-label {
     color: $grey-color !important;
+}
+
+.custom-checkbox.mat-mdc-checkbox .mdc-checkbox__ripple {
+    background-color: transparent !important;
+}
+.custom-checkbox.mat-mdc-checkbox .mat-mdc-focus-indicator {
+    box-shadow: none !important;
+    background: transparent !important;
 }
 
 // Checkbox Legacy (por compatibilidad)
