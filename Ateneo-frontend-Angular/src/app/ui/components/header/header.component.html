@@ -8,7 +8,7 @@
     <div class="links-header-desktop" *ngIf="!isMobile; else mobileHeader">
         <div class="links-dashboard-container" *ngIf="dashboard; else landingLinks">
             <button class="primary-button" mat-flat-button (click)="goTo('/dashboard/subjects')">Materias</button>
-            <button class="primary-button" mat-flat-button color="warn" (click)="openProfileModal()">Perfil</button>
+            <button class="primary-button" mat-flat-button color="warn" (click)="goTo('/dashboard/profile')">Perfil</button>
             <button class="secondary-button" mat-flat-button color="warn" (click)="logOut()">Cerrar Sesión</button>
         </div>
         <ng-template #landingLinks>
@@ -26,7 +26,7 @@
             <mat-menu #menu="matMenu">
                 <ng-container *ngIf="dashboard; else mobileLandingLinks">
                     <button mat-menu-item (click)="goTo('/dashboard/subjects')">Materias</button>
-                    <button mat-menu-item (click)="openProfileModal()">Perfil</button>
+                    <button mat-menu-item (click)="goTo('/dashboard/profile')">Perfil</button>
                     <button mat-menu-item (click)="logOut()">Cerrar Sesión</button>
                 </ng-container>
                 <ng-template #mobileLandingLinks>

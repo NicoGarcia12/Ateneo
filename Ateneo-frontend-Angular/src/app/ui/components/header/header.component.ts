@@ -28,32 +28,6 @@ export class HeaderComponent implements OnInit {
         private sectionService: SectionService,
         private openDialogService: OpenDialogService
     ) {}
-    public openProfileModal(): void {
-        const dialogRef = this.openDialogService.openDialog({
-            title: 'Mi perfil',
-            contentTemplate: this.profileModalTemplate,
-            primaryButton: {
-                show: true,
-                text: 'Console',
-                disabled: false,
-                loading: false
-            },
-            secondaryButtonText: 'Cerrar'
-        });
-
-        dialogRef.componentInstance.onPrimaryButtonClick = () => {
-            dialogRef.componentInstance.data.primaryButton.loading = true;
-            dialogRef.componentInstance.data.primaryButton.disabled = true;
-            setTimeout(() => {
-                dialogRef.componentInstance.data.primaryButton.loading = false;
-                dialogRef.componentInstance.data.primaryButton.disabled = false;
-                console.log('¡Acción completada desde el modal de perfil!');
-                setTimeout(() => {
-                    dialogRef.close();
-                }, 5000);
-            }, 5000);
-        };
-    }
 
     public ngOnInit(): void {
         this.sectionService.dashboardSection.subscribe((isDashboard) => {

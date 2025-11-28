@@ -8,6 +8,7 @@ import { AuthGuard } from './ui/shared/auth.guard';
 import { DashboardComponent } from './ui/pages/dashboard/dashboard.component';
 import { SubjectsComponent } from './ui/pages/dashboard/subjects/subjects.component';
 import { SubjectDetailsComponent } from './ui/pages/dashboard/subjects/subject-details/subject-details.component';
+import { ProfileComponent } from './ui/pages/profile/profile.component';
 
 const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: 'subjects', pathMatch: 'full' },
             { path: 'subjects', component: SubjectsComponent },
-            { path: 'subject/:idSubject', component: SubjectDetailsComponent }
+            { path: 'subject/:idSubject', component: SubjectDetailsComponent },
+            { path: 'profile', component: ProfileComponent }
         ]
     },
     { path: '**', component: ErrorComponent }
