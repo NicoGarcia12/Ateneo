@@ -1,17 +1,17 @@
 <div class="profile-container">
-  <h2>Perfil del Profesor</h2>
-  <form *ngIf="professor$ | async as professor" class="profile-form">
-    <mat-form-field appearance="outline">
-      <mat-label>Nombre</mat-label>
-      <input matInput [value]="professor.firstName" readonly />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Apellido</mat-label>
-      <input matInput [value]="professor.lastName" readonly />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input matInput [value]="professor.email" readonly />
-    </mat-form-field>
-  </form>
+    <h2>Perfil del Profesor</h2>
+    <form *ngIf="professor$ | async as professor" class="profile-form">
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput [value]="professor.firstName" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <input matInput [value]="professor.lastName" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput [value]="professor.email" readonly />
+        </mat-form-field>
+    </form>
 </div>

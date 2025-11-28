@@ -1,19 +1,19 @@
 .profile-container {
-  max-width: 500px;
-  margin: 32px auto;
-  padding: 24px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    max-width: 500px;
+    margin: 32px auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .profile-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
 }
 
 mat-form-field {
-  flex: 1 1 220px;
-  min-width: 180px;
+    flex: 1 1 220px;
+    min-width: 180px;
 }

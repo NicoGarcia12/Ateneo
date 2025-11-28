@@ -5,8 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [ProfileComponent],
-  imports: [CommonModule, MatFormFieldModule, MatInputModule],
-  exports: [ProfileComponent]
+    declarations: [ProfileComponent],
+    imports: [CommonModule, MatFormFieldModule, MatInputModule],
+    exports: [ProfileComponent]
 })
 export class ProfileModule {}

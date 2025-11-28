@@ -3,7 +3,6 @@ import { UpdateProfessorHelper } from 'src/helpers/professor/update-professor-he
 import { GetProfessorHelper } from 'src/helpers/professor/get-professor-helper';
 import { ValidationError, NotFoundError } from 'src/utils/custom-errors';
 
-
 export interface UpdateProfessorControllerParams {
     professorId: string;
     firstName?: string;
