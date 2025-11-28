@@ -5,8 +5,12 @@ import { handleControllerError } from 'src/utils/error-handler';
 export const GetProfessorHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { professorId } = req.params;
-
         const professor = await GetProfessorController({ professorId });
+
+        if (professor && 'password' in professor) {
+            const { password, ...professorSafe } = professor;
+            return res.status(200).json(professorSafe);
+        }
 
         return res.status(200).json(professor);
     } catch (error: any) {
