@@ -1,17 +1,64 @@
 <div class="profile-container">
-    <h2>Perfil del Profesor</h2>
-    <form *ngIf="professor$ | async as professor" class="profile-form">
+    <h2>Datos de cuenta</h2>
+
+    <div *ngIf="isLoading && !isEditing" class="loading-spinner">
+        <mat-spinner [diameter]="64" class="primary-spinner"></mat-spinner>
+    </div>
+
+    <form [formGroup]="profileForm" class="profile-form" *ngIf="!isLoading">
         <mat-form-field appearance="outline">
             <mat-label>Nombre</mat-label>
-            <input matInput [value]="professor.firstName" readonly />
+            <input matInput formControlName="firstName" />
+            <mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">
+                El nombre es obligatorio
+            </mat-error>
         </mat-form-field>
+
         <mat-form-field appearance="outline">
             <mat-label>Apellido</mat-label>
-            <input matInput [value]="professor.lastName" readonly />
+            <input matInput formControlName="lastName" />
+            <mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">
+                El apellido es obligatorio
+            </mat-error>
         </mat-form-field>
+
         <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
-            <input matInput [value]="professor.email" readonly />
+            <input matInput formControlName="email" />
         </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="isEditing">
+            <mat-label>Contraseña actual</mat-label>
+            <input matInput type="password" formControlName="password" />
+            <mat-error *ngIf="profileForm.get('password')?.hasError('required')">
+                La contraseña actual es obligatoria para guardar cambios
+            </mat-error>
+        </mat-form-field>
+
+        <div class="change-password-section" *ngIf="isEditing">
+            <mat-checkbox formControlName="changePassword" class="custom-checkbox">
+                Cambiar contraseña
+            </mat-checkbox>
+        </div>
+
+        <mat-form-field appearance="outline" *ngIf="isEditing && showNewPassword">
+            <mat-label>Nueva contraseña</mat-label>
+            <input matInput type="password" formControlName="newPassword" />
+            <mat-error *ngIf="getNewPasswordError() as error">{{ error }}</mat-error>
+        </mat-form-field>
+
+        <div class="buttons-container">
+            <app-submit *ngIf="!isEditing" class="primary" type="button" (click)="onEdit()">
+                Editar datos
+            </app-submit>
+            <ng-container *ngIf="isEditing">
+                <app-submit class="secondary" type="button" (click)="onCancel()">
+                    Cancelar
+                </app-submit>
+                <app-submit class="secondary" type="button" [disabled]="profileForm.invalid || isSaving" (click)="onSave()" [loading]="isSaving">
+                    Guardar
+                </app-submit>
+            </ng-container>
+        </div>
     </form>
 </div>

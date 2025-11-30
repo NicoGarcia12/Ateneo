@@ -115,3 +115,18 @@
 mat-form-field.mat-form-field-invalid {
     margin-bottom: 32px;
 }
+
+// Spinner
+.primary-spinner.mat-mdc-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #355456 !important;
+}
+
+.secondary-spinner.mat-mdc-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #53777a !important;
+}
+
+.mat-mdc-progress-spinner, .mat-spinner {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
