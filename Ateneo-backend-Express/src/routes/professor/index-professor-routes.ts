@@ -4,6 +4,7 @@ import { LoginProfessorHandler } from 'src/handlers/professor/login-professor-ha
 import { GetProfessorHandler } from 'src/handlers/professor/get-professor-handler';
 import { GetProfessorByEmailHandler } from 'src/handlers/professor/get-professor-by-email-handler';
 import { GetAllSubjectsByIdProfessorHandler } from 'src/handlers/subject/get-all-subjects-handler';
+import { UpdateProfessorHandler } from 'src/handlers/professor/update-professor-handler';
 
 const professorRouter = Router();
 
@@ -12,5 +13,6 @@ professorRouter.post('/sign-up', SignUpProfessorHandler);
 professorRouter.get('/:professorId', GetProfessorHandler);
 professorRouter.get('/by-email/:email', GetProfessorByEmailHandler);
 professorRouter.get('/:professorId/subjects', GetAllSubjectsByIdProfessorHandler);
+professorRouter.put('/:professorId', UpdateProfessorHandler);
 
 export default professorRouter;

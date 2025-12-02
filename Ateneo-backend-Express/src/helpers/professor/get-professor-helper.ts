@@ -9,6 +9,7 @@ export const GetProfessorHelper = async (idProfessor: string) => {
                 email: true,
                 firstName: true,
                 lastName: true,
+                password: true,
                 emailActivated: true
             }
         });
