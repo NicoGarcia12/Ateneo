@@ -14,7 +14,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SubmitModule } from '../../../../components/submit/submit.module';
 import { AddGradeButtonModule } from 'src/app/ui/pages/dashboard/subjects/subject-details/components/add-grade-button/add-grade-button.module';
 import { MatChipsModule } from '@angular/material/chips';
-import { ClassDetailsPanelComponent } from './class-details-panel/class-details-panel.component';
+import { AcademicSummaryPanelModule } from './academic-summary-panel/academic-summary-panel.module';
+import { ClassDetailsPanelModule } from './class-details-panel/class-details-panel.module';
 
 @NgModule({
     imports: [
@@ -31,9 +32,11 @@ import { ClassDetailsPanelComponent } from './class-details-panel/class-details-
         SubmitModule,
         MatChipsModule,
         AddGradeButtonModule,
-        MatIconModule
+        MatIconModule,
+        AcademicSummaryPanelModule,
+        ClassDetailsPanelModule
     ],
     exports: [SubjectDetailsComponent],
-    declarations: [SubjectDetailsComponent, ClassDetailsPanelComponent]
+    declarations: [SubjectDetailsComponent]
 })
 export class SubjectDetailsModule {}

@@ -141,6 +141,29 @@
         max-width: 200px;
     }
 
+    // Ellipsis multilinea para la columna de nombre (máximo 2 líneas, pero solo usa las necesarias)
+    ::ng-deep .mat-column-name.mat-mdc-cell {
+        display: -webkit-box !important;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal !important;
+        word-break: break-word;
+        max-width: 200px;
+        padding: 6px 8px !important;
+        height: auto !important;
+        min-height: unset !important;
+        text-align: center !important;
+    }
+    // Centrado vertical solo si el contenido es una sola línea
+    ::ng-deep .mat-column-name.mat-mdc-cell:only-child {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
     ::ng-deep .mat-mdc-row {
         width: 100% !important;
 
@@ -161,6 +184,22 @@
     ::ng-deep .mat-column-name {
         width: 35%;
         min-width: 180px;
+    }
+
+    ::ng-deep .mat-column-name.mat-mdc-cell {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        max-width: 200px !important;
+    }
+
+    ::ng-deep .mat-column-name.mat-mdc-cell .name-content {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-align: center;
+        word-break: break-word;
     }
 
     ::ng-deep .mat-column-grade1,
@@ -397,6 +436,12 @@
     width: 100%;
 }
 
+.academic-summary-panel-expanded {
+    grid-column: 1 / 6;
+    grid-row: 2 / 3;
+    width: 100%;
+}
+
 .char-counter {
     text-align: right;
     font-size: 12px;
@@ -520,7 +565,7 @@
     text-align: center;
 }
 
-.no-students-fake-cell {
+.no-data-fake-cell {
     background-color: $secondary-color;
     color: $white-color;
     border: 1px solid #333;
@@ -741,6 +786,24 @@
         margin: 0;
         margin-top: 0;
     }
+}
+
+// Celda con ellipsis multilinea y centrado
+.ellipsis-mdc-cell {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+    text-align: center !important;
+    padding: 6px 8px !important;
+    max-width: 200px !important;
+    line-height: 1.4 !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 @media (max-width: 400px) {

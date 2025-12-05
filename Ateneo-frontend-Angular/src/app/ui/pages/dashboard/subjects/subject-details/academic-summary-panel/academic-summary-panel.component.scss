@@ -1,0 +1,269 @@
+@import '../../../../../../../assets/styles/colors.scss';
+
+.academic-summary-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background-color: $white-color;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.panel-header {
+    margin-bottom: 24px;
+    border-bottom: 2px solid $primary-color;
+    padding-bottom: 12px;
+
+    h2 {
+        margin: 0 0 8px 0;
+        color: $primary-color;
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        margin: 0;
+        color: $grey-color;
+        font-size: 0.95rem;
+    }
+}
+
+.panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $primary-color;
+        border-radius: 4px;
+
+        &:hover {
+            background: darken($primary-color, 10%);
+        }
+    }
+}
+
+.recipients-section {
+    margin-bottom: 24px;
+
+    h3 {
+        margin: 0 0 16px 0;
+        color: $primary-color;
+        font-size: 1.1rem;
+    }
+}
+
+.checkbox-option {
+    margin-bottom: 16px;
+
+    .custom-checkbox {
+        ::ng-deep .mat-checkbox-label {
+            font-size: 1rem;
+            color: $grey-color;
+        }
+
+        ::ng-deep .mat-checkbox-frame {
+            border-color: $primary-color;
+        }
+
+        ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+            background-color: $primary-color;
+        }
+    }
+}
+
+.students-select-section {
+    margin-top: 24px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid $primary-color;
+
+    h3 {
+        margin: 0 0 16px 0;
+        color: $primary-color;
+        font-size: 1.1rem;
+    }
+
+    h4 {
+        margin: 0 0 12px 0;
+        color: $grey-color;
+        font-size: 0.95rem;
+    }
+}
+
+.students-select-field {
+    width: 100%;
+    margin-bottom: 16px;
+
+    ::ng-deep .mat-form-field-outline {
+        color: $primary-color;
+    }
+
+    ::ng-deep .mat-form-field-label {
+        color: $primary-color;
+    }
+}
+
+.selected-students-list {
+    margin-top: 16px;
+}
+
+.students-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.student-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: $primary-color;
+    color: $white-color;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: darken($primary-color, 10%);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .student-name {
+        font-weight: 500;
+    }
+
+    .remove-button {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $white-color;
+
+        ::ng-deep .mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+    }
+}
+
+.panel-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    justify-content: flex-end;
+
+    button {
+        min-width: 140px;
+        font-weight: 500;
+    }
+
+    .secondary-button {
+        border-color: $primary-color;
+        color: $primary-color;
+
+        &:hover {
+            background-color: rgba($primary-color, 0.1);
+        }
+    }
+
+    .primary-button {
+        background-color: $primary-color;
+        color: $white-color;
+
+        &:hover:not([disabled]) {
+            background-color: darken($primary-color, 10%);
+        }
+
+        &[disabled] {
+            background-color: #ccc;
+            color: #999;
+            cursor: not-allowed;
+        }
+    }
+}
+
+// Agrupación de acciones de correo
+.email-actions-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.email-actions-label {
+    margin-bottom: 4px;
+    text-align: center;
+    width: 100%;
+    font-weight: 500;
+}
+
+.email-actions-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+@media (min-width: 1024px) {
+    .panel-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .academic-summary-panel {
+        padding: 16px;
+    }
+
+    .panel-header {
+        h2 {
+            font-size: 1.3rem;
+        }
+    }
+
+    .panel-actions {
+        flex-direction: column;
+
+        button {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .students-chips {
+        flex-direction: column;
+
+        .student-chip {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+}
