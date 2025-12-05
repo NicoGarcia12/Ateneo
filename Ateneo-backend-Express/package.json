@@ -26,6 +26,7 @@
         "jsonwebtoken": "^9.0.2",
         "morgan": "^1.10.0",
         "prisma": "^5.19.0",
+        "puppeteer": "^24.32.0",
         "tslib": "^2.7.0"
     },
     "devDependencies": {

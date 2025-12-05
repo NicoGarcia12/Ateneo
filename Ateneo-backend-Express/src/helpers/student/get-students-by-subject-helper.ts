@@ -5,7 +5,29 @@ export const GetStudentsBySubjectHelper = async (idSubject: string): Promise<Stu
     try {
         const subject = await prisma.subject.findUnique({
             where: { id: idSubject },
-            include: { students: true }
+            include: {
+                students: {
+                    include: {
+                        absences: {
+                            where: {
+                                class: {
+                                    subjectId: idSubject
+                                }
+                            }
+                        },
+                        studentGrades: {
+                            include: {
+                                grade: true
+                            },
+                            where: {
+                                grade: {
+                                    subjectId: idSubject
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         });
 
         return subject?.students ?? [];

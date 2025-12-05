@@ -33,6 +33,15 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         if (!studentGrade || studentGrade.value === null || studentGrade.value === undefined) return '-';
         return studentGrade.value;
     }
+
+    public getStudentAttendance(student: Student): string {
+        const totalClasses = this.specialDates.length;
+        if (totalClasses === 0) return '0';
+
+        const absencesCount = (student.absences || []).length;
+        const attendancePercentage = ((totalClasses - absencesCount) / totalClasses) * 100;
+        return Math.round(attendancePercentage).toString();
+    }
     public selectedClassId: string | null = null;
     public loadedClass: {
         absentStudents: Array<Student & { justificado: boolean }>;
@@ -49,6 +58,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     public isEditingClass = false;
     public showClassPanel = false;
     public selectedClassForPanel: Class | null = null;
+    public showReportPanel = false;
     private currentDialogRef: any = null;
     public studentsList: Student[] = [];
     public filteredStudents: Student[] = [...this.studentsList];
@@ -288,6 +298,14 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             const clase = classes.find((c) => c.date && c.date === event.date);
             this.selectedClassForPanel = clase || null;
         }, 500);
+    }
+
+    public openReportPanel(): void {
+        this.showReportPanel = true;
+    }
+
+    public onReportPanelComplete(): void {
+        this.showReportPanel = false;
     }
 
     public resetModalState(): void {
@@ -755,9 +773,9 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     private validateLoadStudentGrades(): boolean {
-        // Solo permitir guardar si todas las notas son válidas (no nulas, entre 1 y 10)
+        // Permitir guardar si todas las notas con valor son válidas (entre 1 y 10), y las nulas se permiten
         if (this.loadStudentGradesData.length === 0) return false;
-        return this.loadStudentGradesData.every((sg) => sg.value !== null && sg.value >= 1 && sg.value <= 10);
+        return this.loadStudentGradesData.every((sg) => sg.value === null || (sg.value >= 1 && sg.value <= 10));
     }
 
     private saveLoadStudentGrades(): void {

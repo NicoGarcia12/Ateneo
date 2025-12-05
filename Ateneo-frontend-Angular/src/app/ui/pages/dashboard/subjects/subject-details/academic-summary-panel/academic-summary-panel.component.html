@@ -1,0 +1,70 @@
+<div class="academic-summary-panel">
+    <div class="panel-header">
+        <h2>Generar Resumen Académico</h2>
+        <p class="subtitle">Selecciona los destinatarios del resumen</p>
+    </div>
+
+    <div class="panel-content">
+        <div class="recipients-section">
+            <h3>Estudiantes en el informe</h3>
+
+            <div class="checkbox-option">
+                <mat-checkbox [(ngModel)]="sendToAll" (ngModelChange)="onSendToAllChange()" class="custom-checkbox"> Todos </mat-checkbox>
+            </div>
+            <div class="checkbox-option">
+                <mat-checkbox [(ngModel)]="sendToSome" (ngModelChange)="onSendToSomeChange()" class="custom-checkbox">
+                    Solo seleccionados
+                </mat-checkbox>
+            </div>
+        </div>
+
+        <div class="students-select-section" *ngIf="sendToSome">
+            <h3>Seleccionar Alumnos</h3>
+
+            <mat-form-field appearance="outline" class="students-select-field">
+                <mat-label>Agregar alumno al informe</mat-label>
+                <mat-select [(ngModel)]="selectedStudentId" (ngModelChange)="onStudentSelect()" [disabled]="isSelectDisabled">
+                    <mat-option *ngFor="let student of availableStudents" [value]="student.id">
+                        {{ student.firstName }} {{ student.lastName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="selected-students-list" *ngIf="selectedStudents.length > 0">
+                <h4>Alumnos seleccionados ({{ selectedStudents.length }})</h4>
+                <div class="students-chips">
+                    <div class="student-chip" *ngFor="let student of selectedStudents">
+                        <span class="student-name">{{ student.firstName }} {{ student.lastName }}</span>
+                        <button mat-icon-button class="remove-button" (click)="removeStudent(student)" title="Quitar alumno">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-actions">
+        <app-submit class="secondary" [disabled]="false" type="button" (click)="cancel()"> Cancelar </app-submit>
+
+        <app-submit
+            class="primary"
+            [disabled]="!canGenerateOrSend || isGeneratingPDF || students.length === 0 || !hasGrades"
+            [loading]="isGeneratingPDF"
+            type="button"
+            (click)="generatePDF()"
+        >
+            Generar PDF
+        </app-submit>
+
+        <div class="email-actions-group">
+            <span class="email-actions-label">Enviar resumen por correo</span>
+            <div class="email-actions-buttons">
+                <app-submit class="primary" [disabled]="!canGenerateOrSend" type="button" (click)="sendEmailToMe()"> A mí </app-submit>
+                <app-submit class="primary" [disabled]="!canGenerateOrSend" type="button" (click)="sendEmailToStudents()">
+                    A estudiantes
+                </app-submit>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,17 +1,17 @@
 <div class="subject-details-container">
     <div class="students-table-container">
         <div class="table-wrapper">
-            <mat-table [dataSource]="studentsList" class="students-table" *ngIf="studentsList.length > 0">
+            <mat-table [dataSource]="studentsList" class="students-table" *ngIf="studentsList.length > 0 && gradesList.length > 0">
                 <ng-container matColumnDef="identification">
                     <mat-header-cell *matHeaderCellDef>DNI</mat-header-cell>
-                    <mat-cell *matCellDef="let student" [title]="student.dni">{{ student.dni }}</mat-cell>
+                    <mat-cell *matCellDef="let student" [title]="student.dni" class="ellipsis-cell">{{ student.dni }}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef>Estudiante</mat-header-cell>
-                    <mat-cell *matCellDef="let student" [title]="student.firstName + ' ' + student.lastName"
-                        >{{ student.firstName }} {{ student.lastName }}</mat-cell
-                    >
+                    <mat-cell *matCellDef="let student" [title]="student.firstName + ' ' + student.lastName">
+                        <span class="name-content">{{ student.firstName }} {{ student.lastName }}</span>
+                    </mat-cell>
                 </ng-container>
 
                 <ng-container *ngFor="let grade of gradesList; trackBy: trackByGradeId" [matColumnDef]="grade.id">
@@ -39,23 +39,28 @@
                             </div>
                         </div>
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let student">
+                    <mat-cell *matCellDef="let student" [title]="getStudentGradeValue(student, grade.id)" class="ellipsis-cell">
                         {{ getStudentGradeValue(student, grade.id) }}
                     </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="attendance">
                     <mat-header-cell *matHeaderCellDef>Asistencias</mat-header-cell>
-                    <mat-cell *matCellDef="let student" title="100%">100%</mat-cell>
+                    <mat-cell *matCellDef="let student" [title]="getStudentAttendance(student) + '%'" class="ellipsis-cell">
+                        {{ getStudentAttendance(student) }}%
+                    </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </mat-table>
-            <div class="no-students-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia</div>
+            <div class="no-data-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia</div>
+            <div class="no-data-fake-cell" *ngIf="studentsList.length > 0 && gradesList.length === 0">
+                No hay notas cargadas en la materia
+            </div>
         </div>
     </div>
-    <div class="calendar-container" *ngIf="!showClassPanel">
+    <div class="calendar-container" *ngIf="!showClassPanel && !showReportPanel">
         <h3>Calendario de Clases</h3>
         <mat-calendar [(selected)]="selectedDate" [dateClass]="dateClass" (selectedChange)="onDateSelected($event)"> </mat-calendar>
     </div>
@@ -70,7 +75,15 @@
         (onClassSaved)="onClassSaved($event)"
     >
     </app-class-details-panel>
-    <div class="buttons-container" *ngIf="!showClassPanel">
+    <app-academic-summary-panel
+        *ngIf="showReportPanel"
+        class="academic-summary-panel-expanded"
+        [students]="studentsList"
+        [subjectId]="idSubject"
+        (onComplete)="onReportPanelComplete()"
+    >
+    </app-academic-summary-panel>
+    <div class="buttons-container" *ngIf="!showClassPanel && !showReportPanel">
         <button class="primary-button full-width-btn" mat-flat-button (click)="openAddStudentModal()">Agregar alumno</button>
         <app-add-grade-button
             [grades]="viewModel.grades$ | async"
@@ -78,7 +91,14 @@
             [students]="studentsList"
             (gradeAdded)="onDataChanged()"
         ></app-add-grade-button>
-        <button class="primary-button full-width-btn" mat-flat-button>Generar informe</button>
+        <button
+            class="primary-button full-width-btn"
+            mat-flat-button
+            (click)="openReportPanel()"
+            [disabled]="studentsList.length === 0 || gradesList.length === 0"
+        >
+            Generar informe
+        </button>
         <button class="primary-button full-width-btn" mat-flat-button>Editar materia</button>
         <button class="primary-button full-width-btn" mat-flat-button>Eliminar materia</button>
     </div>
