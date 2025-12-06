@@ -4,16 +4,26 @@
 
 ---
 
-## ✨ Características principales
 
-- Gestión de materias dictadas por el profesor en distintas instituciones
-- Administración de alumnos por materia
-- Registro de clases dictadas y asistencia
-- Carga y consulta de calificaciones
-- Generación de reportes académicos para alumnos y para el propio docente
-- Comunicación y seguimiento académico con los estudiantes
-- Interfaz web moderna y fácil de usar
-- API REST segura y escalable
+
+## ✨ ¿Qué puede hacer el usuario?
+
+1. **Gestionar materias y estudiantes:** Crear, editar y eliminar materias, vincular y administrar estudiantes en cada materia.
+2. **Registrar y consultar clases y asistencia:** Agregar clases, editar detalles, registrar asistencia y consultar el historial de clases y asistencias.
+3. **Cargar, editar y consultar calificaciones:** Registrar notas por estudiante y materia, editar o eliminar calificaciones y visualizar el historial académico.
+4. **Generar reportes académicos personalizados:** Obtener resúmenes y reportes detallados por materia y por estudiante, listos para imprimir o compartir.
+5. **Administrar su perfil y autenticación:** Registrarse, iniciar sesión y gestionar sus datos como profesor, accediendo a todas las funcionalidades desde una interfaz web moderna.
+
+---
+
+## 🛠️ Aspectos técnicos principales
+
+1. **Frontend en Angular:** Interfaz web modular, con componentes reutilizables, paneles y modales avanzados para todas las acciones principales.
+2. **Backend en Express + Prisma:** API REST robusta y segura, con rutas para todas las entidades y operaciones CRUD, y gestión de base de datos relacional.
+3. **ORM Prisma:** Migraciones, generación de cliente, administración y sincronización de esquema de base de datos mediante scripts npm.
+4. **Autenticación JWT:** Seguridad en el acceso y gestión de sesiones para profesores.
+5. **Arquitectura escalable:** Separación clara de responsabilidades, estructura organizada y posibilidad de extender funcionalidades fácilmente.
+
 
 ---
 
@@ -101,33 +111,31 @@ cd Ateneo
        ```
 ---
 
+
 ## 🧩 Comandos útiles de Prisma
 
-- **Crear la primera migración:**
-   ```bash
-   npx prisma migrate dev --name init
-   ```
-- **Borrar todas las migraciones existentes:**
-   ```bash
-   rm -rf Ateneo-backend-Express/prisma/migrations
-   # Borra la base de datos manualmente desde tu gestor
-   ```
-- **Crear una nueva migración (actualizar el esquema):**
-   ```bash
-   npx prisma migrate dev --name <nombre>
-   ```
-- **Levantar Prisma Studio (UI para la base de datos):**
-   ```bash
-   npx prisma studio
-   ```
-- **Resetear la base de datos y aplicar todas las migraciones:**
-   ```bash
-   npx prisma migrate reset
-   ```
-- **Generar el cliente de Prisma manualmente:**
-   ```bash
-   npx prisma generate
-   ```
+Ejecuta estos comandos dentro de la carpeta `Ateneo-backend-Express` usando npm:
+
+| Comando                                 | Descripción                                               |
+|-----------------------------------------|-----------------------------------------------------------|
+| `npm run prisma:migrate`                | Ejecuta migraciones y actualiza la base de datos          |
+| `npm run prisma:reset`                  | Resetea la base de datos y aplica todas las migraciones   |
+| `npm run prisma:generate`               | Genera el cliente de Prisma según el esquema              |
+| `npm run prisma:studio`                 | Abre Prisma Studio para visualizar y editar datos         |
+| `npm run prisma:dbpush`                 | Sincroniza el esquema Prisma con la base de datos         |
+| `npm run prisma:status`                 | Muestra el estado de las migraciones                      |
+| `npm run prisma:format`                 | Formatea el archivo `schema.prisma`                       |
+
+Para borrar todas las migraciones existentes:
+```bash
+rm -rf Ateneo-backend-Express/prisma/migrations
+# Borra la base de datos manualmente desde tu gestor
+```
+
+Para crear una nueva migración personalizada:
+```bash
+npm run prisma:migrate -- --name <nombre>
+```
 
 Estos comandos te permiten gestionar el ciclo de vida de la base de datos y el esquema de manera sencilla.
 
@@ -167,22 +175,6 @@ Estos comandos te permiten gestionar el ciclo de vida de la base de datos y el e
 - 🔄 Si tienes problemas con dependencias, verifica la versión de Node.js recomendada en la documentación de Angular y Prisma.
 - 📝 Puedes personalizar las variables de entorno según tu entorno local.
 - 📦 Si necesitas instalar dependencias manualmente, usa `npm install <paquete>`.
-
----
-
-## 💎 Comandos útiles de Prisma
-
-Ejecuta estos comandos dentro de la carpeta `Ateneo-backend-Express`:
-
-| Comando                        | Descripción                                               |
-|---------------------------------|-----------------------------------------------------------|
-| `npx prisma migrate dev`        | Ejecuta migraciones y actualiza la base de datos          |
-| `npx prisma migrate reset`      | Resetea la base de datos y aplica todas las migraciones   |
-| `npx prisma generate`           | Genera el cliente de Prisma según el esquema              |
-| `npx prisma studio`             | Abre Prisma Studio para visualizar y editar datos         |
-| `npx prisma db push`            | Sincroniza el esquema Prisma con la base de datos         |
-| `npx prisma migrate status`     | Muestra el estado de las migraciones                      |
-| `npx prisma format`             | Formatea el archivo `schema.prisma`                       |
 
 ---
 

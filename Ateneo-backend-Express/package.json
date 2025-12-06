@@ -12,6 +12,12 @@
         "prisma:studio": "npx prisma studio",
         "prisma:migrate": "prisma migrate dev --config=prisma/prisma.config.ts",
         "seed": "ts-node prisma/seed.ts"
+        ,
+        "prisma:reset": "npx prisma migrate reset",
+        "prisma:generate": "npx prisma generate",
+        "prisma:dbpush": "npx prisma db push",
+        "prisma:status": "npx prisma migrate status",
+        "prisma:format": "npx prisma format"
     },
     "keywords": [],
     "author": "",
