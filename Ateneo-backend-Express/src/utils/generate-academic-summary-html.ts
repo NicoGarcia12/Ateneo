@@ -200,26 +200,13 @@ function generateStudentBlocks(students: any[]): string {
     return students.map((student) => generateStudentBlock(student)).join('');
 }
 
-// Función para generar la información de la materia
-function generateSubjectInfo(subject: any, fechaGeneracion: string): string {
-    return `
-        <div class="subject-info">
-            <p class="main-info">Materia: ${subject.name}</p>
-            <p class="secondary-info">Año Académico: ${subject.academicYear}</p>
-            <p class="secondary-info">Institución: ${subject.institution}</p>
-            <p class="secondary-info">Certificación final: ${subject.degree}</p>
-            <p class="secondary-info">Profesor: ${subject.professor.firstName} ${subject.professor.lastName}</p>
-            <p class="generation-date">Generado el ${fechaGeneracion}</p>
-        </div>
-    `;
-}
-
 // ==================== FUNCIÓN PRINCIPAL ====================
 
 export function generateAcademicSummaryHTML(params: AcademicSummaryHTMLParams): string {
     const { subject, students } = params;
     const fechaGeneracion = new Date().toLocaleDateString('es-AR');
 
+    // Bloque principal con título y datos generales solo en la primera página
     return `
 <!DOCTYPE html>
 <html lang="es">
@@ -230,8 +217,7 @@ export function generateAcademicSummaryHTML(params: AcademicSummaryHTMLParams): 
     <style>${CSS_STYLES}</style>
 </head>
 <body>
-    <h1>Resumen Académico</h1>
-    ${generateSubjectInfo(subject, fechaGeneracion)}
+    <h1>Reporte Académico de ${subject.name}</h1>
     ${generateStudentBlocks(students)}
 </body>
 </html>

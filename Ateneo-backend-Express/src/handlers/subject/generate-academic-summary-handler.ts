@@ -38,19 +38,36 @@ export const GenerateAcademicSummaryHandler = async (req: Request, res: Response
             format: 'A4',
             printBackground: true,
             displayHeaderFooter: true,
-            headerTemplate: '<div></div>',
+            headerTemplate: `
+                <div style="width: 100%; font-size: 12px; padding: 10px 40px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: stretch; border-bottom: 1px solid #ccc;">
+                    <div style='flex: 1; display: flex; flex-direction: column; justify-content: flex-start;'>
+                        <div><strong>Materia:</strong> ${subject.name}</div>
+                        <div><strong>Profesor:</strong> ${subject.professor.firstName} ${subject.professor.lastName}</div>
+                    </div>
+                    <div style='flex: 1; display: flex; flex-direction: column; justify-content: flex-start;'>
+                        <div><strong>Año:</strong> ${subject.academicYear}</div>
+                        <div><strong>Institución:</strong> ${subject.institution}</div>
+                    </div>
+                    <div style='flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;'>
+                        <div><strong>Certificación final:</strong> ${subject.degree}</div>
+                    </div>
+                </div>
+            `,
             footerTemplate: `
                 <div style="width: 100%; font-size: 10px; padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ccc; box-sizing: border-box;">
                     <div style="flex: 1; display: flex; align-items: center;">
-                        ${logoBase64 ? `<img src="${logoBase64}" style="height: 30px; width: auto;" />` : ''}
+                        ${logoBase64 ? `<img src='${logoBase64}' style='height: 50px; width: auto;' />` : ''}
                     </div>
-                    <div style="flex: 1; text-align: right; color: #666;">
+                    <div style="flex: 1; text-align: center; color: #666;">
                         Página <span class="pageNumber"></span> de <span class="totalPages"></span>
+                    </div>
+                    <div style="flex: 1; text-align: right; color: #444;">
+                        Generado el ${new Date().toLocaleDateString('es-AR')}
                     </div>
                 </div>
             `,
             margin: {
-                top: '40px',
+                top: '80px',
                 right: '40px',
                 bottom: '80px',
                 left: '40px'
