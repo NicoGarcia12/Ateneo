@@ -14,6 +14,7 @@ export interface StudentAcademicData {
     firstName: string;
     lastName: string;
     dni: string;
+    email?: string | null;
     grades: {
         id: string;
         name: string;
@@ -85,6 +86,7 @@ export const GenerateAcademicSummaryController = async (
             firstName: student.firstName,
             lastName: student.lastName,
             dni: student.dni,
+            email: student.email || null,
             grades: studentGrades,
             attendancePercentage: Math.round(attendancePercentage)
         };

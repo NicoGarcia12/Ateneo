@@ -6,7 +6,7 @@ import { ValidationError } from 'src/utils/custom-errors';
 export const AddStudentHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { firstName, lastName, dni, email, phone } = req.body;
-        if (!firstName || !lastName || !dni || !email) {
+        if (!firstName || !lastName || !dni) {
             throw new ValidationError('Faltan campos obligatorios');
         }
         const subjectId = typeof req.query['subjectId'] === 'string' ? req.query['subjectId'] : undefined;

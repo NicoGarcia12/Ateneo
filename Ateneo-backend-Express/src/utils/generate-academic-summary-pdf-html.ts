@@ -14,96 +14,96 @@ export interface AcademicSummaryResult {
 // ==================== ESTILOS CSS ====================
 const CSS_STYLES = `
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-    font-family: 'Helvetica', Arial, sans-serif;
-    padding: 40px;
-    color: #000;
+	font-family: 'Helvetica', Arial, sans-serif;
+	padding: 40px;
+	color: #000;
 }
 
 h1 {
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 20px;
+	font-size: 20px;
+	text-align: center;
+	margin-bottom: 20px;
 }
 
 .subject-info {
-    margin-bottom: 30px;
+	margin-bottom: 30px;
 }
 
 .subject-info p {
-    margin: 5px 0;
+	margin: 5px 0;
 }
 
 .main-info {
-    font-size: 14px;
-    font-weight: bold;
+	font-size: 14px;
+	font-weight: bold;
 }
 
 .secondary-info {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 .generation-date {
-    font-size: 10px;
-    color: #444;
+	font-size: 10px;
+	color: #444;
 }
 
 .student-block {
-    page-break-inside: avoid;
-    margin-bottom: 40px;
+	page-break-inside: avoid;
+	margin-bottom: 40px;
 }
 
 .student-info {
-    text-align: center;
-    margin-bottom: 15px;
+	text-align: center;
+	margin-bottom: 15px;
 }
 
 .student-name {
-    font-size: 13px;
-    font-weight: normal;
-    margin-bottom: 3px;
+	font-size: 13px;
+	font-weight: normal;
+	margin-bottom: 3px;
 }
 
 .student-detail {
-    font-size: 12px;
-    margin-bottom: 2px;
+	font-size: 12px;
+	margin-bottom: 2px;
 }
 
 .grades-table {
-    width: auto;
-    margin: 0 auto;
-    border-collapse: collapse;
-    font-size: 10px;
+	width: auto;
+	margin: 0 auto;
+	border-collapse: collapse;
+	font-size: 10px;
 }
 
 .grades-table th {
-    font-size: 11px;
-    font-weight: bold;
-    padding: 8px 12px;
-    text-align: center;
-    border: 1px solid #000;
-    background-color: #fff;
+	font-size: 11px;
+	font-weight: bold;
+	padding: 8px 12px;
+	text-align: center;
+	border: 1px solid #000;
+	background-color: #fff;
 }
 
 .grades-table td {
-    padding: 8px 12px;
-    text-align: center;
-    border: 1px solid #000;
+	padding: 8px 12px;
+	text-align: center;
+	border: 1px solid #000;
 }
 
 .grades-table tbody tr {
-    background-color: #fff;
+	background-color: #fff;
 }
 
 .no-grades-message {
-    text-align: center;
-    font-style: italic;
-    color: #666;
+	text-align: center;
+	font-style: italic;
+	color: #666;
 }
 `;
 
@@ -134,36 +134,36 @@ function sortGradesByDate(grades: any[]): any[] {
 function generateGradeRows(student: any): string {
     if (!student.grades || student.grades.length === 0) {
         return `
-            <tr>
-                <td colspan="3" class="no-grades-message">No hay notas registradas</td>
-            </tr>
-        `;
+			<tr>
+				<td colspan="3" class="no-grades-message">No hay notas registradas</td>
+			</tr>
+		`;
     }
 
-    // Filtrar notas que tengan valor (no nulas)
-    const gradesWithValue = student.grades.filter((grade: any) => grade.value !== null && grade.value !== undefined);
+    // Ordenar todas las notas por fecha
+    const sortedGrades = sortGradesByDate([...student.grades]);
 
-    if (gradesWithValue.length === 0) {
+    // Si todas las notas son nulas o no tienen valor
+    const allNull = sortedGrades.every((grade: any) => grade.value === null || grade.value === undefined);
+    if (allNull) {
         return `
-            <tr>
-                <td colspan="3" class="no-grades-message">No hay notas registradas</td>
-            </tr>
-        `;
+			<tr>
+				<td colspan="3" class="no-grades-message">No hay notas registradas</td>
+			</tr>
+		`;
     }
-
-    // Ordenar las notas por fecha
-    const sortedGrades = sortGradesByDate([...gradesWithValue]);
 
     return sortedGrades
         .map((grade: any) => {
             const formattedDate = grade.date ? new Date(grade.date).toLocaleDateString('es-AR') : '';
+            const nota = grade.value === null || grade.value === undefined ? 'No cargada' : grade.value;
             return `
-            <tr>
-                <td>${grade.name || ''}</td>
-                <td>${grade.value}</td>
-                <td>${formattedDate}</td>
-            </tr>
-        `;
+			<tr>
+				<td>${grade.name || ''}</td>
+				<td>${nota}</td>
+				<td>${formattedDate}</td>
+			</tr>
+		`;
         })
         .join('');
 }
@@ -173,26 +173,26 @@ function generateStudentBlock(student: any): string {
     const attendancePercentage = Math.round(student.attendancePercentage);
 
     return `
-        <div class="student-block">
-            <div class="student-info">
-                <p class="student-name">Estudiante: ${student.lastName}, ${student.firstName}</p>
-                <p class="student-detail">DNI: ${student.dni}</p>
-                <p class="student-detail">Asistencia: ${attendancePercentage}%</p>
-            </div>
-            <table class="grades-table">
-                <thead>
-                    <tr>
-                        <th>Evaluación</th>
-                        <th>Nota</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${generateGradeRows(student)}
-                </tbody>
-            </table>
-        </div>
-    `;
+		<div class="student-block">
+			<div class="student-info">
+				<p class="student-name">Estudiante: ${student.lastName}, ${student.firstName}</p>
+				<p class="student-detail">DNI: ${student.dni}</p>
+				<p class="student-detail">Asistencia: ${attendancePercentage}%</p>
+			</div>
+			<table class="grades-table">
+				<thead>
+					<tr>
+						<th>Evaluación</th>
+						<th>Nota</th>
+						<th>Fecha</th>
+					</tr>
+				</thead>
+				<tbody>
+					${generateGradeRows(student)}
+				</tbody>
+			</table>
+		</div>
+	`;
 }
 
 // Función para generar todos los bloques de estudiantes
@@ -211,15 +211,15 @@ export function generateAcademicSummaryHTML(params: AcademicSummaryHTMLParams): 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resumen Académico</title>
-    <style>${CSS_STYLES}</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Resumen Académico</title>
+	<style>${CSS_STYLES}</style>
 </head>
 <body>
-    <h1>Reporte Académico de ${subject.name}</h1>
-    ${generateStudentBlocks(students)}
+	<h1>Reporte Académico de ${subject.name}</h1>
+	${generateStudentBlocks(students)}
 </body>
 </html>
-    `.trim();
+	`.trim();
 }
