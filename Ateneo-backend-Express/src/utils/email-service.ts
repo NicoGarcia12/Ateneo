@@ -56,7 +56,6 @@ export const sendEmail = async (params: SendEmailParams): Promise<void> => {
 
     try {
         await apiInstance.sendTransacEmail(sendSmtpEmail);
-        console.log(`Email enviado exitosamente a: ${to.map((t: any) => t.email).join(', ')}`);
     } catch (error) {
         console.error('Error al enviar email con Brevo:', error);
         throw new Error('No se pudo enviar el email');
