@@ -11,8 +11,7 @@
         "seed:reset": "ts-node prisma/seed.ts --reset",
         "prisma:studio": "npx prisma studio",
         "prisma:migrate": "prisma migrate dev --config=prisma/prisma.config.ts",
-        "seed": "ts-node prisma/seed.ts"
-        ,
+        "seed": "ts-node prisma/seed.ts",
         "prisma:reset": "npx prisma migrate reset",
         "prisma:generate": "npx prisma generate",
         "prisma:dbpush": "npx prisma db push",
@@ -23,6 +22,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@getbrevo/brevo": "^3.0.1",
         "@prisma/client": "^5.19.0",
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.2",

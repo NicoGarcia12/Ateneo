@@ -32,35 +32,64 @@
             <div class="selected-students-list" *ngIf="selectedStudents.length > 0">
                 <h4>Alumnos seleccionados ({{ selectedStudents.length }})</h4>
                 <div class="students-chips">
-                    <div class="student-chip" *ngFor="let student of selectedStudents">
+                    <div class="student-chip" *ngFor="let student of selectedStudents" [class.no-email]="!hasEmail(student)">
+                        <span
+                            class="student-indicator"
+                            [class.has-email]="hasEmail(student)"
+                            [class.no-email-indicator]="!hasEmail(student)"
+                        ></span>
                         <span class="student-name">{{ student.firstName }} {{ student.lastName }}</span>
                         <button mat-icon-button class="remove-button" (click)="removeStudent(student)" title="Quitar alumno">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
                 </div>
+                <div class="email-legend">
+                    <div class="legend-item">
+                        <span class="legend-indicator has-email"></span>
+                        <span class="legend-text">Con email</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-indicator no-email-indicator"></span>
+                        <span class="legend-text">Sin email</span>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <div class="email-warning" *ngIf="showEmailWarning">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <span *ngIf="sendToAll"> Solo se enviará el reporte a aquellos estudiantes que tengan email. </span>
+            <span *ngIf="sendToSome"> Los estudiantes marcados con círculo rojo no tienen email y no recibirán el reporte. </span>
         </div>
     </div>
 
     <div class="panel-actions">
         <app-submit class="secondary" [disabled]="false" type="button" (click)="cancel()"> Cancelar </app-submit>
 
-        <app-submit
-            class="primary"
-            [disabled]="!canGenerateOrSend || isGeneratingPDF || students.length === 0 || !hasGrades"
-            [loading]="isGeneratingPDF"
-            type="button"
-            (click)="generatePDF()"
-        >
+        <app-submit class="primary" [disabled]="!canGeneratePDF" [loading]="isGeneratingPDF" type="button" (click)="generatePDF()">
             Generar PDF
         </app-submit>
 
         <div class="email-actions-group">
             <span class="email-actions-label">Enviar resumen por correo</span>
             <div class="email-actions-buttons">
-                <app-submit class="primary" [disabled]="!canGenerateOrSend" type="button" (click)="sendEmailToMe()"> A mí </app-submit>
-                <app-submit class="primary" [disabled]="!canGenerateOrSend" type="button" (click)="sendEmailToStudents()">
+                <app-submit
+                    class="primary"
+                    [disabled]="!canSendToMe"
+                    [loading]="isSendingEmailToMe"
+                    type="button"
+                    (click)="sendEmailToMe()"
+                >
+                    A mí
+                </app-submit>
+                <app-submit
+                    class="primary"
+                    [disabled]="!canSendToStudentsButton"
+                    [loading]="isSendingEmailToStudents"
+                    type="button"
+                    (click)="sendEmailToStudents()"
+                >
                     A estudiantes
                 </app-submit>
             </div>
