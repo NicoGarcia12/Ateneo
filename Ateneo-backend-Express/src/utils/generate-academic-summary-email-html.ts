@@ -62,7 +62,7 @@ function generateGradeRows(student: any): string {
 
 // Función para generar el bloque de un estudiante para email
 function generateStudentBlock(student: any): string {
-    const attendancePercentage = Math.round(student.attendancePercentage);
+    const attendancePercentage = student.attendancePercentage ?? 0;
 
     return `
         <div style="margin-bottom:30px;padding:20px;background-color:#f5f5f5;border-radius:8px;border-left:4px solid #4CAF50;">

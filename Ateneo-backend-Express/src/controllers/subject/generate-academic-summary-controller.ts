@@ -74,12 +74,12 @@ export const GenerateAcademicSummaryController = async (
         if (Array.isArray(classes)) {
             absencesCount = classes.reduce((acc: number, clase: any) => {
                 if (clase.absences && Array.isArray(clase.absences)) {
-                    return acc + clase.absences.filter((a: any) => a.studentId === student.id).length;
+                    return acc + clase.absences.filter((a: any) => a.student && a.student.id === student.id).length;
                 }
                 return acc;
             }, 0);
         }
-        const attendancePercentage = totalClasses > 0 ? ((totalClasses - absencesCount) / totalClasses) * 100 : 100;
+        const attendancePercentage = totalClasses > 0 ? ((totalClasses - absencesCount) / totalClasses) * 100 : 0;
 
         return {
             id: student.id,
