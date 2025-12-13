@@ -35,16 +35,16 @@ model Class {
   id        String    @id
   date      DateTime
   description String?  @db.Text
-  subject   Subject   @relation(fields: [subjectId], references: [id])
+  subject   Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   subjectId String
   absences  Absence[]
 }
 
 model Absence {
   id        String  @id
-  class     Class   @relation(fields: [classId], references: [id])
+  class     Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId   String
-  student   Student @relation(fields: [studentId], references: [id])
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId String
   justified Boolean
 }
@@ -52,9 +52,9 @@ model Absence {
 model GradeRelationship {
   id             String @id
   weight         Float
-  derivedGrade   Grade  @relation("DerivedGrade", fields: [derivedGradeId], references: [id])
+  derivedGrade   Grade  @relation("DerivedGrade", fields: [derivedGradeId], references: [id], onDelete: Cascade)
   derivedGradeId String
-  baseGrade      Grade  @relation("BaseGrade", fields: [baseGradeId], references: [id])
+  baseGrade      Grade  @relation("BaseGrade", fields: [baseGradeId], references: [id], onDelete: Cascade)
   baseGradeId    String
 }
 
@@ -64,7 +64,7 @@ model Subject {
   academicYear Int
   institution  String
   degree       String
-  professor    Professor @relation(fields: [professorId], references: [id])
+  professor    Professor @relation(fields: [professorId], references: [id], onDelete: Cascade)
   professorId  String
   classes      Class[]
   grades       Grade[]
@@ -77,7 +77,7 @@ model Grade {
   type            GradeType
   date            DateTime
   description     String?             @db.Text
-  subject         Subject             @relation(fields: [subjectId], references: [id])
+  subject         Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   subjectId       String
   studentGrades   StudentGrade[]
   derivedGradeRel GradeRelationship[] @relation("DerivedGrade")
@@ -87,9 +87,9 @@ model Grade {
 model StudentGrade {
   id        String  @id
   value     Float?
-  grade     Grade   @relation(fields: [gradeId], references: [id])
+  grade     Grade   @relation(fields: [gradeId], references: [id], onDelete: Cascade)
   gradeId   String
-  student   Student @relation(fields: [studentId], references: [id])
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId String
 }
 
