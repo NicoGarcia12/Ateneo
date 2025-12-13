@@ -9,7 +9,9 @@ export const GetProfessorByEmailHelper = async (email: string) => {
                 email: true,
                 firstName: true,
                 lastName: true,
-                emailActivated: true
+                emailActivated: true,
+                resetPasswordCode: true,
+                resetPasswordCodeCreatedAt: true
             }
         });
 

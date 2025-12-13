@@ -9,11 +9,15 @@ import { DashboardComponent } from './ui/pages/dashboard/dashboard.component';
 import { SubjectsComponent } from './ui/pages/dashboard/subjects/subjects.component';
 import { SubjectDetailsComponent } from './ui/pages/dashboard/subjects/subject-details/subject-details.component';
 import { ProfileComponent } from './ui/pages/profile/profile.component';
+import { ForgotPasswordComponent } from './ui/pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './ui/pages/reset-password/reset-password.component';
 
 const routes: Routes = [
     { path: '', component: LandingComponent },
     { path: 'sign-up', component: SignUpComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
     {
         path: 'dashboard',
         component: DashboardComponent,

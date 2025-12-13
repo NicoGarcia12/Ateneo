@@ -1,11 +1,11 @@
 <button
     type="submit"
     mat-flat-button
-    [disabled]="disabled"
+    [disabled]="disabled || loading"
     [ngClass]="{
-        'primary-button': class === 'primary' && !disabled,
-        'secondary-button': class === 'secondary' && !disabled,
-        'disabled-button': disabled
+        'primary-button': class === 'primary' && !(disabled || loading),
+        'secondary-button': class === 'secondary' && !(disabled || loading),
+        'disabled-button': disabled || loading
     }"
     class="button-content"
 >
