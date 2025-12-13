@@ -8,7 +8,6 @@ import { Subscription, forkJoin } from 'rxjs';
 import { NotifyService } from '../../../../shared/services/notify.service';
 import { MatCalendar } from '@angular/material/datepicker';
 import { Class } from 'src/app/domain/entities/class';
-import { Absence } from '../../../../../domain/entities/absence';
 import { isValidEmail } from '../../../../../utils/validators/email.validator';
 import { Grade } from 'src/app/domain/entities/grade';
 import { UpdateGradeUseCase } from 'src/app/domain/use-cases/grade/update-grade-use-case';
@@ -21,50 +20,12 @@ import { IResponse } from 'src/app/domain/use-cases/use-case.interface';
     styleUrls: ['./subject-details.component.scss']
 })
 export class SubjectDetailsComponent implements OnInit, OnDestroy {
-    trackByGradeId(_index: number, grade: { id: string }) {
-        return grade.id;
-    }
-
-    public getStudentGradeValue(student: Student, gradeId: string): string | number {
-        const grade = this.grades.find((g) => g.id === gradeId);
-        if (!grade) return '-';
-        const studentsGrades = grade.studentsGrades || [];
-        const studentGrade = studentsGrades.find((sg: any) => String(sg.student.id) === String(student.id));
-        if (!studentGrade || studentGrade.value === null || studentGrade.value === undefined) return '-';
-        return studentGrade.value;
-    }
-
-    public getStudentAttendance(student: Student): string {
-        const totalClasses = this.specialDates.length;
-        if (totalClasses === 0) return '0';
-
-        const absencesCount = (student.absences || []).length;
-        const attendancePercentage = ((totalClasses - absencesCount) / totalClasses) * 100;
-        return Math.round(attendancePercentage).toString();
-    }
-    public selectedClassId: string | null = null;
-    public loadedClass: {
-        absentStudents: Array<Student & { justificado: boolean }>;
-        description: string;
-    } = {
-        absentStudents: [],
-        description: 'Clase sobre funciones matemáticas. Se repasaron ejercicios y se resolvieron dudas.'
-    };
-    public classDescription: string = '';
-    public showAltModal = false;
-    public selectedStudent: Student | null = null;
     public idSubject: string = '';
     public selectedDate: Date | null = null;
-    public isEditingClass = false;
     public showClassPanel = false;
     public selectedClassForPanel: Class | null = null;
     public showReportPanel = false;
-    private currentDialogRef: any = null;
     public studentsList: Student[] = [];
-    public filteredStudents: Student[] = [...this.studentsList];
-    public filteredStudentsForEdit: Student[] = [];
-    public selectedStudents: Array<Student & { justificado: boolean }> = [];
-    public studentSearch: string = '';
     private addStudentDialogRef: any = null;
     public dniInput: string = '';
     public isSearchingStudent: boolean = false;
@@ -116,7 +77,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
-        this.resetModalState();
         this.activatedRoute.paramMap.subscribe((params) => {
             if (params.get('idSubject') === null) {
                 this.router.navigate(['/dashboard/subjects']);
@@ -129,7 +89,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
             this.studentsSubscription = this.viewModel.students$.subscribe((students) => {
                 this.studentsList = students;
-                this.filterStudents();
             });
             this.classesSubscription = this.viewModel.classes$.subscribe((classes) => {
                 this.specialDates = classes
@@ -149,7 +108,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 this.grades = sortedGrades;
                 this.gradesList = sortedGrades.map((g) => ({ id: g.id, name: g.name }));
                 this.gradeColumns = sortedGrades.map((g) => g.id);
-                this.displayedColumns = ['identification', 'name', ...this.gradeColumns, 'attendance'];
+                this.displayedColumns = ['identification', 'name', ...this.gradeColumns, 'attendance', 'actions'];
             });
         });
         this.dashboardTitleService.setTitle('Detalles de la materia');
@@ -225,24 +184,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         this.stopAutoRefresh();
     }
 
-    public filterStudents(): void {
-        // En modo edición de clase cargada, excluir también los estudiantes que ya están en loadedClass.absentStudents
-        const allAbsentStudents = this.isEditingClass
-            ? [...this.selectedStudents, ...this.loadedClass.absentStudents]
-            : this.selectedStudents;
-        this.filteredStudents = this.viewModel.filterStudents(this.studentsList, allAbsentStudents, this.studentSearch);
-        if (this.filteredStudents.length === 0) {
-            this.selectedStudent = null;
-        }
-
-        // Filtrar estudiantes para el modo edición (solo excluir los que ya están en la clase)
-        this.filteredStudentsForEdit = this.viewModel.filterStudents(
-            this.studentsList,
-            this.loadedClass.absentStudents,
-            this.studentSearch
-        );
-    }
-
     public dateClass = (d: Date) => {
         if (!(d instanceof Date) || isNaN(d.getTime())) return '';
         const fecha = d.toISOString().split('T')[0];
@@ -282,6 +223,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         this.showClassPanel = false;
         this.selectedClassForPanel = null;
         this.selectedDate = null;
+        this.loadAllData();
         if (this.calendar) {
             (this.calendar as any).selected = null;
             try {
@@ -291,7 +233,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onClassSaved(event: { date: string }): void {
-        // Esperar un momento para que se recarguen las clases
+        this.loadAllData();
+        // Esperar un momento para que se procesen las actualizaciones y actualizar la clase seleccionada
         setTimeout(() => {
             let classes: Array<Class> = [];
             this.viewModel.classes$.subscribe((val) => (classes = val)).unsubscribe();
@@ -306,66 +249,6 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     public onReportPanelComplete(): void {
         this.showReportPanel = false;
-    }
-
-    public resetModalState(): void {
-        this.selectedStudents = [];
-        this.studentSearch = '';
-        this.filteredStudents = [...this.studentsList];
-        this.selectedStudent = null;
-        this.showAltModal = false;
-        this.classDescription = '';
-        this.isEditingClass = false;
-        this.currentDialogRef = null;
-    }
-
-    public addSelectedStudent(student: Student): void {
-        this.selectedStudents = this.viewModel.addSelectedStudent(this.selectedStudents, student);
-        this.filterStudents();
-        this.selectedStudent = null;
-    }
-
-    public toggleModalView(): void {
-        this.showAltModal = !this.showAltModal;
-    }
-
-    public removeSelectedStudent(student: Student & { justificado: boolean }): void {
-        this.selectedStudents = this.viewModel.removeSelectedStudent(this.selectedStudents, student);
-        this.filterStudents();
-    }
-
-    public toggleEditMode(): void {
-        this.isEditingClass = !this.isEditingClass;
-
-        // Actualizar el botón primario del diálogo actual
-        if (this.currentDialogRef && this.currentDialogRef.componentInstance) {
-            this.currentDialogRef.componentInstance.data.primaryButton = {
-                show: true,
-                text: this.isEditingClass ? 'Guardar cambios' : 'Borrar clase',
-                disabled: false,
-                loading: false
-            };
-        }
-    }
-
-    public addStudentToLoadedClass(student: Student): void {
-        if (!student) return;
-
-        // Verificar si el estudiante ya está en la lista
-        const exists = this.loadedClass.absentStudents.some((s) => s.id === student.id);
-        if (!exists) {
-            this.loadedClass.absentStudents.push({ ...student, justificado: false } as Student & { justificado: boolean });
-            // Actualizar ambas listas de estudiantes filtrados
-            this.filterStudents();
-        }
-        // Limpiar la selección
-        this.selectedStudent = null;
-    }
-
-    public removeStudentFromLoadedClass(student: Student & { justificado: boolean }): void {
-        this.loadedClass.absentStudents = this.loadedClass.absentStudents.filter((s) => s.id !== student.id);
-        // Actualizar ambas listas de estudiantes filtrados
-        this.filterStudents();
     }
 
     public addStudent(): void {
@@ -397,89 +280,15 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
         addStudentObservable.subscribe({
             next: (response: IResponse) => {
-                this.viewModel.loadStudents(this.idSubject);
                 this.notifyService.notify(response?.message || 'Alumno agregado correctamente', 'success-notify');
                 this.resetAddStudentModalState();
                 if (this.addStudentDialogRef) {
                     this.addStudentDialogRef.close();
                 }
+                this.loadAllData();
             },
             error: (err) => {
                 const message = err?.error?.message || 'Error al agregar el alumno';
-                this.notifyService.notify(message, 'error-notify');
-            }
-        });
-    }
-
-    public saveClassChanges(): void {
-        if (!this.selectedClassId) {
-            this.notifyService.notify('No hay clase seleccionada para editar', 'error-notify');
-            return;
-        }
-        const payload = {
-            classId: this.selectedClassId,
-            description: this.loadedClass.description,
-            absentStudents: this.loadedClass.absentStudents.map((s) => ({
-                id: s.id,
-                justificado: s.justificado
-            }))
-        };
-        this.viewModel.updateClass(payload).subscribe({
-            next: (res: IResponse) => {
-                this.notifyService.notify(res?.message || 'Clase actualizada correctamente', 'success-notify');
-                if (this.idSubject) {
-                    this.viewModel.loadClasses(this.idSubject);
-                }
-                this.isEditingClass = false;
-                if (this.currentDialogRef) {
-                    this.currentDialogRef.close();
-                }
-            },
-            error: (err) => {
-                const message = err?.error?.message || 'Error al actualizar la clase';
-                this.notifyService.notify(message, 'error-notify');
-            }
-        });
-    }
-
-    public confirmDeleteClass(): void {
-        // Mostrar diálogo de confirmación para borrar la clase
-        const confirmDialogRef = this.openDialogService.openDialog({
-            title: 'Confirmar eliminación',
-            text: '¿Estás seguro de que quieres borrar esta clase? Esta acción no se puede deshacer.',
-            secondaryButtonText: 'Cancelar',
-            primaryButton: {
-                show: true,
-                text: 'Borrar',
-                disabled: false,
-                loading: false
-            }
-        });
-        confirmDialogRef.afterClosed().subscribe((result: string | undefined) => {
-            if (result === 'PRIMARY') {
-                this.deleteClass();
-            }
-        });
-    }
-
-    public deleteClass(): void {
-        if (!this.selectedClassId) {
-            this.notifyService.notify('No se encontró la clase a borrar', 'error-notify');
-            return;
-        }
-        this.viewModel.deleteClass(this.selectedClassId).subscribe({
-            next: () => {
-                this.notifyService.notify('Clase eliminada correctamente', 'success-notify');
-                if (this.idSubject) {
-                    this.viewModel.loadClasses(this.idSubject);
-                }
-                this.selectedClassId = null;
-                if (this.currentDialogRef) {
-                    this.currentDialogRef.close();
-                }
-            },
-            error: (err) => {
-                const message = err?.error?.message || 'Error al borrar la clase';
                 this.notifyService.notify(message, 'error-notify');
             }
         });
@@ -810,5 +619,27 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         });
+    }
+
+    trackByGradeId(_index: number, grade: { id: string }) {
+        return grade.id;
+    }
+
+    public getStudentGradeValue(student: Student, gradeId: string): string | number {
+        const grade = this.grades.find((g) => g.id === gradeId);
+        if (!grade) return '-';
+        const studentsGrades = grade.studentsGrades || [];
+        const studentGrade = studentsGrades.find((sg: any) => String(sg.student.id) === String(student.id));
+        if (!studentGrade || studentGrade.value === null || studentGrade.value === undefined) return '-';
+        return studentGrade.value;
+    }
+
+    public getStudentAttendance(student: Student): string {
+        const totalClasses = this.specialDates.length;
+        if (totalClasses === 0) return '0';
+
+        const absencesCount = (student.absences || []).length;
+        const attendancePercentage = ((totalClasses - absencesCount) / totalClasses) * 100;
+        return Math.round(attendancePercentage).toString();
     }
 }

@@ -1,0 +1,32 @@
+<div class="actions-cell">
+    <button
+        mat-icon-button
+        (click)="editStudent(student); $event.stopPropagation()"
+        class="action-button edit-button"
+        title="Editar estudiante"
+    >
+        <mat-icon>edit</mat-icon>
+    </button>
+    <button
+        mat-icon-button
+        (click)="openDeleteStudentModal(student); $event.stopPropagation()"
+        class="action-button delete-button"
+        title="Eliminar estudiante de la materia"
+    >
+        <mat-icon>delete</mat-icon>
+    </button>
+</div>
+
+<ng-template #deleteStudentModal>
+    <div class="modal-delete-student">
+        <p class="delete-modal-message">
+            ¿Estás seguro de que deseas eliminar a
+            <strong>{{ studentToDelete?.firstName }} {{ studentToDelete?.lastName }}</strong>
+            de la materia?
+        </p>
+        <div class="delete-modal-warning">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <span>Se eliminarán todas sus notas y asistencias asociadas a esta materia. Esta acción no se puede deshacer.</span>
+        </div>
+    </div>
+</ng-template>

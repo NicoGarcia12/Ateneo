@@ -12,7 +12,7 @@
 2. **Registrar y consultar clases y asistencia:** Agregar clases, editar detalles, registrar asistencia y consultar el historial de clases y asistencias.
 3. **Cargar, editar y consultar calificaciones:** Registrar notas por estudiante y materia, editar o eliminar calificaciones y visualizar el historial académico.
 4. **Generar y enviar reportes académicos:** Obtener resúmenes y reportes detallados por materia y por estudiante, listos para imprimir o compartir por email, con validación automática de destinatarios.
-5. **Administrar su perfil y autenticación:** Registrarse, iniciar sesión y gestionar sus datos como profesor, accediendo a todas las funcionalidades desde una interfaz web moderna.
+5. **Administrar su perfil y autenticación:** Registrarse, iniciar sesión, recuperar contraseña mediante código de verificación enviado por email, y gestionar sus datos como profesor, accediendo a todas las funcionalidades desde una interfaz web moderna.
 
 ---
 
@@ -22,9 +22,10 @@
 2. **Backend en Express + Prisma:** API REST robusta y segura, con rutas para todas las entidades y operaciones CRUD, gestión de base de datos relacional y generación dinámica de reportes académicos en múltiples formatos.
 3. **ORM Prisma:** Migraciones, generación de cliente, administración y sincronización de esquema de base de datos mediante scripts npm.
 4. **Autenticación JWT:** Seguridad en el acceso y gestión de sesiones para profesores.
-5. **Integración con Gmail/SMTP:** Envío transaccional de reportes académicos por email con adjuntos PDF utilizando Nodemailer y Gmail. Soporta envío individual a estudiantes o al profesor.
-6. **Generación de PDFs:** Sistema de generación automática de reportes académicos con diseño profesional, incluyendo notas, asistencias y datos del estudiante.
-7. **Arquitectura escalable:** Separación clara de responsabilidades (controllers, handlers, helpers), estructura organizada en capas y posibilidad de extender funcionalidades fácilmente.
+5. **Recuperación de contraseña:** Sistema de recuperación segura mediante código de verificación de 6 dígitos enviado por email, con validación de expiración (15 minutos).
+6. **Integración con Gmail/SMTP:** Envío transaccional de reportes académicos y códigos de verificación por email con adjuntos PDF utilizando Nodemailer y Gmail. Soporta envío individual a estudiantes o al profesor.
+7. **Generación de PDFs:** Sistema de generación automática de reportes académicos con diseño profesional, incluyendo notas, asistencias y datos del estudiante.
+8. **Arquitectura escalable:** Separación clara de responsabilidades (controllers, handlers, helpers), estructura organizada en capas y posibilidad de extender funcionalidades fácilmente.
 
 
 ---

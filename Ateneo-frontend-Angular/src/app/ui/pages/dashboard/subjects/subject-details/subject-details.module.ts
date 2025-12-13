@@ -16,6 +16,7 @@ import { AddGradeButtonModule } from 'src/app/ui/pages/dashboard/subjects/subjec
 import { MatChipsModule } from '@angular/material/chips';
 import { AcademicSummaryPanelModule } from './academic-summary-panel/academic-summary-panel.module';
 import { ClassDetailsPanelModule } from './class-details-panel/class-details-panel.module';
+import { ActionsTableStudentsComponent } from './components/actions-table-students/actions-table-students.component';
 
 @NgModule({
     imports: [
@@ -37,6 +38,6 @@ import { ClassDetailsPanelModule } from './class-details-panel/class-details-pan
         ClassDetailsPanelModule
     ],
     exports: [SubjectDetailsComponent],
-    declarations: [SubjectDetailsComponent]
+    declarations: [SubjectDetailsComponent, ActionsTableStudentsComponent]
 })
 export class SubjectDetailsModule {}

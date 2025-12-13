@@ -13,28 +13,15 @@
 .students-table-container {
     grid-column: 1 / -1;
     grid-row: 1 / 2;
-    max-height: 15rem;
-    overflow: hidden;
+    max-height: 20rem;
+    overflow: auto;
     border-radius: 8px;
     border: 2px solid #ddd;
-    width: fit-content;
-    justify-self: center;
-    max-width: 100%;
-}
-
-.students-table-container .table-wrapper {
-    max-height: 15rem;
-    max-width: 100%;
-    overflow-y: auto;
-    overflow-x: auto;
-    border-radius: 8px;
     width: 100%;
+    max-width: 100%;
 
     &::-webkit-scrollbar {
         width: 8px;
-    }
-
-    &::-webkit-scrollbar:horizontal {
         height: 8px;
     }
 
@@ -53,13 +40,16 @@
     }
 }
 
+.students-table-container .table-wrapper {
+    width: 100%;
+    min-width: fit-content;
+}
+
 .students-table-container .students-table {
-    width: max-content;
-    min-width: 100%;
+    width: 100%;
+    min-width: 800px;
     border-radius: 8px;
     overflow: hidden;
-    min-width: 800px;
-    width: 100%;
 
     ::ng-deep .mat-mdc-table {
         width: max-content !important;
@@ -318,136 +308,6 @@
     padding-top: 40px;
 }
 
-.button-toggle-modal-libre {
-    min-height: 50px;
-}
-
-.modal-clase-cargada {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-.edit-students-section {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    margin-bottom: 16px;
-}
-
-.inasistencias-table {
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 24px;
-    overflow: hidden;
-}
-
-.inasistencias-header .inasistencias-nombre,
-.inasistencias-header .inasistencias-justificado {
-    font-weight: bold;
-}
-
-.inasistencias-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    gap: 8px;
-}
-
-.inasistencias-nombre {
-    flex: 1 1 auto;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 1rem;
-}
-
-.inasistencias-justificado {
-    flex: 0 0 auto;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    min-width: 36px;
-}
-
-.inasistencias-actions {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 32px;
-    max-width: 40px;
-
-    mat-icon {
-        cursor: pointer;
-        color: #000;
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-    }
-}
-
-.no-inasistencias {
-    text-align: center;
-    color: $grey-color;
-    font-style: normal;
-    padding: 20px 0;
-}
-
-.modal-libre-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.inputs-column {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.full-width {
-    width: 100%;
-}
-
-.class-description-textarea {
-    resize: none;
-}
-
-.class-panel-expanded {
-    grid-column: 1 / 6;
-    grid-row: 2 / 3;
-    width: 100%;
-}
-
-.academic-summary-panel-expanded {
-    grid-column: 1 / 6;
-    grid-row: 2 / 3;
-    width: 100%;
-}
-
-.char-counter {
-    text-align: right;
-    font-size: 12px;
-    color: $grey-color;
-    margin-top: 2px;
-}
 
 .modal-add-student {
     display: flex;
