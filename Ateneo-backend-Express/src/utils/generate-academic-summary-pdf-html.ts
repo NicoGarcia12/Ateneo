@@ -170,7 +170,7 @@ function generateGradeRows(student: any): string {
 
 // Función para generar el bloque de un estudiante
 function generateStudentBlock(student: any): string {
-	const attendancePercentage = student.attendancePercentage ?? 0;
+    const attendancePercentage = student.attendancePercentage ?? 0;
 
     return `
 		<div class="student-block">

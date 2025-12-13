@@ -64,7 +64,7 @@ export const sendEmailToStudentsHelper = async (params: SendEmailToStudentsParam
                                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                             }
                             .email-wrapper-header {
-                                background-color: #4CAF50;
+                                background-color: #355456; /* primary del producto */
                                 color: white;
                                 padding: 30px;
                                 text-align: center;
@@ -90,9 +90,6 @@ export const sendEmailToStudentsHelper = async (params: SendEmailToStudentsParam
                             .email-wrapper-content p.spacing {
                                 margin: 0 0 20px 0;
                             }
-                            .email-wrapper-content p.greeting {
-                                margin: 20px 0 0 0;
-                            }
                             .info-box {
                                 background-color: #f9f9f9;
                                 padding: 15px;
@@ -117,7 +114,7 @@ export const sendEmailToStudentsHelper = async (params: SendEmailToStudentsParam
                             <div class="email-wrapper-content">
                                 <p>Estimado/a <strong>${studentName}</strong>,</p>
                                 <p class="spacing">
-                                    A continuación se detalla tu resumen académico para la materia <strong>${subject.name}</strong>.
+                                    A continuación se detalla su resumen académico para la materia <strong>${subject.name}</strong>.
                                 </p>
                                 <div class="info-box">
                                     <p><strong>Profesor:</strong> ${subject.professor.firstName} ${subject.professor.lastName}</p>
@@ -125,7 +122,11 @@ export const sendEmailToStudentsHelper = async (params: SendEmailToStudentsParam
                                     <p><strong>Año académico:</strong> ${subject.academicYear}</p>
                                 </div>
                                 ${generateEmailHTML({ subject, students: [student] })}
-                                <p class="greeting">Saludos cordiales</p>
+                                <div>
+                                    Saludos cordiales,<br>
+                                    Prof. ${subject.professor.firstName} ${subject.professor.lastName}<br>
+                                    ${subject.name}
+                                </div>
                             </div>
                         </div>
                     </body>

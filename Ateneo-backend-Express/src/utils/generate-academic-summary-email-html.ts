@@ -51,9 +51,9 @@ function generateGradeRows(student: any): string {
             const bgColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';
             return `
             <tr style="background-color:${bgColor};">
-                <td style="padding:10px;border:1px solid #ddd;text-align:left;">${grade.name || ''}</td>
-                <td style="padding:10px;border:1px solid #ddd;text-align:center;font-weight:bold;">${nota}</td>
-                <td style="padding:10px;border:1px solid #ddd;text-align:center;">${formattedDate}</td>
+                <td style="padding:10px;border:1px solid #53777a;text-align:left;">${grade.name || ''}</td>
+                <td style="padding:10px;border:1px solid #53777a;text-align:center;font-weight:bold;">${nota}</td>
+                <td style="padding:10px;border:1px solid #53777a;text-align:center;">${formattedDate}</td>
             </tr>
         `;
         })
@@ -65,7 +65,7 @@ function generateStudentBlock(student: any): string {
     const attendancePercentage = student.attendancePercentage ?? 0;
 
     return `
-        <div style="margin-bottom:30px;padding:20px;background-color:#f5f5f5;border-radius:8px;border-left:4px solid #4CAF50;">
+    <div style="margin-bottom:30px;padding:20px;background-color:#f5f5f5;border-radius:8px;border-left:4px solid #53777a;">
             <div style="text-align:center;margin-bottom:15px;">
                 <h3 style="margin:0 0 10px 0;color:#333;font-size:16px;">
                     ${student.lastName}, ${student.firstName}
@@ -79,10 +79,10 @@ function generateStudentBlock(student: any): string {
             </div>
             <table style="width:100%;border-collapse:collapse;background-color:white;border-radius:4px;overflow:hidden;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
                 <thead>
-                    <tr style="background-color:#4CAF50;color:white;">
-                        <th style="padding:12px;font-size:13px;border:1px solid #4CAF50;text-align:left;">Evaluación</th>
-                        <th style="padding:12px;font-size:13px;border:1px solid #4CAF50;text-align:center;">Nota</th>
-                        <th style="padding:12px;font-size:13px;border:1px solid #4CAF50;text-align:center;">Fecha</th>
+                    <tr style="background-color:#53777a;color:white;">
+                        <th style="padding:12px;font-size:13px;border:1px solid #53777a;text-align:left;">Evaluación</th>
+                        <th style="padding:12px;font-size:13px;border:1px solid #53777a;text-align:center;">Nota</th>
+                        <th style="padding:12px;font-size:13px;border:1px solid #53777a;text-align:center;">Fecha</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,14 +105,14 @@ export function generateEmailHTML(params: AcademicSummaryEmailHTMLParams): strin
 
     return `
         <div style="max-width:800px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;">
-            <div style="background-color:#4CAF50;color:white;padding:20px;border-radius:8px 8px 0 0;text-align:center;">
+            <div style="background-color:#355456;color:white;padding:20px;border-radius:8px 8px 0 0;text-align:center;">
                 <h1 style="margin:0;font-size:24px;">Reporte Académico</h1>
                 <h2 style="margin:10px 0 0 0;font-size:18px;font-weight:normal;">${subject.name}</h2>
             </div>
-            <div style="background-color:white;padding:20px;border:1px solid #ddd;border-top:none;">
+            <div style="background-color:white;padding:20px;border:1px solid #355456;border-top:none;">
                 ${generateStudentBlocks(students)}
             </div>
-            <div style="background-color:#f9f9f9;padding:15px;border-radius:0 0 8px 8px;text-align:center;color:#666;font-size:12px;border:1px solid #ddd;border-top:none;">
+            <div style="background-color:#f9f9f9;padding:15px;border-radius:0 0 8px 8px;text-align:center;color:#666;font-size:12px;border:1px solid #355456;border-top:none;">
                 <p style="margin:0;font-style:italic;">Generado el ${new Date().toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             </div>
         </div>

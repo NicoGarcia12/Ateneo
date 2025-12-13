@@ -50,7 +50,7 @@ export const sendEmailToProfessorHelper = async (params: SendEmailToProfessorPar
                             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                         }
                         .email-wrapper-header {
-                            background-color: #4CAF50;
+                            background-color: #355456;
                             color: white;
                             padding: 30px;
                             text-align: center;
@@ -107,7 +107,6 @@ export const sendEmailToProfessorHelper = async (params: SendEmailToProfessorPar
                             <p>${subject.name}</p>
                         </div>
                         <div class="email-wrapper-content">
-                            <p>Estimado/a <strong>${professorName}</strong>,</p>
                             <p class="spacing">
                                 A continuación se detalla el resumen académico de <strong>${studentsNames}</strong> para la materia <strong>${subject.name}</strong>.
                             </p>
@@ -117,7 +116,6 @@ export const sendEmailToProfessorHelper = async (params: SendEmailToProfessorPar
                                 <p><strong>Certificación final:</strong> ${subject.degree}</p>
                             </div>
                             ${generateEmailHTML({ subject, students })}
-                            <p class="greeting">Saludos cordiales</p>
                         </div>
                     </div>
                 </body>
