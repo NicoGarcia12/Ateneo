@@ -1,6 +1,5 @@
 @import '../../../../../../../../assets/styles/colors.scss';
 
-
 ::ng-deep .actions-cell {
     display: flex;
     gap: 4px;
@@ -8,10 +7,12 @@
     justify-content: center;
 }
 
-::ng-deep .edit-button > .mat-icon, ::ng-deep .edit-button mat-icon {
+::ng-deep .edit-button > .mat-icon,
+::ng-deep .edit-button mat-icon {
     color: $grey-color !important;
 }
-::ng-deep .delete-button > .mat-icon, ::ng-deep .delete-button mat-icon {
+::ng-deep .delete-button > .mat-icon,
+::ng-deep .delete-button mat-icon {
     color: #d32f2f !important;
 }
 

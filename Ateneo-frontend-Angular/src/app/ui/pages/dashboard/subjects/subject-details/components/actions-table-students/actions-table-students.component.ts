@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, AfterVi
 import { Student } from '../../../../../../../domain/entities/student';
 import { OpenDialogService } from '../../../../../../shared/services/open-dialog.service';
 import { NotifyService } from '../../../../../../shared/services/notify.service';
-import { SubjectDetailsViewModelService } from '../../subject-details-view-model.service';
 import { IResponse } from 'src/app/domain/use-cases/use-case.interface';
+import { ActionsTableStudentsViewModelService } from './actions-table-students-view-model.service';
 
 @Component({
     selector: 'app-actions-table-students',
@@ -22,7 +22,7 @@ export class ActionsTableStudentsComponent implements AfterViewInit {
     @ViewChild('deleteStudentModal', { static: false }) deleteStudentModalTemplate!: TemplateRef<any>;
 
     constructor(
-        private viewModel: SubjectDetailsViewModelService,
+        private viewModel: ActionsTableStudentsViewModelService,
         private openDialogService: OpenDialogService,
         private notifyService: NotifyService
     ) {}

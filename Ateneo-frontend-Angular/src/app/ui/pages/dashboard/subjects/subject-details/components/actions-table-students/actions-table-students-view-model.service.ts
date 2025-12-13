@@ -5,11 +5,9 @@ import { IResponse } from 'src/app/domain/use-cases/use-case.interface';
 
 @Injectable({ providedIn: 'root' })
 export class ActionsTableStudentsViewModelService {
-  constructor(
-    private removeStudentFromSubjectUseCase: RemoveStudentFromSubjectUseCase,
-  ) {}
+    constructor(private removeStudentFromSubjectUseCase: RemoveStudentFromSubjectUseCase) {}
 
-  removeStudentFromSubject(subjectId: string, studentId: string): Observable<IResponse> {
-    return this.removeStudentFromSubjectUseCase.execute({ subjectId, studentId });
-  }
+    removeStudentFromSubject(subjectId: string, studentId: string): Observable<IResponse> {
+        return this.removeStudentFromSubjectUseCase.execute({ subjectId, studentId });
+    }
 }

@@ -21,7 +21,7 @@ export interface AddStudentGradeResponse {
 })
 export class AddStudentGradeUseCase implements useCase<IResponse, IAddStudentGradeParams> {
     private readonly BASE_URL = buildApiUrl('grades');
-    private urlAddStudentGrade!: string
+    private urlAddStudentGrade!: string;
 
     constructor(private httpClient: HttpClient) {}
 
