@@ -13,11 +13,13 @@ export interface IGetClassesBySubjectParams {
     providedIn: 'root'
 })
 export class GetClassesBySubjectUseCase implements useCase<Array<Class>, IGetClassesBySubjectParams> {
-    private BASE_URL = buildApiUrl('classes');
+    private readonly BASE_URL = buildApiUrl('classes');
+    private urlBySubject!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetClassesBySubjectParams): Observable<Class[]> {
-        return this.httpClient.get<Class[]>(`${this.BASE_URL}/by-subject/${params.subjectId}`);
+        this.urlBySubject = `${this.BASE_URL}/by-subject/${params.subjectId}`;
+        return this.httpClient.get<Class[]>(this.urlBySubject);
     }
 }

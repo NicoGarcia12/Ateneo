@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { buildApiUrl } from '../../../utils/api';
 
 export interface IGenerateAcademicSummaryPDFParams {
     subjectId: string;
@@ -15,11 +15,14 @@ export interface IGenerateAcademicSummaryPDFResponse {
 
 @Injectable({ providedIn: 'root' })
 export class GenerateAcademicSummaryPDFUseCase {
+    private readonly BASE_URL = buildApiUrl('subjects');
+    private url!: string;
+
     constructor(private http: HttpClient) {}
 
     execute(params: IGenerateAcademicSummaryPDFParams): Observable<IGenerateAcademicSummaryPDFResponse> {
         const { subjectId, studentIds } = params;
-        const url = `${environment.apiBaseUrl}/subjects/${subjectId}/generate-academic-summary-pdf`;
-        return this.http.post<IGenerateAcademicSummaryPDFResponse>(url, { studentIds });
+        this.url = `${this.BASE_URL}/${subjectId}/generate-academic-summary-pdf`;
+        return this.http.post<IGenerateAcademicSummaryPDFResponse>(this.url, { studentIds });
     }
 }

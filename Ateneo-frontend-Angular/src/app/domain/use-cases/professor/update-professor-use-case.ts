@@ -16,12 +16,14 @@ export interface IUpdateProfessorParams {
     providedIn: 'root'
 })
 export class UpdateProfessorUseCase implements useCase<IResponse, IUpdateProfessorParams> {
-    private BASE_URL = buildApiUrl('professors');
+    private readonly BASE_URL = buildApiUrl('professors');
+    private urlUpdate!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IUpdateProfessorParams): Observable<IResponse> {
         const { professorId, ...updateData } = params;
-        return this.httpClient.put<IResponse>(`${this.BASE_URL}/${professorId}`, updateData);
+        this.urlUpdate = `${this.BASE_URL}/${professorId}`;
+        return this.httpClient.put<IResponse>(this.urlUpdate, updateData);
     }
 }

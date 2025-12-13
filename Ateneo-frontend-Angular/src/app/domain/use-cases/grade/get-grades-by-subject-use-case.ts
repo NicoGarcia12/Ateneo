@@ -13,11 +13,13 @@ export interface IGetGradesBySubjectParams {
     providedIn: 'root'
 })
 export class GetGradesBySubjectUseCase implements useCase<Array<Grade>, IGetGradesBySubjectParams> {
-    private BASE_URL = buildApiUrl('grades');
+    private readonly BASE_URL = buildApiUrl('grades');
+    private urlBySubject!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetGradesBySubjectParams): Observable<Array<Grade>> {
-        return this.httpClient.get<Array<Grade>>(`${this.BASE_URL}/by-subject/${params.subjectId}`);
+        this.urlBySubject = `${this.BASE_URL}/by-subject/${params.subjectId}`;
+        return this.httpClient.get<Array<Grade>>(this.urlBySubject);
     }
 }

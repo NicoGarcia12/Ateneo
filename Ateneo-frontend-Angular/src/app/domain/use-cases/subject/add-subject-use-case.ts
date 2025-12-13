@@ -11,17 +11,18 @@ export interface IAddSubjectParams {}
     providedIn: 'root'
 })
 export class AddSubjectUseCase implements useCase<IResponse, IAddSubjectParams> {
-    private BASE_URL = buildApiUrl('subjects');
+    private readonly BASE_URL = buildApiUrl('subjects');
+    private url!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IAddSubjectParams): Observable<IResponse> {
         const { subject, idProfessor } = params as any;
-        let url = `${this.BASE_URL}/add/`;
+        this.url = `${this.BASE_URL}/add/`;
         if (idProfessor) {
-            url += `?professorId=${encodeURIComponent(idProfessor)}`;
+            this.url += `?professorId=${encodeURIComponent(idProfessor)}`;
         }
-        return this.httpClient.post<IResponse>(url, {
+        return this.httpClient.post<IResponse>(this.url, {
             ...subject
         });
     }

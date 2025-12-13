@@ -14,11 +14,13 @@ export interface IUpdateClassParams {
     providedIn: 'root'
 })
 export class UpdateClassUseCase implements useCase<IResponse, IUpdateClassParams> {
-    private BASE_URL = buildApiUrl('classes');
+    private readonly BASE_URL = buildApiUrl('classes');
+    private urlUpdate!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IUpdateClassParams): Observable<IResponse> {
-        return this.httpClient.put<IResponse>(`${this.BASE_URL}/${params.classId}`, params);
+        this.urlUpdate = `${this.BASE_URL}/${params.classId}`;
+        return this.httpClient.put<IResponse>(this.urlUpdate, params);
     }
 }

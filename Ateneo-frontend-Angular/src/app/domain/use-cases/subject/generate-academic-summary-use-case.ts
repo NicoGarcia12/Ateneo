@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { buildApiUrl } from '../../../utils/api';
 
 export interface IGenerateAcademicSummaryParams {
     subjectId: string;
@@ -21,21 +21,24 @@ export interface IGenerateAcademicSummaryResponse {
 
 @Injectable({ providedIn: 'root' })
 export class GenerateAcademicSummaryUseCase {
+    private readonly BASE_URL = buildApiUrl('subjects');
+    private url!: string;
+
     constructor(private http: HttpClient) {}
 
     execute(params: IGenerateAcademicSummaryParams): Observable<IGenerateAcademicSummaryResponse> {
         const { subjectId, studentIds, email, professor } = params;
-        let url = `${environment.apiBaseUrl}/subjects/${subjectId}/generate-academic-summary`;
+        this.url = `${this.BASE_URL}/${subjectId}/generate-academic-summary`;
         let body: any = { studentIds };
 
         if (email === true) {
-            url = `${environment.apiBaseUrl}/subjects/${subjectId}/send-academic-summary-email`;
+            this.url = `${this.BASE_URL}/${subjectId}/send-academic-summary-email`;
             body = { studentIds, professor };
         } else if (params.pdf === true) {
-            url = `${environment.apiBaseUrl}/subjects/${subjectId}/generate-academic-summary-pdf`;
+            this.url = `${this.BASE_URL}/${subjectId}/generate-academic-summary-pdf`;
             body = { studentIds };
         }
 
-        return this.http.post<IGenerateAcademicSummaryResponse>(url, body);
+        return this.http.post<IGenerateAcademicSummaryResponse>(this.url, body);
     }
 }

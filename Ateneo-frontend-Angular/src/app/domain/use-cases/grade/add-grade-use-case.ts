@@ -18,11 +18,12 @@ export interface IAddGradeParams {
     providedIn: 'root'
 })
 export class AddGradeUseCase implements useCase<IResponse, IAddGradeParams> {
-    private BASE_URL = buildApiUrl('grades');
+    private readonly BASE_URL = buildApiUrl('grades');
+    private urlAdd = `${this.BASE_URL}/add`;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IAddGradeParams): Observable<IResponse> {
-        return this.httpClient.post<IResponse>(`${this.BASE_URL}/add`, params);
+        return this.httpClient.post<IResponse>(this.urlAdd, params);
     }
 }

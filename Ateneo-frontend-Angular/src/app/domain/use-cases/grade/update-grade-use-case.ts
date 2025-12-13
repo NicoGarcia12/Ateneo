@@ -17,12 +17,14 @@ export interface IUpdateGradeParams {
     providedIn: 'root'
 })
 export class UpdateGradeUseCase implements useCase<IResponse, IUpdateGradeParams> {
-    private BASE_URL = buildApiUrl('grades');
+    private readonly BASE_URL = buildApiUrl('grades');
+    private urlUpdate!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IUpdateGradeParams): Observable<IResponse> {
         const { gradeId, ...updateData } = params;
-        return this.httpClient.put<IResponse>(`${this.BASE_URL}/${gradeId}`, updateData);
+        this.urlUpdate = `${this.BASE_URL}/${gradeId}`;
+        return this.httpClient.put<IResponse>(this.urlUpdate, updateData);
     }
 }

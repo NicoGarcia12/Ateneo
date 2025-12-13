@@ -13,11 +13,12 @@ interface IVerifyResetCodeUseCase {
     providedIn: 'root'
 })
 export class VerifyResetCodeUseCase implements useCase<IResponse, IVerifyResetCodeUseCase> {
-    private apiUrl = buildApiUrl('professors', 'verify-reset-code');
+    private readonly BASE_URL = buildApiUrl('professors');
+    private urlVerifyResetCode = `${this.BASE_URL}/verify-reset-code`;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IVerifyResetCodeUseCase): Observable<IResponse> {
-        return this.httpClient.post<IResponse>(this.apiUrl, params);
+        return this.httpClient.post<IResponse>(this.urlVerifyResetCode, params);
     }
 }
