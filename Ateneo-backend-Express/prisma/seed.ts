@@ -70,7 +70,7 @@ async function main() {
             firstName: 'Nicolás',
             lastName: 'Lopez',
             dni: 10000002n,
-            email: 'garcianicolas1298gmail.com',
+            email: 'garcianicolas1298@gmail.com',
             phone: '2604621425'
         }
     });

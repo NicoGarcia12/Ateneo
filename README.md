@@ -22,7 +22,7 @@
 2. **Backend en Express + Prisma:** API REST robusta y segura, con rutas para todas las entidades y operaciones CRUD, gestión de base de datos relacional y generación dinámica de reportes académicos en múltiples formatos.
 3. **ORM Prisma:** Migraciones, generación de cliente, administración y sincronización de esquema de base de datos mediante scripts npm.
 4. **Autenticación JWT:** Seguridad en el acceso y gestión de sesiones para profesores.
-5. **Integración con Brevo:** Envío transaccional de reportes académicos por email con adjuntos PDF. Plan gratuito incluye hasta 300 emails diarios. Soporta envío individual a estudiantes o al profesor.
+5. **Integración con Gmail/SMTP:** Envío transaccional de reportes académicos por email con adjuntos PDF utilizando Nodemailer y Gmail. Soporta envío individual a estudiantes o al profesor.
 6. **Generación de PDFs:** Sistema de generación automática de reportes académicos con diseño profesional, incluyendo notas, asistencias y datos del estudiante.
 7. **Arquitectura escalable:** Separación clara de responsabilidades (controllers, handlers, helpers), estructura organizada en capas y posibilidad de extender funcionalidades fácilmente.
 
@@ -72,13 +72,16 @@ cd Ateneo
      URL_BASE=<url_del_frontend>
      DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
      JWT_SECRET_KEY=<clave_secreta_para_tokens>
-     BREVO_API_KEY=<tu_api_key_de_brevo>
-     BREVO_SENDER_EMAIL=<email_del_remitente>
-     BREVO_SENDER_NAME=Sistema Ateneo
+     SMTP_HOST=smtp.gmail.com
+     SMTP_PORT=587
+     SMTP_SECURE=false
+     SMTP_USER=<tu_correo@gmail.com>
+     SMTP_PASS=<tu_contraseña_de_aplicacion_sin_espacios>
+     SMTP_SENDER_NAME=Sistema Ateneo
      ```
    - Reemplaza los valores entre <> por los datos reales de tu entorno.
    - **Todas las variables son necesarias para que el sistema funcione correctamente.**
-   - Las variables de Brevo son opcionales solo si no usarás la funcionalidad de envío de emails. Si deseas enviar reportes por correo, debes configurarlas.
+   - Las variables de SMTP son opcionales solo si no usarás la funcionalidad de envío de emails. Si deseas enviar reportes por correo con Gmail, debes configurarlas.
 
 
     #### 🔗 ¿Qué motor de base de datos puedo usar?

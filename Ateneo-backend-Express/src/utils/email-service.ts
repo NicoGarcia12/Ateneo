@@ -1,9 +1,6 @@
-import * as brevo from '@getbrevo/brevo';
+import nodemailer from 'nodemailer';
 import * as fs from 'fs';
 import * as path from 'path';
-
-const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, process.env['BREVO_API_KEY'] || '');
 
 export interface SendEmailParams {
     to: { email: string; name: string }[];
@@ -27,15 +24,16 @@ export const getLogoBase64 = (): string => {
 export const sendEmail = async (params: SendEmailParams): Promise<void> => {
     const { to, subject, htmlContent, attachment } = params;
 
-    const sendSmtpEmail = new brevo.SendSmtpEmail();
-
-    sendSmtpEmail.sender = {
-        email: process.env['BREVO_SENDER_EMAIL'] || '',
-        name: process.env['BREVO_SENDER_NAME'] || 'Sistema Ateneo'
-    };
-
-    sendSmtpEmail.to = to;
-    sendSmtpEmail.subject = subject;
+    // Configurar transporter de nodemailer con Outlook
+    const transporter = nodemailer.createTransport({
+        host: process.env['SMTP_HOST'] || 'smtp.office365.com',
+        port: Number(process.env['SMTP_PORT']) || 587,
+        secure: process.env['SMTP_SECURE'] === 'true',
+        auth: {
+            user: process.env['SMTP_USER'] || '',
+            pass: process.env['SMTP_PASS'] || ''
+        }
+    });
 
     // Reemplazar el CID del logo con data URL en base64
     const logoBase64 = getLogoBase64();
@@ -43,20 +41,30 @@ export const sendEmail = async (params: SendEmailParams): Promise<void> => {
         ? htmlContent.replace(/src="cid:ateneo-logo"/g, `src="data:image/png;base64,${logoBase64}"`)
         : htmlContent;
 
-    sendSmtpEmail.htmlContent = htmlWithEmbeddedLogo;
+    // Preparar los destinatarios en formato string separado por comas
+    const recipients = to.map((recipient) => `"${recipient.name}" <${recipient.email}>`).join(', ');
 
-    if (attachment) {
-        sendSmtpEmail.attachment = [
-            {
-                content: attachment.content,
-                name: attachment.name
-            }
-        ];
-    }
+    // Preparar el adjunto si existe
+    const attachments = attachment
+        ? [
+              {
+                  filename: attachment.name,
+                  content: Buffer.from(attachment.content, 'base64'),
+                  contentType: 'application/pdf'
+              }
+          ]
+        : [];
 
     try {
-        await apiInstance.sendTransacEmail(sendSmtpEmail);
+        await transporter.sendMail({
+            from: `"${process.env['SMTP_SENDER_NAME'] || 'Sistema Ateneo'}" <${process.env['SMTP_USER']}>`,
+            to: recipients,
+            subject: subject,
+            html: htmlWithEmbeddedLogo,
+            attachments: attachments
+        });
     } catch (error) {
+        console.error('Error al enviar email con Nodemailer:', error);
         throw new Error('No se pudo enviar el email');
     }
 };

@@ -12,8 +12,8 @@ export const SendAcademicSummaryEmailController = async (params: SendAcademicSum
     const { subjectId, studentIds, professor } = params;
 
     // Validar variables de entorno
-    if (!process.env['BREVO_API_KEY'] || !process.env['BREVO_SENDER_EMAIL']) {
-        throw new Error('Las variables de entorno BREVO_API_KEY y BREVO_SENDER_EMAIL deben estar configuradas');
+    if (!process.env['SMTP_USER'] || !process.env['SMTP_PASS']) {
+        throw new Error('Las variables de entorno SMTP_USER y SMTP_PASS deben estar configuradas');
     }
 
     // Generar datos del resumen académico
