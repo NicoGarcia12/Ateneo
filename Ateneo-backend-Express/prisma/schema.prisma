@@ -8,14 +8,15 @@ datasource db {
 }
 
 model Professor {
-  id             String    @id
-  firstName      String
-  lastName       String
-  email          String    @unique
-  password       String
-  resetPassword  DateTime?
-  emailActivated Boolean
-  subjects       Subject[]
+  id                         String    @id
+  firstName                  String
+  lastName                   String
+  email                      String    @unique
+  password                   String
+  resetPasswordCode          String?
+  resetPasswordCodeCreatedAt DateTime?
+  emailActivated             Boolean
+  subjects                   Subject[]
 }
 
 model Student {

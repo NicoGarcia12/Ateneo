@@ -19,6 +19,10 @@
                 <mat-error *ngIf="hasError('password', 'required')"> La contraseña es requerida </mat-error>
             </mat-form-field>
 
+            <div class="forgot-password-link">
+                <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+            </div>
+
             <app-submit [withText]="!loadingLogin" [loading]="loadingLogin" [disabled]="loginForm.invalid"> Iniciar Sesión </app-submit>
         </form>
     </div>

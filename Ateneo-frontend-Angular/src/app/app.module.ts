@@ -13,6 +13,8 @@ import { DashboardModule } from './ui/pages/dashboard/dashboard.module';
 import { CommonModule } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ModalDialogModule } from './ui/components/modal-dialog/modal-dialog.module';
+import { ForgotPasswordModule } from './ui/pages/forgot-password/forgot-password.module';
+import { ResetPasswordModule } from './ui/pages/reset-password/reset-password.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -25,6 +27,8 @@ import { ModalDialogModule } from './ui/components/modal-dialog/modal-dialog.mod
         LoginModule,
         SignUpModule,
         DashboardModule,
+        ForgotPasswordModule,
+        ResetPasswordModule,
         AppRoutingModule,
         HttpClientModule,
         MatSnackBarModule,
