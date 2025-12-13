@@ -68,17 +68,6 @@ export function generateResetPasswordEmailHtml(professorName: string, resetCode:
                     color: #856404;
                     font-size: 14px;
                 }
-                .footer {
-                    text-align: center;
-                    padding: 20px;
-                    border-top: 1px solid #ddd;
-                    margin-top: 30px;
-                }
-                .footer p {
-                    color: #999;
-                    font-size: 12px;
-                    margin: 5px 0;
-                }
             </style>
         </head>
         <body>
@@ -101,10 +90,6 @@ export function generateResetPasswordEmailHtml(professorName: string, resetCode:
                     
                     <p>Saludos cordiales,<br>
                     <strong>El equipo de Ateneo</strong></p>
-                </div>
-                <div class="footer">
-                    <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
-                    <p>&copy; ${new Date().getFullYear()} Ateneo. Todos los derechos reservados.</p>
                 </div>
             </div>
         </body>
