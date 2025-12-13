@@ -13,11 +13,13 @@ export interface IGetProfessorParams {
     providedIn: 'root'
 })
 export class GetProfessorUseCase implements useCase<Professor, IGetProfessorParams> {
-    private BASE_URL = buildApiUrl('professors');
+    private readonly BASE_URL = buildApiUrl('professors');
+    private urlGetProfessor!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetProfessorParams): Observable<Professor> {
-        return this.httpClient.get<Professor>(`${this.BASE_URL}/${params.professorId}`);
+        this.urlGetProfessor = `${this.BASE_URL}/${params.professorId}`;
+        return this.httpClient.get<Professor>(this.urlGetProfessor);
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { buildApiUrl } from '../../../utils/api';
 
 export interface ISendAcademicSummaryEmailParams {
     subjectId: string;
@@ -17,11 +17,14 @@ export interface ISendAcademicSummaryEmailResponse {
 
 @Injectable({ providedIn: 'root' })
 export class SendAcademicSummaryEmailUseCase {
+    private readonly BASE_URL = buildApiUrl('subjects');
+    private url!: string;
+
     constructor(private http: HttpClient) {}
 
     execute(params: ISendAcademicSummaryEmailParams): Observable<ISendAcademicSummaryEmailResponse> {
         const { subjectId, studentIds, professor } = params;
-        const url = `${environment.apiBaseUrl}/subjects/${subjectId}/send-academic-summary-email`;
-        return this.http.post<ISendAcademicSummaryEmailResponse>(url, { studentIds, professor });
+        this.url = `${this.BASE_URL}/${subjectId}/send-academic-summary-email`;
+        return this.http.post<ISendAcademicSummaryEmailResponse>(this.url, { studentIds, professor });
     }
 }

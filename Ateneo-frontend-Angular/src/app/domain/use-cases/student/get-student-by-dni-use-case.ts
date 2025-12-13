@@ -13,11 +13,13 @@ export interface IGetStudentByDniParams {
     providedIn: 'root'
 })
 export class GetStudentByDniUseCase implements useCase<Student, IGetStudentByDniParams> {
-    private BASE_URL = buildApiUrl('students');
+    private readonly BASE_URL = buildApiUrl('students');
+    private urlByDni!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IGetStudentByDniParams): Observable<Student> {
-        return this.httpClient.get<Student>(`${this.BASE_URL}/by-dni/${params.dni}`);
+        this.urlByDni = `${this.BASE_URL}/by-dni/${params.dni}`;
+        return this.httpClient.get<Student>(this.urlByDni);
     }
 }

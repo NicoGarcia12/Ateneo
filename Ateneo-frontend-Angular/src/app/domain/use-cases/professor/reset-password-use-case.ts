@@ -14,11 +14,12 @@ interface IResetPasswordUseCase {
     providedIn: 'root'
 })
 export class ResetPasswordUseCase implements useCase<IResponse, IResetPasswordUseCase> {
-    private apiUrl = buildApiUrl('professors', 'reset-password');
+    private readonly BASE_URL = buildApiUrl('professors');
+    private urlResetPassword = `${this.BASE_URL}/reset-password`;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IResetPasswordUseCase): Observable<IResponse> {
-        return this.httpClient.post<IResponse>(this.apiUrl, params);
+        return this.httpClient.post<IResponse>(this.urlResetPassword, params);
     }
 }

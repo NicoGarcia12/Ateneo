@@ -10,11 +10,13 @@ export interface IDeleteClassParams {
 
 @Injectable({ providedIn: 'root' })
 export class DeleteClassUseCase implements useCase<{ message: string }, IDeleteClassParams> {
-    private BASE_URL = buildApiUrl('classes');
+    private readonly BASE_URL = buildApiUrl('classes');
+    private urlDelete!: string;
 
     constructor(private http: HttpClient) {}
 
     execute(params: IDeleteClassParams): Observable<{ message: string }> {
-        return this.http.delete<{ message: string }>(`${this.BASE_URL}/${params.id}`);
+        this.urlDelete = `${this.BASE_URL}/${params.id}`;
+        return this.http.delete<{ message: string }>(this.urlDelete);
     }
 }

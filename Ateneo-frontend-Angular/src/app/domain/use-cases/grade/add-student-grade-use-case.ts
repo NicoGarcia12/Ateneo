@@ -20,11 +20,13 @@ export interface AddStudentGradeResponse {
     providedIn: 'root'
 })
 export class AddStudentGradeUseCase implements useCase<IResponse, IAddStudentGradeParams> {
-    private BASE_URL = buildApiUrl('grades');
+    private readonly BASE_URL = buildApiUrl('grades');
+    private urlAddStudentGrade!: string;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IAddStudentGradeParams): Observable<IResponse> {
-        return this.httpClient.post<IResponse>(`${this.BASE_URL}/${params.gradeId}/student/${params.studentId}`, { value: params.value });
+        this.urlAddStudentGrade = `${this.BASE_URL}/${params.gradeId}/student/${params.studentId}`;
+        return this.httpClient.post<IResponse>(this.urlAddStudentGrade, { value: params.value });
     }
 }

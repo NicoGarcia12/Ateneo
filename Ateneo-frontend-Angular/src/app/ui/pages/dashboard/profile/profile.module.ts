@@ -4,7 +4,7 @@ import { ProfileComponent } from './profile.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { SubmitModule } from '../../components/submit/submit.module';
+import { SubmitModule } from '../../../components/submit/submit.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';

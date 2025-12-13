@@ -1,0 +1,61 @@
+@import '../../../../../../../../assets/styles/colors.scss';
+
+::ng-deep .actions-cell {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+::ng-deep .edit-button > .mat-icon,
+::ng-deep .edit-button mat-icon {
+    color: $grey-color !important;
+}
+::ng-deep .delete-button > .mat-icon,
+::ng-deep .delete-button mat-icon {
+    color: #d32f2f !important;
+}
+
+::ng-deep .modal-delete-student {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    gap: 1rem;
+
+    .delete-modal-message {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #555;
+        margin: 0;
+
+        strong {
+            color: #333;
+            font-weight: 600;
+        }
+    }
+
+    .delete-modal-warning {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background-color: #fff3cd;
+        border: 1px solid $terciary-color;
+        border-radius: 8px;
+        color: #856404;
+
+        .warning-icon {
+            color: $terciary-color;
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        span {
+            flex: 1;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+    }
+}

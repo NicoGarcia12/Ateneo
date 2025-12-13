@@ -16,11 +16,12 @@ export interface ISignUpUseCase {
     providedIn: 'root'
 })
 export class SignUpUseCase implements useCase<IResponse, ISignUpUseCase> {
-    private apiUrl = buildApiUrl('professors', 'sign-up');
+    private readonly BASE_URL = buildApiUrl('professors');
+    private urlSignUp = `${this.BASE_URL}/sign-up`;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: ISignUpUseCase): Observable<IResponse> {
-        return this.httpClient.post<IResponse>(this.apiUrl, params);
+        return this.httpClient.post<IResponse>(this.urlSignUp, params);
     }
 }

@@ -22,11 +22,12 @@ export interface ClassResponse {
     providedIn: 'root'
 })
 export class AddClassUseCase implements useCase<IResponse, IAddClassParams> {
-    private BASE_URL = buildApiUrl('classes');
+    private readonly BASE_URL = buildApiUrl('classes');
+    private urlAdd = `${this.BASE_URL}/add`;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: IAddClassParams): Observable<IResponse> {
-        return this.httpClient.post<IResponse>(`${this.BASE_URL}/add`, params);
+        return this.httpClient.post<IResponse>(this.urlAdd, params);
     }
 }

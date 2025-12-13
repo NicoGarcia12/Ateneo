@@ -18,7 +18,8 @@ export interface IAddStudentParams {
     providedIn: 'root'
 })
 export class AddStudentUseCase implements useCase<IResponse, IAddStudentParams> {
-    private BASE_URL = buildApiUrl('students');
+    private readonly BASE_URL = buildApiUrl('students');
+    private urlAdd = `${this.BASE_URL}/add`;
 
     constructor(private httpClient: HttpClient) {}
 
@@ -37,6 +38,6 @@ export class AddStudentUseCase implements useCase<IResponse, IAddStudentParams> 
             phone: params.phone
         };
 
-        return this.httpClient.post<IResponse>(`${this.BASE_URL}/add`, body, { params: httpParams });
+        return this.httpClient.post<IResponse>(this.urlAdd, body, { params: httpParams });
     }
 }

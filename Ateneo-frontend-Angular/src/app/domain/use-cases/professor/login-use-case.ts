@@ -14,11 +14,12 @@ interface ILoginUseCase {
     providedIn: 'root'
 })
 export class LoginUseCase implements useCase<IResponse, ILoginUseCase> {
-    private apiUrl = buildApiUrl('professors', 'login');
+    private readonly BASE_URL = buildApiUrl('professors');
+    private urlLogin = `${this.BASE_URL}/login`;
 
     constructor(private httpClient: HttpClient) {}
 
     execute(params: ILoginUseCase): Observable<IResponse> {
-        return this.httpClient.post<IResponse>(this.apiUrl, params);
+        return this.httpClient.post<IResponse>(this.urlLogin, params);
     }
 }
