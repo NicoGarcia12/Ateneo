@@ -5,6 +5,8 @@ import { AddStudentToSubjectHandler } from 'src/handlers/subject/add-student-to-
 import { GenerateAcademicSummaryPDFHandler } from 'src/handlers/subject/generate-academic-summary-pdf-handler';
 import { SendAcademicSummaryEmailHandler } from 'src/handlers/subject/send-academic-summary-email-handler';
 import { RemoveStudentFromSubjectHandler } from 'src/handlers/subject/remove-student-from-subject-handler';
+import { DeleteSubjectHandler } from 'src/handlers/subject/delete-subject-handler';
+import { UpdateSubjectHandler } from 'src/handlers/subject/update-subject-handler';
 
 const subjectRouter = Router();
 subjectRouter.post('/add', AddSubjectHandler);
@@ -13,5 +15,7 @@ subjectRouter.post('/:subjectId/add-student/:studentId', AddStudentToSubjectHand
 subjectRouter.delete('/:subjectId/remove-student/:studentId', RemoveStudentFromSubjectHandler);
 subjectRouter.post('/:subjectId/generate-academic-summary-pdf', GenerateAcademicSummaryPDFHandler);
 subjectRouter.post('/:subjectId/send-academic-summary-email', SendAcademicSummaryEmailHandler);
+subjectRouter.delete('/:subjectId', DeleteSubjectHandler);
+subjectRouter.put('/:subjectId', UpdateSubjectHandler);
 
 export default subjectRouter;
