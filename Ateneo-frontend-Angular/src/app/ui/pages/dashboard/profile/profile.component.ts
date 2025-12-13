@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Professor } from 'src/app/domain/entities/professor';
-import { TokenService } from '../../shared/services/token.service';
+import { TokenService } from '../../../shared/services/token.service';
 import { ProfileViewModelService } from './profile-view-model.service';
-import { NotifyService } from '../../shared/services/notify.service';
+import { NotifyService } from '../../../shared/services/notify.service';
 
 @Component({
     selector: 'app-profile',
