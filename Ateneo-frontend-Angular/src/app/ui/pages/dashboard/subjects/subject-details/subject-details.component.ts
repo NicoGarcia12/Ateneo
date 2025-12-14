@@ -13,6 +13,7 @@ import { Grade } from 'src/app/domain/entities/grade';
 import { UpdateGradeUseCase } from 'src/app/domain/use-cases/grade/update-grade-use-case';
 import { AddStudentGradeUseCase } from 'src/app/domain/use-cases/grade/add-student-grade-use-case';
 import { IResponse } from 'src/app/domain/use-cases/use-case.interface';
+import { GetSubjectUseCase } from 'src/app/domain/use-cases/subject/get-subject-use-case';
 
 @Component({
     selector: 'app-subject-details',
@@ -73,7 +74,8 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         private openDialogService: OpenDialogService,
         private notifyService: NotifyService,
         private updateGradeUseCase: UpdateGradeUseCase,
-        private addStudentGradeUseCase: AddStudentGradeUseCase
+        private addStudentGradeUseCase: AddStudentGradeUseCase,
+        private getSubjectUseCase: GetSubjectUseCase
     ) {}
 
     public ngOnInit(): void {
@@ -84,31 +86,39 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             }
             this.idSubject = params.get('idSubject') as string;
 
-            this.loadAllData();
-            this.startAutoRefresh();
+            // Verificar si la materia existe antes de cargar datos
+            this.getSubjectUseCase.execute({ subjectId: this.idSubject }).subscribe({
+                next: () => {
+                    this.loadAllData();
+                    this.startAutoRefresh();
 
-            this.studentsSubscription = this.viewModel.students$.subscribe((students) => {
-                this.studentsList = students;
-            });
-            this.classesSubscription = this.viewModel.classes$.subscribe((classes) => {
-                this.specialDates = classes
-                    .map((c) => {
-                        if (!c.date) return null;
-                        const d = new Date(c.date);
-                        return isNaN(d.getTime()) ? null : d;
-                    })
-                    .filter((d): d is Date => d !== null);
+                    this.studentsSubscription = this.viewModel.students$.subscribe((students) => {
+                        this.studentsList = students;
+                    });
+                    this.classesSubscription = this.viewModel.classes$.subscribe((classes) => {
+                        this.specialDates = classes
+                            .map((c) => {
+                                if (!c.date) return null;
+                                const d = new Date(c.date);
+                                return isNaN(d.getTime()) ? null : d;
+                            })
+                            .filter((d): d is Date => d !== null);
 
-                if (this.calendar) {
-                    this.calendar.updateTodaysDate();
+                        if (this.calendar) {
+                            this.calendar.updateTodaysDate();
+                        }
+                    });
+                    this.gradesSubscription = this.viewModel.grades$.subscribe((grades: Grade[]) => {
+                        const sortedGrades = [...grades].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                        this.grades = sortedGrades;
+                        this.gradesList = sortedGrades.map((g) => ({ id: g.id, name: g.name }));
+                        this.gradeColumns = sortedGrades.map((g) => g.id);
+                        this.displayedColumns = ['identification', 'name', ...this.gradeColumns, 'attendance', 'actions'];
+                    });
+                },
+                error: () => {
+                    this.router.navigate(['/error']);
                 }
-            });
-            this.gradesSubscription = this.viewModel.grades$.subscribe((grades: Grade[]) => {
-                const sortedGrades = [...grades].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-                this.grades = sortedGrades;
-                this.gradesList = sortedGrades.map((g) => ({ id: g.id, name: g.name }));
-                this.gradeColumns = sortedGrades.map((g) => g.id);
-                this.displayedColumns = ['identification', 'name', ...this.gradeColumns, 'attendance', 'actions'];
             });
         });
         this.dashboardTitleService.setTitle('Detalles de la materia');
@@ -138,6 +148,11 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         this.loadAllData();
         this.startAutoRefresh();
     }
+
+    public onSubjectDeleted(): void {
+        this.router.navigate(['/dashboard/subjects']);
+    }
+
     public isStudentInSubject(student: Student): boolean {
         return this.studentsList.some((s) => s.dni === student.dni);
     }

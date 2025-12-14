@@ -1,0 +1,78 @@
+@import '../../../../../../../../assets/styles/colors.scss';
+
+.subject-data-button {
+    width: 100%;
+}
+
+.modal-subject-data {
+    padding: 1rem;
+    min-width: 400px;
+}
+
+.delete-subject-btn-top {
+    display: block;
+    margin: 0 0 1.5rem 0;
+    width: auto;
+    padding: 0 1.2rem;
+}
+
+.subject-data-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.form-fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.subject-form-field {
+    width: 100%;
+}
+
+::ng-deep .modal-delete-subject {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    gap: 1rem;
+
+    .delete-modal-message {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #555;
+        margin: 0;
+
+        strong {
+            color: #333;
+            font-weight: 600;
+        }
+    }
+
+    .delete-modal-warning {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background-color: #fff3cd;
+        border: 1px solid $terciary-color;
+        border-radius: 8px;
+        color: #856404;
+
+        .warning-icon {
+            color: $terciary-color;
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        span {
+            flex: 1;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+    }
+}

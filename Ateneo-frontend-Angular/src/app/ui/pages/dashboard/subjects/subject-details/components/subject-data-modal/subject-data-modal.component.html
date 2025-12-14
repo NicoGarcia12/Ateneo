@@ -1,0 +1,52 @@
+<button class="primary-button subject-data-button" mat-flat-button (click)="openModal()">Ver datos de materia</button>
+
+<ng-template #subjectDataModal>
+    <div class="modal-subject-data">
+        <button mat-raised-button color="warn" class="delete-subject-btn-top" (click)="openDeleteModal()">Eliminar materia</button>
+
+        <p class="subject-data-title">Información de la materia</p>
+        <form [formGroup]="subjectForm" class="form-fields-container">
+            <mat-form-field appearance="outline" class="subject-form-field">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre de la materia" formControlName="name" />
+                <mat-error *ngIf="hasError('name', 'required')">El nombre es requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="subject-form-field">
+                <mat-label>Año académico</mat-label>
+                <input matInput type="number" placeholder="Año académico" formControlName="academicYear" />
+                <mat-error *ngIf="hasError('academicYear', 'required')">El año académico es requerido</mat-error>
+                <mat-error *ngIf="hasError('academicYear', 'invalidYear')">El año no es válido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="subject-form-field">
+                <mat-label>Institución</mat-label>
+                <input matInput placeholder="Institución" formControlName="institution" />
+                <mat-error *ngIf="hasError('institution', 'required')">La institución es requerida</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="subject-form-field">
+                <mat-label>Certificación final</mat-label>
+                <input matInput placeholder="Certificación final" formControlName="degree" />
+                <mat-error *ngIf="hasError('degree', 'required')">La certificación final es requerida</mat-error>
+            </mat-form-field>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #deleteSubjectModal>
+    <div class="modal-delete-subject">
+        <p class="delete-modal-message">
+            ¿Estás seguro de que deseas eliminar la materia
+            <strong>{{ subjectForm.get('name')?.value }}</strong
+            >?
+        </p>
+        <div class="delete-modal-warning">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <span
+                >Se eliminarán todas las clases, ausencias, notas y relaciones asociadas a esta materia. Esta acción no se puede
+                deshacer.</span
+            >
+        </div>
+    </div>
+</ng-template>

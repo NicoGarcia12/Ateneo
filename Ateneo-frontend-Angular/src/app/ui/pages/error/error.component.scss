@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden; /* evitar scroll si el contenido intenta desbordar */
     text-align: center;
     background-color: $primary-color;
 }
@@ -14,8 +15,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 36rem;
-    height: 36rem;
+    width: min(36rem, 90vw);
+    height: min(36rem, 90vw);
     border-radius: 50%;
     background-color: $grey-color;
     padding: 2rem;
@@ -42,4 +43,21 @@ p {
 
 button {
     margin-top: 20px;
+}
+
+@media (max-height: 420px) {
+    .error-content {
+        width: min(28rem, 88vw);
+        height: min(28rem, 88vw);
+        padding: 1.2rem;
+    }
+    h1 {
+        font-size: 4.5rem;
+    }
+    h2 {
+        font-size: 1.4rem;
+    }
+    p {
+        font-size: 1rem;
+    }
 }
