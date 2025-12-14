@@ -17,6 +17,43 @@
     </button>
 </div>
 
+<ng-template #editStudentModal>
+    <div class="modal-edit-student">
+        <p class="student-data-title">Información del estudiante</p>
+        <form [formGroup]="studentForm" class="form-fields-container">
+            <mat-form-field appearance="outline" class="student-form-field">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre" formControlName="firstName" />
+                <mat-error *ngIf="hasError('firstName', 'required')">El nombre es obligatorio</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="student-form-field">
+                <mat-label>Apellido</mat-label>
+                <input matInput placeholder="Apellido" formControlName="lastName" />
+                <mat-error *ngIf="hasError('lastName', 'required')">El apellido es obligatorio</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="student-form-field">
+                <mat-label>DNI</mat-label>
+                <input matInput placeholder="DNI" formControlName="dni" />
+                <mat-error *ngIf="hasError('dni', 'required')">El DNI es obligatorio</mat-error>
+                <mat-error *ngIf="hasError('dni', 'pattern')">El DNI debe contener solo números</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="student-form-field">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Email" formControlName="email" />
+                <mat-error *ngIf="hasError('email', 'email')">El email debe tener el formato: ejemplo&#64;dominio.com</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="student-form-field">
+                <mat-label>Teléfono</mat-label>
+                <input matInput placeholder="Teléfono" formControlName="phone" />
+            </mat-form-field>
+        </form>
+    </div>
+</ng-template>
+
 <ng-template #deleteStudentModal>
     <div class="modal-delete-student">
         <p class="delete-modal-message">
