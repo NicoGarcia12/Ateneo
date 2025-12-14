@@ -11,7 +11,8 @@ export class OpenDialogService {
 
     public openDialog(data: DialogDataInterface): MatDialogRef<ModalDialogComponent> {
         const dialogRef: MatDialogRef<ModalDialogComponent> = this.dialog.open(ModalDialogComponent, {
-            data
+            data,
+            maxHeight: '90vh'
         });
 
         return dialogRef;

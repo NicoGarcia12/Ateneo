@@ -6,7 +6,10 @@
 
 .modal-subject-data {
     padding: 1rem;
-    min-width: 400px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .delete-subject-btn-top {
@@ -21,16 +24,20 @@
     font-weight: 500;
     margin-bottom: 1rem;
     color: #333;
+    text-align: center;
 }
 
 .form-fields-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
+    width: 100%;
 }
 
 .subject-form-field {
     width: 100%;
+    max-width: 250px;
 }
 
 ::ng-deep .modal-delete-subject {
