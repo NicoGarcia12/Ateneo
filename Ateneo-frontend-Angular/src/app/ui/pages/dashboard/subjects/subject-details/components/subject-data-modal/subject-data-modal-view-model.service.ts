@@ -39,10 +39,7 @@ export class SubjectDataModalViewModelService {
                 onSuccess(data);
             },
             error: (error) => {
-                this.notifyService.notify(
-                    error?.error?.message || 'Error al cargar los datos de la materia',
-                    'error-notify'
-                );
+                this.notifyService.notify(error?.error?.message || 'Error al cargar los datos de la materia', 'error-notify');
             }
         });
     }
@@ -84,20 +81,14 @@ export class SubjectDataModalViewModelService {
 
         this.updateSubjectUseCase.execute({ subjectId, ...data }).subscribe({
             next: (response) => {
-                this.notifyService.notify(
-                    response.message || 'Materia actualizada correctamente',
-                    'success-notify'
-                );
+                this.notifyService.notify(response.message || 'Materia actualizada correctamente', 'success-notify');
                 if (this.dialogRef) {
                     this.dialogRef.close();
                 }
                 onSuccess();
             },
             error: (error) => {
-                this.notifyService.notify(
-                    error?.error?.message || 'Error al actualizar la materia',
-                    'error-notify'
-                );
+                this.notifyService.notify(error?.error?.message || 'Error al actualizar la materia', 'error-notify');
                 if (this.dialogRef?.componentInstance?.data?.primaryButton) {
                     this.dialogRef.componentInstance.data.primaryButton.loading = false;
                     this.dialogRef.componentInstance.data.primaryButton.disabled = false;
@@ -134,10 +125,7 @@ export class SubjectDataModalViewModelService {
 
         this.deleteSubjectUseCase.execute({ subjectId }).subscribe({
             next: (response) => {
-                this.notifyService.notify(
-                    response.message || 'Materia eliminada correctamente',
-                    'success-notify'
-                );
+                this.notifyService.notify(response.message || 'Materia eliminada correctamente', 'success-notify');
                 if (this.deleteDialogRef) {
                     this.deleteDialogRef.close();
                 }
@@ -147,10 +135,7 @@ export class SubjectDataModalViewModelService {
                 onSuccess();
             },
             error: (error) => {
-                this.notifyService.notify(
-                    error?.error?.message || 'Error al eliminar la materia',
-                    'error-notify'
-                );
+                this.notifyService.notify(error?.error?.message || 'Error al eliminar la materia', 'error-notify');
                 if (this.deleteDialogRef?.componentInstance?.data?.primaryButton) {
                     this.deleteDialogRef.componentInstance.data.primaryButton.loading = false;
                     this.deleteDialogRef.componentInstance.data.primaryButton.disabled = false;

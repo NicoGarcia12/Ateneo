@@ -14,7 +14,6 @@ export class SubjectDataButtonComponent {
     @Output() subjectUpdated = new EventEmitter<void>();
     @Output() subjectDeleted = new EventEmitter<void>();
 
-
     public subjectForm!: FormGroup;
     public isEditMode = false;
     private originalData = { name: '', academicYear: 0, institution: '', degree: '' };
@@ -61,7 +60,7 @@ export class SubjectDataButtonComponent {
                 });
             } else {
                 this.isEditMode = true;
-                Object.keys(this.subjectForm.controls).forEach(key => {
+                Object.keys(this.subjectForm.controls).forEach((key) => {
                     this.subjectForm.get(key)?.enable();
                 });
                 setTimeout(() => this.showModal(), 0);
@@ -70,7 +69,7 @@ export class SubjectDataButtonComponent {
             if (this.isEditMode) {
                 this.isEditMode = false;
                 this.subjectForm.setValue({ ...this.originalData });
-                Object.keys(this.subjectForm.controls).forEach(key => {
+                Object.keys(this.subjectForm.controls).forEach((key) => {
                     this.subjectForm.get(key)?.disable();
                 });
                 setTimeout(() => this.showModal(), 0);
@@ -95,10 +94,7 @@ export class SubjectDataButtonComponent {
     }
 
     public openDeleteModal(): void {
-        this.viewModel.openDeleteSubjectModal(
-            this.deleteSubjectModalTemplate,
-            () => this.confirmDelete()
-        );
+        this.viewModel.openDeleteSubjectModal(this.deleteSubjectModalTemplate, () => this.confirmDelete());
     }
 
     private confirmDelete(): void {

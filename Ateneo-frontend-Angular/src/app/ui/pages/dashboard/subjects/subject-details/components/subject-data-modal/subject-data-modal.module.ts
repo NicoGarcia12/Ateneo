@@ -9,16 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [SubjectDataButtonComponent],
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-    FormsModule,
-    ReactiveFormsModule
-    ],
+    imports: [CommonModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, FormsModule, ReactiveFormsModule],
     exports: [SubjectDataButtonComponent]
 })
 export class SubjectDataButtonModule {}
-

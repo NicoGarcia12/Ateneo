@@ -2,14 +2,7 @@
 
 <ng-template #subjectDataModal>
     <div class="modal-subject-data">
-        <button 
-            mat-raised-button 
-            color="warn" 
-            class="delete-subject-btn-top"
-            (click)="openDeleteModal()"
-        >
-            Eliminar materia
-        </button>
+        <button mat-raised-button color="warn" class="delete-subject-btn-top" (click)="openDeleteModal()">Eliminar materia</button>
 
         <p class="subject-data-title">Información de la materia</p>
         <form [formGroup]="subjectForm" class="form-fields-container">
@@ -45,13 +38,15 @@
     <div class="modal-delete-subject">
         <p class="delete-modal-message">
             ¿Estás seguro de que deseas eliminar la materia
-            <strong>{{ subjectForm.get('name')?.value }}</strong>?
+            <strong>{{ subjectForm.get('name')?.value }}</strong
+            >?
         </p>
         <div class="delete-modal-warning">
             <mat-icon class="warning-icon">warning</mat-icon>
-            <span>Se eliminarán todas las clases, ausencias, notas y relaciones asociadas a esta materia. Esta acción no se puede deshacer.</span>
+            <span
+                >Se eliminarán todas las clases, ausencias, notas y relaciones asociadas a esta materia. Esta acción no se puede
+                deshacer.</span
+            >
         </div>
     </div>
 </ng-template>
-
-
