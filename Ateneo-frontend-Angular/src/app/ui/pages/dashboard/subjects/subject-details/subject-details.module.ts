@@ -17,6 +17,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { AcademicSummaryPanelModule } from './academic-summary-panel/academic-summary-panel.module';
 import { ClassDetailsPanelModule } from './class-details-panel/class-details-panel.module';
 import { ActionsTableStudentsComponent } from './components/actions-table-students/actions-table-students.component';
+import { SubjectDataButtonModule } from './components/subject-data-modal/subject-data-modal.module';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { ActionsTableStudentsComponent } from './components/actions-table-studen
         AddGradeButtonModule,
         MatIconModule,
         AcademicSummaryPanelModule,
-        ClassDetailsPanelModule
+        ClassDetailsPanelModule,
+        SubjectDataButtonModule
     ],
     exports: [SubjectDetailsComponent],
     declarations: [SubjectDetailsComponent, ActionsTableStudentsComponent]

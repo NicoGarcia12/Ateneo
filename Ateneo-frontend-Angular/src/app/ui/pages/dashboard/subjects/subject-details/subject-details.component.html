@@ -110,8 +110,11 @@
         >
             Generar informe
         </button>
-        <button class="primary-button full-width-btn" mat-flat-button>Editar materia</button>
-        <button class="primary-button full-width-btn" mat-flat-button>Eliminar materia</button>
+        <app-subject-data-button 
+            [subjectId]="idSubject"
+            (subjectUpdated)="onDataChanged()"
+            (subjectDeleted)="onSubjectDeleted()"
+        ></app-subject-data-button>
     </div>
 </div>
 
