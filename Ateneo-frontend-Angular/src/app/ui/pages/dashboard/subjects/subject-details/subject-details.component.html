@@ -208,6 +208,11 @@
 
 <ng-template #editGradeModal>
     <div class="modal-edit-grade">
+        <!-- Botón para eliminar la nota -->
+        <div class="delete-grade-section">
+            <button mat-flat-button color="warn" (click)="deleteGrade()" class="delete-grade-button">Eliminar nota</button>
+        </div>
+
         <p class="grade-data-title">Datos de la nota</p>
         <div class="form-fields-container">
             <mat-form-field appearance="outline" class="grade-form-field">

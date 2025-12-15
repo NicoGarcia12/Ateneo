@@ -657,4 +657,13 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
         const attendancePercentage = ((totalClasses - absencesCount) / totalClasses) * 100;
         return Math.round(attendancePercentage).toString();
     }
+
+    /**
+     * Inicia el proceso de eliminación de la nota actualmente en edición
+     */
+    public deleteGrade(): void {
+        this.viewModel.handleDeleteGrade(this.editGradeData.id, this.editGradeData.name, this.editGradeDialogRef, () =>
+            this.onDataChanged()
+        );
+    }
 }

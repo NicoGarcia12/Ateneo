@@ -12,8 +12,7 @@ export const DeleteGradeController = async (params: DeleteGradeParams) => {
     const dependentGrades = await GetDependentGradesHelper(id);
 
     if (dependentGrades.length > 0) {
-        const dependentNames = dependentGrades.map((dg) => dg.derivedGrade.name).join(', ');
-        throw new ValidationError(`No se puede eliminar esta nota porque otras notas dependen de ella: ${dependentNames}`);
+        throw new ValidationError(`No se puede eliminar esta nota porque otras notas dependen de ella`);
     }
 
     return await DeleteGradeHelper({ id });

@@ -15,7 +15,10 @@ import {
     IAddStudentToSubjectParams
 } from '../../../../../domain/use-cases/subject/add-student-to-subject-use-case';
 import { GetGradesBySubjectUseCase } from '../../../../../domain/use-cases/grade/get-grades-by-subject-use-case';
+import { DeleteGradeUseCase } from '../../../../../domain/use-cases/grade/delete-grade-use-case';
 import { Grade } from '../../../../../domain/entities/grade';
+import { OpenDialogService } from '../../../../shared/services/open-dialog.service';
+import { NotifyService } from '../../../../shared/services/notify.service';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectDetailsViewModelService {
@@ -35,7 +38,10 @@ export class SubjectDetailsViewModelService {
         private deleteClassUseCase: DeleteClassUseCase,
         private getStudentByDniUseCase: GetStudentByDniUseCase,
         private updateClassUseCase: UpdateClassUseCase,
-        private getGradesBySubjectUseCase: GetGradesBySubjectUseCase
+        private getGradesBySubjectUseCase: GetGradesBySubjectUseCase,
+        private deleteGradeUseCase: DeleteGradeUseCase,
+        private openDialogService: OpenDialogService,
+        private notifyService: NotifyService
     ) {}
 
     public loadStudents(subjectId: string): void {
@@ -121,11 +127,66 @@ export class SubjectDetailsViewModelService {
     public updateClass(params: IUpdateClassParams): Observable<IResponse> {
         return this.updateClassUseCase.execute(params);
     }
+
     public deleteClass(id: string) {
         return this.deleteClassUseCase.execute({ id });
     }
+
     public createClass(params: IAddClassParams, subjectId?: string): Observable<IResponse> {
         const payload = { ...params, subjectId: subjectId ?? params.subjectId };
         return this.addClassUseCase.execute(payload);
+    }
+
+    public handleDeleteGrade(gradeId: string, gradeName: string, editDialogRef: any, onSuccess: () => void): void {
+        if (!gradeId) {
+            this.notifyService.notify('No se puede eliminar la nota', 'error-notify');
+            return;
+        }
+
+        const confirmDialogRef = this.openDialogService.openDialog({
+            title: 'Confirmar eliminación',
+            text: `¿Está seguro que desea eliminar la nota "${gradeName}"? Esta acción no se puede deshacer.`,
+            secondaryButtonText: 'Cancelar',
+            primaryButton: {
+                show: true,
+                text: 'Eliminar',
+                disabled: false,
+                loading: false
+            }
+        });
+
+        confirmDialogRef.afterClosed().subscribe((result: string | undefined) => {
+            if (result === 'PRIMARY') {
+                this.executeDeleteGrade(gradeId, editDialogRef, onSuccess);
+            }
+        });
+    }
+
+    private executeDeleteGrade(gradeId: string, editDialogRef: any, onSuccess: () => void): void {
+        if (editDialogRef?.componentInstance?.data?.primaryButton) {
+            editDialogRef.componentInstance.data.primaryButton.loading = true;
+            editDialogRef.componentInstance.data.primaryButton.disabled = true;
+        }
+
+        this.deleteGradeUseCase.execute({ gradeId }).subscribe({
+            next: (response: { message: string }) => {
+                this.notifyService.notify(response?.message || 'Nota eliminada correctamente', 'success-notify');
+
+                if (editDialogRef) {
+                    editDialogRef.close();
+                }
+
+                onSuccess();
+            },
+            error: (error: any) => {
+                const errorMessage = error?.error?.message || 'Error al eliminar la nota';
+                this.notifyService.notify(errorMessage, 'error-notify');
+
+                if (editDialogRef?.componentInstance?.data?.primaryButton) {
+                    editDialogRef.componentInstance.data.primaryButton.loading = false;
+                    editDialogRef.componentInstance.data.primaryButton.disabled = false;
+                }
+            }
+        });
     }
 }
