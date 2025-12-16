@@ -111,9 +111,56 @@
     stroke: $white-color !important;
 }
 
-// Inputs
+// Inputs y select
 mat-form-field.mat-form-field-invalid {
     margin-bottom: 32px;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline .mdc-notched-outline__trailing {
+    border-color: $primary-color !important;
+    border-width: 2px !important;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline .mdc-notched-outline__notch {
+    border-color: $primary-color !important;
+    border-width: 0 0 2px 0 !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+    color: $primary-color !important;
+}
+
+.mat-mdc-select-arrow {
+    color: $primary-color !important;
+}
+
+.mat-mdc-option,
+.mdc-list-item {
+    padding-left: 16px !important;
+}
+
+.mat-mdc-select-panel .mat-mdc-option {
+    border-left: none !important;
+}
+
+.mat-mdc-option.mat-mdc-option-active,
+.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple) {
+    background-color: rgba(53, 84, 86, 0.12) !important;
+}
+
+.mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
+    color: $primary-color !important;
+    font-weight: 500 !important;
+}
+
+.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after {
+    color: $primary-color !important;
+}
+
+// Color del label cuando el select está enfocado
+.mat-mdc-form-field.mat-focused.mat-form-field-has-label .mat-mdc-floating-label {
+    color: $primary-color !important;
 }
 
 // Spinner

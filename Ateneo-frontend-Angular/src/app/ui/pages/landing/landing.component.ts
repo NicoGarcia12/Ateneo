@@ -13,20 +13,20 @@ interface Card {
 export class LandingComponent implements OnInit, OnDestroy {
     public cards: Card[] = [
         {
-            title: 'Gestión de Materias',
-            content: 'Organiza y administra tus materias de forma rápida y eficiente. Accede a toda la información fácilmente.'
+            title: 'Gestión de Materias y Estudiantes',
+            content: 'Crea, edita y administra tus materias. Vincula estudiantes y organiza toda tu información académica en un solo lugar.'
         },
         {
-            title: 'Gestioná notas',
-            content: 'Registra y calcula las notas finales de tus estudiantes en simples pasos, de manera sencilla.'
+            title: 'Clases y Asistencia',
+            content: 'Registra clases, controla la asistencia de tus estudiantes y consulta el historial completo de forma rápida.'
         },
         {
-            title: 'Registro de Asistencia',
-            content: 'Controla la asistencia de tus estudiantes con un registro preciso y fácil de consultar.'
+            title: 'Calificaciones',
+            content: 'Carga, edita y consulta las notas de tus estudiantes. Visualiza el historial académico completo por materia.'
         },
         {
-            title: 'Gestión de Estudiantes',
-            content: 'Centraliza y organiza la información de tus estudiantes, accediendo a sus datos y notas fácilmente.'
+            title: 'Reportes Académicos',
+            content: 'Genera reportes detallados en PDF o envíalos por email. Resúmenes académicos listos para compartir.'
         }
     ];
 

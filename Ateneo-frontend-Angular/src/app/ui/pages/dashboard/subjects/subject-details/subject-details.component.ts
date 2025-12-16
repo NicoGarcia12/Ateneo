@@ -55,6 +55,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     };
     public editBaseGrades: Array<{ gradeId: string; weight: number; gradeName: string }> = [];
     public selectedEditBaseGradeId: string | null = null;
+    public showEditGradeSelect: boolean = true;
     private editGradeDialogRef: any = null;
 
     public loadStudentGradesData: Array<{ studentId: string; studentName: string; value: number | null }> = [];
@@ -488,8 +489,13 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     public removeEditBaseGrade(index: number): void {
         this.editBaseGrades.splice(index, 1);
-        // Resetear el select para que pueda volver a seleccionar la nota eliminada
+
+        this.showEditGradeSelect = false;
         this.selectedEditBaseGradeId = null;
+        setTimeout(() => {
+            this.showEditGradeSelect = true;
+        }, 0);
+
         this.onEditGradeFormChange();
     }
 

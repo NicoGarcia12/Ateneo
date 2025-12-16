@@ -20,7 +20,7 @@
         <div class="students-select-section" *ngIf="sendToSome">
             <h3>Seleccionar Alumnos</h3>
 
-            <mat-form-field appearance="outline" class="students-select-field">
+            <mat-form-field appearance="outline" class="students-select-field" *ngIf="showSelect">
                 <mat-label>Agregar alumno al informe</mat-label>
                 <mat-select [(ngModel)]="selectedStudentId" (ngModelChange)="onStudentSelect()" [disabled]="isSelectDisabled">
                     <mat-option *ngFor="let student of availableStudents" [value]="student.id">

@@ -24,6 +24,7 @@ export class AddGradeButtonComponent {
     };
 
     public selectedBaseGradeId: string | null = null;
+    public showBaseGradeSelect: boolean = true;
     public baseGrades: BaseGradeData[] = [];
     public studentGrades: StudentGradeData[] = [];
 
@@ -109,6 +110,13 @@ export class AddGradeButtonComponent {
 
     public removeBaseGrade(index: number): void {
         this.baseGrades = this.viewModel.removeBaseGrade(this.baseGrades, index);
+
+        this.showBaseGradeSelect = false;
+        this.selectedBaseGradeId = null;
+        setTimeout(() => {
+            this.showBaseGradeSelect = true;
+        }, 0);
+
         this.updateButtonState();
     }
 

@@ -9,6 +9,8 @@
     align-items: center;
     gap: 16px;
     box-sizing: border-box;
+    position: relative;
+    z-index: 10;
 
     .image-container {
         grid-column: span 2;
@@ -124,6 +126,27 @@
         margin-left: 8px;
         mat-icon {
             font-size: 22px;
+        }
+    }
+}
+
+// Estilos para el menú hamburguesa (mat-menu)
+::ng-deep .mat-mdc-menu-panel {
+    background-color: $primary-color !important;
+
+    .mat-mdc-menu-content {
+        padding: 0 !important;
+    }
+
+    .mat-mdc-menu-item {
+        color: $white-color !important;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .mat-mdc-menu-item-text {
+            color: $white-color !important;
         }
     }
 }

@@ -4,6 +4,23 @@
     display: block;
     width: 100%;
     min-height: 100vh;
+    background-image: url('../../../../assets/images/library-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        pointer-events: none;
+        z-index: 0;
+    }
 }
 
 .landing-container {
@@ -16,10 +33,16 @@
     flex-direction: column;
     align-items: center;
     gap: 40px;
+    position: relative;
+    z-index: 1;
 
     h1 {
         text-align: center;
         margin: 0;
+        color: $white-color;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+        font-size: 2.5rem;
+        font-weight: 500;
     }
 
     .landing-cards-container {
@@ -40,15 +63,31 @@
             &.card-content {
                 border-radius: 32px;
                 border: 2px solid $grey-color;
-                background-color: $primary-color;
+                background-color: $secondary-color;
                 color: $white-color;
-                padding: 0 30px;
+                padding: 20px 30px 30px;
                 text-align: center;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+                position: relative;
 
                 .card-text {
                     display: flex;
                     flex-direction: column;
-                    gap: 25px;
+                    gap: 20px;
+
+                    h4 {
+                        font-size: 1.5rem;
+                        font-weight: 500;
+                        margin: 0;
+                        color: $white-color;
+                    }
+
+                    p {
+                        line-height: 1.6;
+                        font-size: 1rem;
+                        margin: 0;
+                        color: $white-color;
+                    }
                 }
             }
         }
@@ -67,34 +106,58 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 0;
 
             mat-icon {
-                font-size: 1rem;
+                font-size: 2rem;
+                color: $white-color;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            }
+
+            &:hover {
+                transform: scale(1.2);
+
+                mat-icon {
+                    color: rgba(255, 255, 255, 0.8);
+                }
             }
 
             &.left-arrow {
                 position: absolute;
-                bottom: 20px;
-                left: 25%;
+                bottom: 30px;
+                left: 20px;
             }
 
             &.right-arrow {
                 position: absolute;
-                bottom: 20px;
-                right: 25%;
+                bottom: 30px;
+                right: 20px;
             }
         }
 
         .current-index {
             position: absolute;
-            bottom: 30px;
-            color: #000;
+            bottom: 35px;
+            color: $white-color;
+            font-weight: 500;
+            font-size: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
     }
 
     @media (max-width: 768px) {
         padding: 32px 20px;
         gap: 32px;
+
+        h1 {
+            font-size: 2rem;
+        }
 
         .landing-cards-container {
             gap: 24px;
@@ -104,21 +167,41 @@
     @media (max-width: 600px) {
         padding: 24px 16px;
 
+        h1 {
+            font-size: 1.75rem;
+        }
+
         .landing-cards-container {
             flex-direction: column;
 
             .card-content {
-                margin-bottom: 80px;
+                margin-bottom: 70px;
             }
 
             .current-index {
-                bottom: 32px;
+                bottom: 30px;
+            }
+
+            .arrow {
+                &.left-arrow {
+                    left: 15px;
+                    bottom: 25px;
+                }
+
+                &.right-arrow {
+                    right: 15px;
+                    bottom: 25px;
+                }
             }
         }
     }
 
     @media (max-width: 480px) {
         padding: 20px 12px;
+
+        h1 {
+            font-size: 1.5rem;
+        }
     }
 
     @media (max-width: 360px) {
@@ -134,7 +217,23 @@
             }
 
             .current-index {
-                bottom: 35px;
+                bottom: 30px;
+            }
+
+            .arrow {
+                mat-icon {
+                    font-size: 1.75rem;
+                }
+
+                &.left-arrow {
+                    left: 10px;
+                    bottom: 20px;
+                }
+
+                &.right-arrow {
+                    right: 10px;
+                    bottom: 20px;
+                }
             }
         }
     }
