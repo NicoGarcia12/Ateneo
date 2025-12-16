@@ -23,7 +23,7 @@ export class AddGradeButtonComponent {
         date: ''
     };
 
-    public selectedBaseGradeId: string = '';
+    public selectedBaseGradeId: string | null = null;
     public baseGrades: BaseGradeData[] = [];
     public studentGrades: StudentGradeData[] = [];
 
@@ -47,7 +47,7 @@ export class AddGradeButtonComponent {
             date: ''
         };
         this.baseGrades = [];
-        this.selectedBaseGradeId = '';
+        this.selectedBaseGradeId = null;
     }
 
     private handleSaveGrade(): void {
@@ -87,7 +87,7 @@ export class AddGradeButtonComponent {
 
     public onTypeChange(): void {
         this.baseGrades = [];
-        this.selectedBaseGradeId = '';
+        this.selectedBaseGradeId = null;
         this.updateButtonState();
     }
 
@@ -98,6 +98,12 @@ export class AddGradeButtonComponent {
         if (!grade) return;
 
         this.baseGrades = this.viewModel.addBaseGrade(this.baseGrades, grade);
+
+        // Usar setTimeout para asegurar que Angular detecte el cambio
+        setTimeout(() => {
+            this.selectedBaseGradeId = null;
+        }, 0);
+
         this.updateButtonState();
     }
 

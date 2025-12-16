@@ -46,7 +46,11 @@
 
                 <mat-form-field appearance="outline" class="grade-select-field">
                     <mat-label>Seleccionar nota</mat-label>
-                    <mat-select [value]="null" (selectionChange)="onBaseGradeSelect($event.value)">
+                    <mat-select
+                        [(ngModel)]="selectedBaseGradeId"
+                        (selectionChange)="onBaseGradeSelect($event.value)"
+                        [disabled]="availableGrades.length === 0"
+                    >
                         <mat-option *ngFor="let grade of availableGrades" [value]="grade.id">
                             {{ grade.name }}
                         </mat-option>

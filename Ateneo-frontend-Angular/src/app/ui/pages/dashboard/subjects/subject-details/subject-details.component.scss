@@ -17,8 +17,9 @@
     overflow: auto;
     border-radius: 8px;
     border: 2px solid #ddd;
-    width: 100%;
+    width: fit-content;
     max-width: 100%;
+    justify-self: center;
 
     &::-webkit-scrollbar {
         width: 8px;
@@ -41,22 +42,21 @@
 }
 
 .students-table-container .table-wrapper {
-    width: 100%;
+    width: fit-content;
     min-width: fit-content;
 }
 
 .students-table-container .students-table {
-    width: 100%;
-    min-width: 800px;
+    width: fit-content;
+    max-width: 100%;
     border-radius: 8px;
     overflow: hidden;
 
     ::ng-deep .mat-mdc-table {
-        width: max-content !important;
-        min-width: 100% !important;
+        width: fit-content !important;
         border-radius: 8px;
         overflow: hidden;
-        table-layout: auto;
+        table-layout: fixed;
     }
 
     ::ng-deep .mat-mdc-header-cell {
@@ -72,8 +72,10 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        min-width: 80px;
         flex-direction: column !important;
+        width: 200px;
+        min-width: 200px;
+        max-width: 200px;
 
         .grade-header-container {
             display: flex;
@@ -127,7 +129,8 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        min-width: 80px;
+        width: 200px;
+        min-width: 200px;
         max-width: 200px;
     }
 
@@ -155,7 +158,7 @@
     }
 
     ::ng-deep .mat-mdc-row {
-        width: 100% !important;
+        width: fit-content !important;
 
         &:nth-child(odd) {
             background-color: $secondary-color !important;
@@ -163,45 +166,64 @@
     }
 
     ::ng-deep .mat-mdc-header-row {
-        width: 100% !important;
+        width: fit-content !important;
     }
 
     ::ng-deep .mat-column-identification {
-        width: 15%;
+        width: 120px;
         min-width: 120px;
+        max-width: 120px;
     }
 
     ::ng-deep .mat-column-name {
-        width: 35%;
+        width: 180px;
         min-width: 180px;
+        max-width: 180px;
     }
 
     ::ng-deep .mat-column-name.mat-mdc-cell {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        max-width: 200px !important;
+        width: 180px !important;
+        min-width: 180px !important;
+        max-width: 180px !important;
     }
 
     ::ng-deep .mat-column-name.mat-mdc-cell .name-content {
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-align: center;
         word-break: break-word;
     }
 
-    ::ng-deep .mat-column-grade1,
-    ::ng-deep .mat-column-grade2,
-    ::ng-deep .mat-column-gradeN {
-        width: 12%;
-        min-width: 70px;
+    // Todas las columnas de notas (dinámicas) tendrán el mismo ancho
+    ::ng-deep
+        .mat-mdc-header-cell:not(.mat-column-identification):not(.mat-column-name):not(.mat-column-attendance):not(.mat-column-actions) {
+        width: 200px;
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    ::ng-deep .mat-mdc-cell:not(.mat-column-identification):not(.mat-column-name):not(.mat-column-attendance):not(.mat-column-actions) {
+        width: 200px;
+        min-width: 200px;
+        max-width: 200px;
     }
 
     ::ng-deep .mat-column-attendance {
-        width: 14%;
+        width: 120px;
+        min-width: 120px;
+        max-width: 120px;
+    }
+
+    ::ng-deep .mat-column-actions {
+        width: 100px;
         min-width: 100px;
+        max-width: 100px;
     }
 }
 
@@ -306,6 +328,16 @@
     flex-direction: column;
     gap: 8px;
     padding-top: 40px;
+}
+
+.class-panel-expanded {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+}
+
+.academic-summary-panel-expanded {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
 }
 
 .modal-add-student {
