@@ -44,7 +44,7 @@
                     <span *ngIf="gradeData.type === 'Weighted'"> Asigne porcentajes de peso que sumen 100.</span>
                 </div>
 
-                <mat-form-field appearance="outline" class="grade-select-field">
+                <mat-form-field appearance="outline" class="grade-select-field" *ngIf="showBaseGradeSelect">
                     <mat-label>Seleccionar nota</mat-label>
                     <mat-select
                         [(ngModel)]="selectedBaseGradeId"

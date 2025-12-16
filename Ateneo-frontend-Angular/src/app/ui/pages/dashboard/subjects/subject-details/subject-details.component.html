@@ -65,9 +65,8 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </mat-table>
-            <div class="no-data-fake-cell" *ngIf="studentsList.length === 0">No hay alumnos cargados en la materia</div>
-            <div class="no-data-fake-cell" *ngIf="studentsList.length > 0 && gradesList.length === 0">
-                No hay notas cargadas en la materia
+            <div class="no-data-fake-cell" *ngIf="studentsList.length === 0 || gradesList.length === 0">
+                Para ver la tabla de datos debe haber al menos una materia y un alumno cargados.
             </div>
         </div>
     </div>
@@ -103,10 +102,14 @@
             (gradeAdded)="onDataChanged()"
         ></app-add-grade-button>
         <button
-            class="primary-button full-width-btn"
+            class="full-width-btn"
             mat-flat-button
             (click)="openReportPanel()"
             [disabled]="studentsList.length === 0 || gradesList.length === 0"
+            [ngClass]="{
+                'primary-button': !(studentsList.length === 0 || gradesList.length === 0),
+                'disabled-button': studentsList.length === 0 || gradesList.length === 0
+            }"
         >
             Generar informe
         </button>
@@ -261,7 +264,7 @@
                     <span *ngIf="editGradeData.type === 'Weighted'"> Asigne porcentajes de peso que sumen 100.</span>
                 </div>
 
-                <mat-form-field appearance="outline" class="grade-select-field">
+                <mat-form-field appearance="outline" class="grade-select-field" *ngIf="showEditGradeSelect">
                     <mat-label>Seleccionar nota</mat-label>
                     <mat-select
                         [(ngModel)]="selectedEditBaseGradeId"

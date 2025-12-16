@@ -22,6 +22,7 @@ export class AcademicSummaryPanelComponent implements OnInit, OnDestroy {
     public availableStudents: Student[] = [];
     public selectedStudents: Student[] = [];
     public selectedStudentId: string | null = null;
+    public showSelect: boolean = true;
     public isGeneratingPDF: boolean = false;
     public isSendingEmailToMe: boolean = false;
     public isSendingEmailToStudents: boolean = false;
@@ -93,8 +94,18 @@ export class AcademicSummaryPanelComponent implements OnInit, OnDestroy {
 
     public removeStudent(student: Student): void {
         this.selectedStudents = this.selectedStudents.filter((s) => s.id !== student.id);
-        this.availableStudents.push(student);
-        this.availableStudents.sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`));
+
+        if (!this.availableStudents.some((s) => s.id === student.id)) {
+            this.availableStudents.push(student);
+            this.availableStudents.sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`));
+        }
+
+        this.showSelect = false;
+        this.selectedStudentId = null;
+        setTimeout(() => {
+            this.showSelect = true;
+        }, 0);
+
         this.checkEmailWarning();
         this.updateCanSendEmailToStudents();
     }
