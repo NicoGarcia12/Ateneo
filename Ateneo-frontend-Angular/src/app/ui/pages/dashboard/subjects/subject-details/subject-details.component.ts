@@ -88,7 +88,9 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
             // Verificar si la materia existe antes de cargar datos
             this.getSubjectUseCase.execute({ subjectId: this.idSubject }).subscribe({
-                next: () => {
+                next: (subject) => {
+                    this.dashboardTitleService.setTitle(subject.name);
+
                     this.loadAllData();
                     this.startAutoRefresh();
 
@@ -121,13 +123,20 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
                 }
             });
         });
-        this.dashboardTitleService.setTitle('Detalles de la materia');
     }
 
     private loadAllData(): void {
         this.viewModel.loadStudents(this.idSubject);
         this.viewModel.loadClasses(this.idSubject);
         this.viewModel.loadGrades(this.idSubject);
+    }
+
+    private loadSubjectData(): void {
+        this.getSubjectUseCase.execute({ subjectId: this.idSubject }).subscribe({
+            next: (subject) => {
+                this.dashboardTitleService.setTitle(subject.name);
+            }
+        });
     }
 
     private startAutoRefresh(): void {
@@ -146,6 +155,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     public onDataChanged(): void {
         this.loadAllData();
+        this.loadSubjectData();
         this.startAutoRefresh();
     }
 
@@ -469,8 +479,10 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             gradeName: grade.name
         });
 
-        // Resetear el select
-        this.selectedEditBaseGradeId = null;
+        setTimeout(() => {
+            this.selectedEditBaseGradeId = null;
+        }, 0);
+
         this.onEditGradeFormChange();
     }
 
