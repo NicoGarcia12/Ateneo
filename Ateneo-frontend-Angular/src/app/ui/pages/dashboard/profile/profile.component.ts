@@ -17,6 +17,8 @@ export class ProfileComponent implements OnInit {
     isLoading = false;
     isSaving = false;
     showNewPassword = false;
+    hideCurrentPassword = true;
+    hideNewPassword = true;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -97,6 +99,8 @@ export class ProfileComponent implements OnInit {
     onCancel(): void {
         this.isEditing = false;
         this.showNewPassword = false;
+        this.hideCurrentPassword = true;
+        this.hideNewPassword = true;
         this.profileForm.get('firstName')?.disable();
         this.profileForm.get('lastName')?.disable();
         this.profileForm.patchValue({
@@ -139,6 +143,8 @@ export class ProfileComponent implements OnInit {
                 this.notifyService.notify(response.message || 'Profesor actualizado correctamente', 'success-notify');
                 this.isEditing = false;
                 this.showNewPassword = false;
+                this.hideCurrentPassword = true;
+                this.hideNewPassword = true;
                 this.profileForm.get('firstName')?.disable();
                 this.profileForm.get('lastName')?.disable();
                 this.profileForm.patchValue({
@@ -155,5 +161,13 @@ export class ProfileComponent implements OnInit {
                 this.isSaving = false;
             }
         });
+    }
+
+    toggleCurrentPasswordVisibility(): void {
+        this.hideCurrentPassword = !this.hideCurrentPassword;
+    }
+
+    toggleNewPasswordVisibility(): void {
+        this.hideNewPassword = !this.hideNewPassword;
     }
 }

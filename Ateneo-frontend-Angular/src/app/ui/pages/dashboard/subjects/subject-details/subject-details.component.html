@@ -326,9 +326,10 @@
                         step="1"
                         [(ngModel)]="studentGrade.value"
                         (ngModelChange)="onLoadStudentGradeChange()"
-                        placeholder="1-10"
+                        placeholder="1-10 o vacío"
                     />
-                    <mat-error *ngIf="studentGrade.value !== null && (studentGrade.value < 1 || studentGrade.value > 10)">
+                    <mat-hint>Ingresa un valor entre 1 y 10, o deja vacío</mat-hint>
+                    <mat-error *ngIf="studentGrade.value !== null && studentGrade.value !== undefined && (studentGrade.value < 1 || studentGrade.value > 10)">
                         La nota debe estar entre 1 y 10
                     </mat-error>
                 </mat-form-field>

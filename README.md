@@ -1,50 +1,97 @@
 # Ateneo 🎓
 
-> **Ateneo** es un sistema de gestión académica pensado para profesores que dictan materias en diferentes instituciones. Permite a los docentes organizar y administrar las materias que dictan, gestionar los alumnos de cada materia, registrar clases, cargar y consultar notas, y generar reportes tanto para los alumnos como para sí mismos. El sistema también facilita la comunicación con los estudiantes y el seguimiento académico personalizado. Está compuesto por un backend en Node.js (Express + Prisma) y un frontend en Angular.
+> **Ateneo** es un sistema de gestión académica completo pensado para profesores que dictan materias en diferentes instituciones educativas. Permite a los docentes organizar y administrar materias, gestionar estudiantes, registrar clases con control de asistencia, cargar calificaciones con diferentes tipos de evaluación (finales, ponderadas y promediadas), y generar reportes académicos profesionales en PDF con envío automático por email. El sistema está desarrollado con tecnologías modernas: **Angular** en el frontend, **Node.js + Express** en el backend, y **Prisma ORM** para la gestión de base de datos.
 
 ---
 
+## 📋 Tabla de Contenidos
 
-
-## ✨ ¿Qué puede hacer el usuario?
-
-1. **Gestionar materias y estudiantes:** Crear, editar y eliminar materias, vincular y administrar estudiantes en cada materia.
-2. **Registrar y consultar clases y asistencia:** Agregar clases, editar detalles, registrar asistencia y consultar el historial de clases y asistencias.
-3. **Cargar, editar y consultar calificaciones:** Registrar notas por estudiante y materia, editar o eliminar calificaciones y visualizar el historial académico.
-4. **Generar y enviar reportes académicos:** Obtener resúmenes y reportes detallados por materia y por estudiante, listos para imprimir o compartir por email, con validación automática de destinatarios.
-5. **Administrar su perfil y autenticación:** Registrarse, iniciar sesión, recuperar contraseña mediante código de verificación enviado por email, y gestionar sus datos como profesor, accediendo a todas las funcionalidades desde una interfaz web moderna.
-
----
-
-## 🛠️ Aspectos técnicos principales
-
-1. **Frontend en Angular:** Interfaz web modular, con componentes reutilizables, paneles y modales avanzados para todas las acciones principales.
-2. **Backend en Express + Prisma:** API REST robusta y segura, con rutas para todas las entidades y operaciones CRUD, gestión de base de datos relacional y generación dinámica de reportes académicos en múltiples formatos.
-3. **ORM Prisma:** Migraciones, generación de cliente, administración y sincronización de esquema de base de datos mediante scripts npm.
-4. **Autenticación JWT:** Seguridad en el acceso y gestión de sesiones para profesores.
-5. **Recuperación de contraseña:** Sistema de recuperación segura mediante código de verificación de 6 dígitos enviado por email, con validación de expiración (15 minutos).
-6. **Integración con Gmail/SMTP:** Envío transaccional de reportes académicos y códigos de verificación por email con adjuntos PDF utilizando Nodemailer y Gmail. Soporta envío individual a estudiantes o al profesor.
-7. **Generación de PDFs:** Sistema de generación automática de reportes académicos con diseño profesional, incluyendo notas, asistencias y datos del estudiante.
-8. **Arquitectura escalable:** Separación clara de responsabilidades (controllers, handlers, helpers), estructura organizada en capas y posibilidad de extender funcionalidades fácilmente.
-
+1. [Características Principales](#-características-principales)
+2. [Arquitectura del Sistema](#-arquitectura-del-sistema)
+3. [Requisitos Previos](#-requisitos-previos)
+4. [Instalación Paso a Paso](#-instalación-paso-a-paso)
+5. [Comandos Útiles de Prisma](#-comandos-útiles-de-prisma)
+6. [Uso del Sistema](#-uso-del-sistema)
+7. [Arquitectura y Patrones de Diseño](#️-arquitectura-y-patrones-de-diseño)
+8. [Tecnologías Utilizadas](#-tecnologías-utilizadas)
+9. [Comandos Disponibles](#-comandos-disponibles)
+10. [Solución de Problemas](#-solución-de-problemas)
+11. [Despliegue en Producción](#-despliegue-en-producción)
+12. [Próximas Mejoras](#-próximas-mejoras-sugeridas)
 
 ---
 
-## 🚦 Requisitos previos al desarrollo
+## ✨ Características Principales
 
-| Programa            | Comando de verificación/instalación                | Uso                        |
+### 1. **Gestión de Materias**
+- ✅ Crear, editar y eliminar materias
+- ✅ Visualizar todas las materias del profesor en un dashboard
+- ✅ Ver detalles completos de cada materia (estudiantes, clases, notas)
+- ✅ Agregar y remover estudiantes de materias
+- ✅ Validación de datos en tiempo real
+
+### 2. **Gestión de Estudiantes**
+- ✅ Buscar estudiantes existentes por DNI
+- ✅ Crear nuevos estudiantes con validación de datos
+- ✅ Editar información de estudiantes (nombre, apellido, email, teléfono)
+- ✅ Vincular/desvincular estudiantes a materias
+- ✅ Ver el historial académico de cada estudiante
+
+### 3. **Registro de Clases y Asistencia**
+- ✅ Crear clases con fecha y descripción
+- ✅ Registrar asistencia individual por estudiante
+- ✅ Editar clases y asistencias existentes
+- ✅ Eliminar clases (con eliminación en cascada de asistencias)
+- ✅ Visualización en calendario interactivo
+- ✅ Cálculo automático de porcentaje de asistencia por estudiante
+
+### 4. **Sistema de Calificaciones Avanzado**
+- ✅ **Notas Finales**: Calificaciones directas del 1 al 10
+- ✅ **Notas Ponderadas**: Calculadas automáticamente basándose en otras notas con pesos asignados (el total debe sumar 100%)
+- ✅ **Notas Promediadas**: Calculadas como el promedio simple de otras notas base
+- ✅ Cargar notas individuales o masivas para todos los estudiantes
+- ✅ Editar y eliminar notas con validación de dependencias
+- ✅ Prevención de ciclos en relaciones entre notas
+- ✅ Visualización en tabla con todas las notas por estudiante
+
+### 5. **Generación de Reportes Académicos**
+- ✅ Generar reportes en formato PDF profesional
+- ✅ Incluye: datos del estudiante, todas las notas con fechas, porcentaje de asistencia
+- ✅ Enviar reportes por email a:
+  - El profesor (a sí mismo)
+  - Estudiantes individuales o grupos seleccionados
+  - Todos los estudiantes de la materia
+- ✅ Validación automática de emails disponibles
+- ✅ Indicadores visuales de estudiantes con/sin email
+
+### 6. **Autenticación y Seguridad**
+- ✅ Registro de profesores con validación de datos
+- ✅ Inicio de sesión con JWT (JSON Web Tokens)
+- ✅ Recuperación de contraseña mediante código de verificación
+- ✅ Códigos de 6 dígitos enviados por email (válidos por 15 minutos)
+- ✅ Protección de rutas y endpoints con tokens
+- ✅ Actualización de perfil del profesor
+
+---
+
+## 📋 Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+| Programa            | Comando de verificación                            | Uso                        |
 |---------------------|----------------------------------------------------|----------------------------|
-| Visual Studio Code 🖥️ | `code`                                            | Editor de código           |
+| Visual Studio Code 🖥️ | `code --version`                                  | Editor de código           |
 | Node.js y npm 🟩     | `node -v` / `npm -v`                               | Entorno de ejecución JS    |
 | Git 🐙              | `git --version`                                    | Control de versiones       |
-| Angular CLI 🅰️      | `npm install -g @angular/cli`                      | CLI para Angular           |
-| Prisma CLI 💎        | `npm install -g prisma`                            | ORM para Node.js           |
+| MySQL o PostgreSQL 🗄️| `mysql --version` / `psql --version`             | Base de datos              |
 
 ---
 
-## 📥 Clonar el repositorio
+## 📥 Instalación Paso a Paso
 
-```cmd
+### **Paso 1: Clonar el repositorio**
+
+```bash
 git clone <URL_DEL_REPOSITORIO>
 cd Ateneo
 ```
@@ -53,139 +100,179 @@ cd Ateneo
 
 ## 🛠️ Instalación y ejecución del Backend
 
-1. Entra a la carpeta del backend:
-   ```cmd
-   cd Ateneo-backend-Express
-   ```
-2. Instala las dependencias:
-   ```cmd
-   npm install
-   ```
-3. Configura las variables de entorno:
-   - Crea un archivo `.env` en la raíz de `Ateneo-backend-Express` y completa **todas** las siguientes variables:
-     ```env
-     DB_USER=<usuario_de_bd>
-     DB_PASSWORD=<contraseña_de_bd>
-     DB_HOST=<host_de_bd>
-     DB_PORT=<puerto_de_bd>
-     DB_NAME=<nombre_de_bd>
-     PORT=<puerto_backend>
-     URL_BASE=<url_del_frontend>
-     DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
-     JWT_SECRET_KEY=<clave_secreta_para_tokens>
-     SMTP_HOST=smtp.gmail.com
-     SMTP_PORT=587
-     SMTP_SECURE=false
-     SMTP_USER=<tu_correo@gmail.com>
-     SMTP_PASS=<tu_contraseña_de_aplicacion_sin_espacios>
-     SMTP_SENDER_NAME=Sistema Ateneo
-     ```
-   - Reemplaza los valores entre <> por los datos reales de tu entorno.
-   - **Todas las variables son necesarias para que el sistema funcione correctamente.**
-   - Las variables de SMTP son opcionales solo si no usarás la funcionalidad de envío de emails. Si deseas enviar reportes por correo con Gmail, debes configurarlas.
+### **Paso 2: Instalar dependencias del backend**
 
-
-    #### 🔗 ¿Qué motor de base de datos puedo usar?
-    Puedes usar **PostgreSQL** o **MySQL**. Debes tener el motor instalado y corriendo en tu máquina o usar un servicio en la nube.
-
-    - Para **PostgreSQL**:
-       ```env
-       DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/ateneo"
-       ```
-    - Para **MySQL**:
-       ```env
-       DATABASE_URL="mysql://usuario:contraseña@localhost:3306/ateneo"
-       ```
-
-   #### ⚙️ ¿Dónde se configura el motor?
-   - En el archivo `Ateneo-backend-Express/prisma/schema.prisma`, la primera línea debe indicar el proveedor:
-     ```prisma
-     datasource db {
-       provider = "postgresql" // o "mysql"
-       url      = env("DATABASE_URL")
-     }
-     ```
-   - Asegúrate de que el valor de `provider` coincida con el tipo de base de datos que usas en `DATABASE_URL`.
-
-
-4. Crea la migración inicial de la base de datos:
-    - Una vez configurado el archivo `schema.prisma` y las variables de entorno, ejecuta:
-       ```bash
-       npx prisma migrate dev --name init
-       ```
-    - Esto generará la migración inicial y aplicará los cambios en tu base de datos.
-    - Si cambias de motor (por ejemplo, de MySQL a PostgreSQL), elimina la base de datos y la carpeta `prisma/migrations/` antes de crear la migración inicial nuevamente:
-       ```bash
-       rm -rf Ateneo-backend-Express/prisma/migrations
-       # Borra la base de datos manualmente desde tu gestor (MySQL/Postgres)
-       ```
----
-
-
-## 🧩 Comandos útiles de Prisma
-
-Ejecuta estos comandos dentro de la carpeta `Ateneo-backend-Express` usando npm:
-
-| Comando                                 | Descripción                                               |
-|-----------------------------------------|-----------------------------------------------------------|
-| `npm run prisma:migrate`                | Ejecuta migraciones y actualiza la base de datos          |
-| `npm run prisma:reset`                  | Resetea la base de datos y aplica todas las migraciones   |
-| `npm run prisma:generate`               | Genera el cliente de Prisma según el esquema              |
-| `npm run prisma:studio`                 | Abre Prisma Studio para visualizar y editar datos         |
-| `npm run prisma:dbpush`                 | Sincroniza el esquema Prisma con la base de datos         |
-| `npm run prisma:status`                 | Muestra el estado de las migraciones                      |
-| `npm run prisma:format`                 | Formatea el archivo `schema.prisma`                       |
-
-Para borrar todas las migraciones existentes:
 ```bash
-rm -rf Ateneo-backend-Express/prisma/migrations
-# Borra la base de datos manualmente desde tu gestor
+cd Ateneo-backend-Express
+npm install
 ```
 
-Para crear una nueva migración personalizada:
-```bash
-npm run prisma:migrate -- --name <nombre>
+### **Paso 3: Configurar variables de entorno**
+
+Crea un archivo `.env` en la raíz de `Ateneo-backend-Express` con las siguientes variables:
+
+```env
+# Base de datos
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contraseña
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=ateneo
+DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+
+# Backend
+PORT=3000
+URL_BASE=http://localhost:4200
+
+# JWT
+JWT_SECRET_KEY=tu_clave_secreta_muy_segura
+
+# SMTP (opcional - solo si usarás envío de emails)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=tu_correo@gmail.com
+SMTP_PASS=tu_contraseña_de_aplicacion
+SMTP_SENDER_NAME=Sistema Ateneo
 ```
 
-Estos comandos te permiten gestionar el ciclo de vida de la base de datos y el esquema de manera sencilla.
+**Notas importantes:**
+- Reemplaza los valores de ejemplo por tus propios datos
+- Para Gmail, usa una [Contraseña de Aplicación](https://myaccount.google.com/apppasswords), no tu contraseña normal
+- Si usas PostgreSQL, cambia el `DATABASE_URL` a: `postgresql://usuario:contraseña@localhost:5432/ateneo`
 
-5. (Opcional) Ejecuta el seed para datos iniciales:
-   ```cmd
-   npm run seed
-   ```
-6. Inicia el servidor backend:
-   ```cmd
-   npm start
-   ```
-   El backend estará corriendo normalmente en `http://localhost:3000` (o el puerto configurado).
+### **Paso 4: Configurar el motor de base de datos**
+
+Asegúrate de que el archivo `prisma/schema.prisma` tenga el proveedor correcto:
+
+**Para MySQL:**
+```prisma
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+```
+
+**Para PostgreSQL:**
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+### **Paso 5: Crear la base de datos y ejecutar migraciones**
+
+```bash
+npx prisma migrate dev --name init
+```
+
+Este comando:
+- Crea la base de datos si no existe
+- Aplica todas las migraciones
+- Genera el cliente de Prisma
+
+### **Paso 6: (Opcional) Cargar datos de prueba**
+
+```bash
+npm run seed
+```
+
+### **Paso 7: Iniciar el servidor backend**
+
+```bash
+npm start
+```
+
+El backend estará corriendo en `http://localhost:3000` (o el puerto que configuraste).
 
 ---
 
 ## 🖼️ Instalación y ejecución del Frontend
 
-1. Abre una nueva terminal y navega a la carpeta del frontend:
-   ```cmd
-   cd Ateneo-frontend-Angular
-   ```
-2. Instala las dependencias:
-   ```cmd
-   npm install
-   ```
-3. Inicia la aplicación Angular:
-   ```cmd
-   npm start
-   ```
-   El frontend estará disponible en `http://localhost:4200`.
+### **Paso 8: Instalar dependencias del frontend**
+
+Abre una **nueva terminal** y ejecuta:
+
+```bash
+cd Ateneo-frontend-Angular
+npm install
+```
+
+### **Paso 9: Configurar la URL del backend**
+
+Si tu backend NO está en `http://localhost:3000`, edita el archivo `src/environments/environment.ts`:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000'  // Cambia esto si es necesario
+};
+```
+
+### **Paso 10: Iniciar la aplicación Angular**
+
+```bash
+npm start
+```
+
+El frontend estará disponible en `http://localhost:4200`.
 
 ---
 
-## ℹ️ Notas adicionales
+## ✅ ¡Listo para usar!
 
-- ✅ Asegúrate de que el backend esté corriendo antes de usar el frontend.
-- 🔄 Si tienes problemas con dependencias, verifica la versión de Node.js recomendada en la documentación de Angular y Prisma.
-- 📝 Puedes personalizar las variables de entorno según tu entorno local.
-- 📦 Si necesitas instalar dependencias manualmente, usa `npm install <paquete>`.
+1. Abre tu navegador en `http://localhost:4200`
+2. Regístrate como profesor
+3. Comienza a crear materias y gestionar estudiantes
 
 ---
 
-¡Listo! 🚀 Ahora puedes desarrollar y probar el sistema Ateneo en tu entorno local.
+## 🏗️ Resumen de Arquitectura y Separación de Responsabilidades
+
+### **¿Por qué separar Frontend y Backend?**
+
+Ateneo implementa una **arquitectura de dos capas** (Frontend y Backend separados) que permite:
+
+- ✅ **Escalabilidad independiente**: Cada parte puede crecer sin afectar a la otra
+- ✅ **Desarrollo paralelo**: Equipos diferentes pueden trabajar simultáneamente
+- ✅ **Reutilización**: El backend puede servir a múltiples clientes (web, móvil, desktop)
+- ✅ **Despliegue independiente**: Actualizar el frontend no requiere tocar el backend y viceversa
+
+---
+
+### **🎨 Frontend - Angular: Clean Architecture + MVVM**
+
+El frontend está organizado en **capas separadas** donde cada parte tiene una única responsabilidad:
+- La **lógica de negocio** (reglas del sistema) está separada de la **interfaz visual** (lo que ve el usuario)
+- Usamos servicios intermedios llamados **"ViewModel"** que conectan la pantalla con los datos y mantienen todo sincronizado
+- Los componentes son **pequeños y reutilizables**, como piezas de LEGO que se usan en múltiples lugares
+- Esto hace que el código sea ordenado, fácil de probar y simple de modificar en el futuro
+
+---
+
+### **⚙️ Backend - Express: Arquitectura en Capas**
+
+El backend está dividido en **3 capas principales** que trabajan en secuencia:
+
+**1. Handlers** → Reciben las peticiones HTTP del frontend y devuelven respuestas  
+**2. Controllers** → Ejecutan la lógica de negocio (las reglas y validaciones del sistema)  
+**3. Helpers** → Se comunican directamente con la base de datos usando Prisma
+
+**¿Por qué separar en capas?**
+- Cada capa hace **una sola cosa** y la hace bien
+- Podemos **cambiar una capa sin romper las demás** (por ejemplo, cambiar la base de datos sin tocar la lógica)
+- El código es más **fácil de testear y mantener**
+- Podemos **reutilizar funciones** en diferentes partes del sistema
+
+**Tecnologías usadas:**
+- **Node.js + Express**: Stack estándar para crear APIs REST
+- **Prisma ORM**: Herramienta moderna para trabajar con bases de datos de forma segura
+- **JWT**: Sistema de autenticación con tokens
+- **bcrypt**: Para encriptar contraseñas de forma segura
+
+---
+
+**¡Gracias por usar Ateneo! 🎓**
+
+

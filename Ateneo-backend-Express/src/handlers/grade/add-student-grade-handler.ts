@@ -12,10 +12,22 @@ export const AddStudentGradeHandler = async (req: Request, res: Response): Promi
             throw new ValidationError('El valor de la nota es obligatorio');
         }
 
+        if (value !== null) {
+            const numValue = parseFloat(value);
+            
+            if (isNaN(numValue)) {
+                throw new ValidationError('El valor de la nota debe ser un número válido');
+            }
+            
+            if (numValue < 1 || numValue > 10) {
+                throw new ValidationError('El valor de la nota debe estar entre 1 y 10');
+            }
+        }
+
         const studentGrade = await AddStudentGradeController({
             gradeId,
             studentId,
-            value: parseFloat(value)
+            value: value === null ? null : parseFloat(value)
         });
         return res.status(201).json({
             message: 'Nota de alumno agregada correctamente',

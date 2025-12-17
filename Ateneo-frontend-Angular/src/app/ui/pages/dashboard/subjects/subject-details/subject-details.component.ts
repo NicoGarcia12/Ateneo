@@ -596,7 +596,7 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
             primaryButton: {
                 show: true,
                 text: 'Guardar notas',
-                disabled: false,
+                disabled: !this.validateLoadStudentGrades(),
                 loading: false
             }
         });
@@ -615,12 +615,22 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     private validateLoadStudentGrades(): boolean {
-        // Permitir guardar si todas las notas con valor son válidas (entre 1 y 10), y las nulas se permiten
         if (this.loadStudentGradesData.length === 0) return false;
-        return this.loadStudentGradesData.every((sg) => sg.value === null || (sg.value >= 1 && sg.value <= 10));
+        
+        return this.loadStudentGradesData.every((sg) => {
+            if (sg.value === null || sg.value === undefined) return true;
+            
+            const numValue = Number(sg.value);
+            return !isNaN(numValue) && numValue >= 1 && numValue <= 10;
+        });
     }
 
     private saveLoadStudentGrades(): void {
+        if (!this.validateLoadStudentGrades()) {
+            this.notifyService.notify('Por favor, verifica que todas las notas estén entre 1 y 10, o vacías', 'error-notify');
+            return;
+        }
+
         if (this.loadStudentGradesDialogRef?.componentInstance?.data?.primaryButton) {
             this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.loading = true;
             this.loadStudentGradesDialogRef.componentInstance.data.primaryButton.disabled = true;
