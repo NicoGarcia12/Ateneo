@@ -14,11 +14,11 @@ export const AddStudentGradeHandler = async (req: Request, res: Response): Promi
 
         if (value !== null) {
             const numValue = parseFloat(value);
-            
+
             if (isNaN(numValue)) {
                 throw new ValidationError('El valor de la nota debe ser un número válido');
             }
-            
+
             if (numValue < 1 || numValue > 10) {
                 throw new ValidationError('El valor de la nota debe estar entre 1 y 10');
             }

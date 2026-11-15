@@ -616,10 +616,10 @@ export class SubjectDetailsComponent implements OnInit, OnDestroy {
 
     private validateLoadStudentGrades(): boolean {
         if (this.loadStudentGradesData.length === 0) return false;
-        
+
         return this.loadStudentGradesData.every((sg) => {
             if (sg.value === null || sg.value === undefined) return true;
-            
+
             const numValue = Number(sg.value);
             return !isNaN(numValue) && numValue >= 1 && numValue <= 10;
         });
